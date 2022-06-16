@@ -42,17 +42,14 @@ namespace KhoanNhaTrang
             }
             finally
             {
-                //Find();
-                //Add();
-                //GetMultipleDataTable();
-                //GetMultipleDataTableUseProcedure();
-                //AddContactUseProcedure();
-                //DeleteContact();
-                //UpdateContact();
+                try {
+                    db.Close();
+                }
+                catch (Exception ex)
+                {
+
+                }
             }
-
-
-
         }
     }
 }
