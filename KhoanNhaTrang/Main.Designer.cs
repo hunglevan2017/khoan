@@ -73,7 +73,7 @@ namespace KhoanNhaTrang
             this.label4 = new System.Windows.Forms.Label();
             this.cbOrder = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtHoleNo = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txtProjectName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -221,7 +221,7 @@ namespace KhoanNhaTrang
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.cbOrder);
             this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.txtHoleNo);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.txtProjectName);
             this.groupBox1.Controls.Add(this.label1);
@@ -435,9 +435,9 @@ namespace KhoanNhaTrang
             this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.label17.Location = new System.Drawing.Point(6, 101);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(54, 20);
+            this.label17.Size = new System.Drawing.Size(58, 20);
             this.label17.TabIndex = 18;
-            this.label17.Text = "Num : ";
+            this.label17.Text = "Num. : ";
             // 
             // txtLength
             // 
@@ -559,13 +559,13 @@ namespace KhoanNhaTrang
             this.label3.TabIndex = 4;
             this.label3.Text = "Order : ";
             // 
-            // textBox1
+            // txtHoleNo
             // 
-            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.textBox1.Location = new System.Drawing.Point(90, 44);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(240, 23);
-            this.textBox1.TabIndex = 3;
+            this.txtHoleNo.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.txtHoleNo.Location = new System.Drawing.Point(90, 44);
+            this.txtHoleNo.Name = "txtHoleNo";
+            this.txtHoleNo.Size = new System.Drawing.Size(240, 23);
+            this.txtHoleNo.TabIndex = 3;
             // 
             // label2
             // 
@@ -573,9 +573,9 @@ namespace KhoanNhaTrang
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.label2.Location = new System.Drawing.Point(6, 43);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(78, 20);
+            this.label2.Size = new System.Drawing.Size(82, 20);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Hole No : ";
+            this.label2.Text = "Hole No. : ";
             // 
             // txtProjectName
             // 
@@ -1090,6 +1090,7 @@ namespace KhoanNhaTrang
             this.btnSaveToAs.TabIndex = 40;
             this.btnSaveToAs.Text = "Save To As";
             this.btnSaveToAs.UseVisualStyleBackColor = true;
+            this.btnSaveToAs.Click += new System.EventHandler(this.btnSaveToAs_Click);
             // 
             // btnEnd
             // 
@@ -1183,7 +1184,7 @@ namespace KhoanNhaTrang
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox cbOrder;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtHoleNo;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.GroupBox groupBox4;

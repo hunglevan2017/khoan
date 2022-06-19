@@ -191,8 +191,22 @@ namespace KhoanNhaTrang
             btnStart.Enabled = true;
             btnPause.Enabled = false;
             btnEnd.Enabled = false;
+            btnSaveToAs.Enabled = true;
+            btnPrint.Enabled = false;
+
             timer1.Stop();
             timer1.Enabled = false;
+        }
+
+        private void btnSaveToAs_Click(object sender, EventArgs e)
+        {
+            btnStart.Enabled = true;
+            btnPause.Enabled = false;
+            btnEnd.Enabled = false;
+            btnSaveToAs.Enabled = false;
+            btnPrint.Enabled = true;
+
+           
         }
     }
 }
