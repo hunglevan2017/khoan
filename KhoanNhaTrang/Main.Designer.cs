@@ -29,12 +29,7 @@ namespace KhoanNhaTrang
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            this.components = new System.ComponentModel.Container();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -120,14 +115,15 @@ namespace KhoanNhaTrang
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.chartTimeCurves = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.chartTimeCurves = new ZedGraph.ZedGraphControl();
             this.tabDataGrid = new System.Windows.Forms.TabPage();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel4 = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btnAddInfo = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnPrint = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.btnSaveToAs = new System.Windows.Forms.Button();
             this.btnEnd = new System.Windows.Forms.Button();
             this.btnPause = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
@@ -142,7 +138,6 @@ namespace KhoanNhaTrang
             this.tabTimeCurves.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chartTimeCurves)).BeginInit();
             this.panel4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
@@ -1004,39 +999,18 @@ namespace KhoanNhaTrang
             // 
             // chartTimeCurves
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chartTimeCurves.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chartTimeCurves.Legends.Add(legend1);
-            this.chartTimeCurves.Location = new System.Drawing.Point(4, 19);
+            this.chartTimeCurves.Location = new System.Drawing.Point(6, 25);
             this.chartTimeCurves.Name = "chartTimeCurves";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series1.Color = System.Drawing.Color.Red;
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series2.Color = System.Drawing.Color.Blue;
-            series2.Legend = "Legend1";
-            series2.Name = "Series2";
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series3.Color = System.Drawing.Color.Brown;
-            series3.Legend = "Legend1";
-            series3.Name = "Series3";
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series4.Color = System.Drawing.Color.Green;
-            series4.Legend = "Legend1";
-            series4.Name = "Series4";
-            this.chartTimeCurves.Series.Add(series1);
-            this.chartTimeCurves.Series.Add(series2);
-            this.chartTimeCurves.Series.Add(series3);
-            this.chartTimeCurves.Series.Add(series4);
-            this.chartTimeCurves.Size = new System.Drawing.Size(818, 512);
+            this.chartTimeCurves.ScrollGrace = 0D;
+            this.chartTimeCurves.ScrollMaxX = 0D;
+            this.chartTimeCurves.ScrollMaxY = 0D;
+            this.chartTimeCurves.ScrollMaxY2 = 0D;
+            this.chartTimeCurves.ScrollMinX = 0D;
+            this.chartTimeCurves.ScrollMinY = 0D;
+            this.chartTimeCurves.ScrollMinY2 = 0D;
+            this.chartTimeCurves.Size = new System.Drawing.Size(815, 506);
             this.chartTimeCurves.TabIndex = 0;
-            this.chartTimeCurves.Text = "chart1";
+            this.chartTimeCurves.UseExtendedPrintDialog = true;
             // 
             // tabDataGrid
             // 
@@ -1048,6 +1022,11 @@ namespace KhoanNhaTrang
             this.tabDataGrid.TabIndex = 1;
             this.tabDataGrid.Text = "Data Gird";
             this.tabDataGrid.UseVisualStyleBackColor = true;
+            // 
+            // timer1
+            // 
+            this.timer1.Interval = 5000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // panel4
             // 
@@ -1062,7 +1041,7 @@ namespace KhoanNhaTrang
             this.groupBox3.Controls.Add(this.btnAddInfo);
             this.groupBox3.Controls.Add(this.btnClose);
             this.groupBox3.Controls.Add(this.btnPrint);
-            this.groupBox3.Controls.Add(this.button3);
+            this.groupBox3.Controls.Add(this.btnSaveToAs);
             this.groupBox3.Controls.Add(this.btnEnd);
             this.groupBox3.Controls.Add(this.btnPause);
             this.groupBox3.Controls.Add(this.btnStart);
@@ -1102,15 +1081,15 @@ namespace KhoanNhaTrang
             this.btnPrint.Text = "Print";
             this.btnPrint.UseVisualStyleBackColor = true;
             // 
-            // button3
+            // btnSaveToAs
             // 
-            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.button3.Location = new System.Drawing.Point(6, 319);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(174, 46);
-            this.button3.TabIndex = 40;
-            this.button3.Text = "Save To As";
-            this.button3.UseVisualStyleBackColor = true;
+            this.btnSaveToAs.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
+            this.btnSaveToAs.Location = new System.Drawing.Point(6, 319);
+            this.btnSaveToAs.Name = "btnSaveToAs";
+            this.btnSaveToAs.Size = new System.Drawing.Size(174, 46);
+            this.btnSaveToAs.TabIndex = 40;
+            this.btnSaveToAs.Text = "Save To As";
+            this.btnSaveToAs.UseVisualStyleBackColor = true;
             // 
             // btnEnd
             // 
@@ -1121,6 +1100,7 @@ namespace KhoanNhaTrang
             this.btnEnd.TabIndex = 39;
             this.btnEnd.Text = "End";
             this.btnEnd.UseVisualStyleBackColor = true;
+            this.btnEnd.Click += new System.EventHandler(this.btnEnd_Click);
             // 
             // btnPause
             // 
@@ -1131,6 +1111,7 @@ namespace KhoanNhaTrang
             this.btnPause.TabIndex = 38;
             this.btnPause.Text = "Pause";
             this.btnPause.UseVisualStyleBackColor = true;
+            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
             // 
             // btnStart
             // 
@@ -1155,6 +1136,7 @@ namespace KhoanNhaTrang
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "EM Grouting -- Equipment2";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);
@@ -1171,7 +1153,6 @@ namespace KhoanNhaTrang
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.groupBox4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.chartTimeCurves)).EndInit();
             this.panel4.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -1206,8 +1187,8 @@ namespace KhoanNhaTrang
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chartTimeCurves;
-        //private ZedGraph.ZedGraphControl zedGraphControl1;
+        private ZedGraph.ZedGraphControl chartTimeCurves;
+        private System.Windows.Forms.Timer timer1;
 
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label8;
@@ -1275,7 +1256,7 @@ namespace KhoanNhaTrang
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnPrint;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btnSaveToAs;
         private System.Windows.Forms.Button btnEnd;
         private System.Windows.Forms.Button btnPause;
         private System.Windows.Forms.Button btnAddInfo;
