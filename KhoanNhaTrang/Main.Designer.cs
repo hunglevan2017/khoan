@@ -752,7 +752,7 @@ namespace KhoanNhaTrang
             this.panel3.Controls.Add(this.tabControl1);
             this.panel3.Location = new System.Drawing.Point(4, 315);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(859, 745);
+            this.panel3.Size = new System.Drawing.Size(859, 590);
             this.panel3.TabIndex = 3;
             // 
             // tabControl1
@@ -800,9 +800,9 @@ namespace KhoanNhaTrang
             this.groupBox5.Controls.Add(this.label7);
             this.groupBox5.Controls.Add(this.label6);
             this.groupBox5.Controls.Add(this.label5);
-            this.groupBox5.Location = new System.Drawing.Point(2, 543);
+            this.groupBox5.Location = new System.Drawing.Point(3, 390);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(827, 156);
+            this.groupBox5.Size = new System.Drawing.Size(827, 167);
             this.groupBox5.TabIndex = 1;
             this.groupBox5.TabStop = false;
             // 
@@ -993,7 +993,7 @@ namespace KhoanNhaTrang
             this.groupBox4.Controls.Add(this.chartTimeCurves);
             this.groupBox4.Location = new System.Drawing.Point(2, 0);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(827, 537);
+            this.groupBox4.Size = new System.Drawing.Size(827, 385);
             this.groupBox4.TabIndex = 0;
             this.groupBox4.TabStop = false;
             // 
@@ -1008,7 +1008,7 @@ namespace KhoanNhaTrang
             this.chartTimeCurves.ScrollMinX = 0D;
             this.chartTimeCurves.ScrollMinY = 0D;
             this.chartTimeCurves.ScrollMinY2 = 0D;
-            this.chartTimeCurves.Size = new System.Drawing.Size(815, 506);
+            this.chartTimeCurves.Size = new System.Drawing.Size(815, 349);
             this.chartTimeCurves.TabIndex = 0;
             this.chartTimeCurves.UseExtendedPrintDialog = true;
             // 
@@ -1033,7 +1033,7 @@ namespace KhoanNhaTrang
             this.panel4.Controls.Add(this.groupBox3);
             this.panel4.Location = new System.Drawing.Point(869, 315);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(195, 745);
+            this.panel4.Size = new System.Drawing.Size(195, 590);
             this.panel4.TabIndex = 4;
             // 
             // groupBox3
@@ -1047,14 +1047,14 @@ namespace KhoanNhaTrang
             this.groupBox3.Controls.Add(this.btnStart);
             this.groupBox3.Location = new System.Drawing.Point(4, 4);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(186, 738);
+            this.groupBox3.Size = new System.Drawing.Size(186, 575);
             this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
             // 
             // btnAddInfo
             // 
             this.btnAddInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.btnAddInfo.Location = new System.Drawing.Point(6, 519);
+            this.btnAddInfo.Location = new System.Drawing.Point(6, 337);
             this.btnAddInfo.Name = "btnAddInfo";
             this.btnAddInfo.Size = new System.Drawing.Size(174, 46);
             this.btnAddInfo.TabIndex = 43;
@@ -1064,17 +1064,18 @@ namespace KhoanNhaTrang
             // btnClose
             // 
             this.btnClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.btnClose.Location = new System.Drawing.Point(6, 619);
+            this.btnClose.Location = new System.Drawing.Point(6, 399);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(174, 46);
             this.btnClose.TabIndex = 42;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // btnPrint
             // 
             this.btnPrint.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.btnPrint.Location = new System.Drawing.Point(6, 419);
+            this.btnPrint.Location = new System.Drawing.Point(6, 272);
             this.btnPrint.Name = "btnPrint";
             this.btnPrint.Size = new System.Drawing.Size(174, 46);
             this.btnPrint.TabIndex = 41;
@@ -1084,7 +1085,7 @@ namespace KhoanNhaTrang
             // btnSaveToAs
             // 
             this.btnSaveToAs.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.btnSaveToAs.Location = new System.Drawing.Point(6, 319);
+            this.btnSaveToAs.Location = new System.Drawing.Point(6, 208);
             this.btnSaveToAs.Name = "btnSaveToAs";
             this.btnSaveToAs.Size = new System.Drawing.Size(174, 46);
             this.btnSaveToAs.TabIndex = 40;
@@ -1095,7 +1096,7 @@ namespace KhoanNhaTrang
             // btnEnd
             // 
             this.btnEnd.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.btnEnd.Location = new System.Drawing.Point(6, 219);
+            this.btnEnd.Location = new System.Drawing.Point(6, 146);
             this.btnEnd.Name = "btnEnd";
             this.btnEnd.Size = new System.Drawing.Size(174, 46);
             this.btnEnd.TabIndex = 39;
@@ -1106,7 +1107,7 @@ namespace KhoanNhaTrang
             // btnPause
             // 
             this.btnPause.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.btnPause.Location = new System.Drawing.Point(6, 119);
+            this.btnPause.Location = new System.Drawing.Point(6, 82);
             this.btnPause.Name = "btnPause";
             this.btnPause.Size = new System.Drawing.Size(174, 46);
             this.btnPause.TabIndex = 38;
@@ -1128,7 +1129,7 @@ namespace KhoanNhaTrang
             // Form1
             // 
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(1077, 1070);
+            this.ClientSize = new System.Drawing.Size(1077, 919);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
