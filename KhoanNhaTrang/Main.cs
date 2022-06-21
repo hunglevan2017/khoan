@@ -64,7 +64,7 @@ namespace KhoanNhaTrang
         private void Form1_Load(object sender, EventArgs e)
         {
             // khi khởi động sẽ được chạy
-            sampleConnectDB();
+            //sampleConnectDB();
             // init button
             btnPause.Enabled = false;
             btnEnd.Enabled = false;
