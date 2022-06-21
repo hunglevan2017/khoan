@@ -683,9 +683,8 @@ namespace KhoanNhaTrang
             this.lbBeginTimeHour.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.lbBeginTimeHour.Location = new System.Drawing.Point(40, 152);
             this.lbBeginTimeHour.Name = "lbBeginTimeHour";
-            this.lbBeginTimeHour.Size = new System.Drawing.Size(99, 20);
+            this.lbBeginTimeHour.Size = new System.Drawing.Size(0, 20);
             this.lbBeginTimeHour.TabIndex = 8;
-            this.lbBeginTimeHour.Text = "08:48:14 AM";
             // 
             // lbBeginTimeDate
             // 
@@ -693,9 +692,8 @@ namespace KhoanNhaTrang
             this.lbBeginTimeDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.lbBeginTimeDate.Location = new System.Drawing.Point(48, 132);
             this.lbBeginTimeDate.Name = "lbBeginTimeDate";
-            this.lbBeginTimeDate.Size = new System.Drawing.Size(91, 20);
+            this.lbBeginTimeDate.Size = new System.Drawing.Size(0, 20);
             this.lbBeginTimeDate.TabIndex = 7;
-            this.lbBeginTimeDate.Text = "2022-05-20";
             // 
             // label31
             // 
@@ -713,9 +711,8 @@ namespace KhoanNhaTrang
             this.lbGroutedTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.lbGroutedTime.Location = new System.Drawing.Point(48, 79);
             this.lbGroutedTime.Name = "lbGroutedTime";
-            this.lbGroutedTime.Size = new System.Drawing.Size(71, 20);
+            this.lbGroutedTime.Size = new System.Drawing.Size(0, 20);
             this.lbGroutedTime.TabIndex = 5;
-            this.lbGroutedTime.Text = "00:10:46";
             // 
             // label29
             // 
@@ -833,6 +830,7 @@ namespace KhoanNhaTrang
             this.txtMaxOfYPressure.Name = "txtMaxOfYPressure";
             this.txtMaxOfYPressure.Size = new System.Drawing.Size(140, 26);
             this.txtMaxOfYPressure.TabIndex = 17;
+            this.txtMaxOfYPressure.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label11
             // 
@@ -871,6 +869,7 @@ namespace KhoanNhaTrang
             this.txtMaxOfYWC.Name = "txtMaxOfYWC";
             this.txtMaxOfYWC.Size = new System.Drawing.Size(140, 26);
             this.txtMaxOfYWC.TabIndex = 13;
+            this.txtMaxOfYWC.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label10
             // 
@@ -909,6 +908,7 @@ namespace KhoanNhaTrang
             this.txtMaxOfYTotalFlow.Name = "txtMaxOfYTotalFlow";
             this.txtMaxOfYTotalFlow.Size = new System.Drawing.Size(140, 26);
             this.txtMaxOfYTotalFlow.TabIndex = 9;
+            this.txtMaxOfYTotalFlow.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label9
             // 
@@ -947,6 +947,7 @@ namespace KhoanNhaTrang
             this.txtMaxOfYFlowrate.Name = "txtMaxOfYFlowrate";
             this.txtMaxOfYFlowrate.Size = new System.Drawing.Size(140, 26);
             this.txtMaxOfYFlowrate.TabIndex = 5;
+            this.txtMaxOfYFlowrate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label8
             // 
