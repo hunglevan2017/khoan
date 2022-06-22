@@ -38,6 +38,38 @@ namespace KhoanNhaTrang
         static string connStr = ConfigurationManager.ConnectionStrings["connStr"].ConnectionString;
         static IDbConnection db = new MySqlConnection(connStr);
 
+        private void sampleConnectDB()
+        {
+            try
+            {
+                db.Open();
+                var data = new Data();
+                data.flow_rate = 30f;
+                data.fluid = 25f;
+                string query = @"insert into data(flow_rate, fluid) values(@flow_rate, @fluid);
+                            SELECT LAST_INSERT_ID()";
+                long id = db.Query<int>(query, data).Single();
+                data.Id = id;
+                MessageBox.Show("ID:" + data.Id);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                try
+                {
+                    db.Close();
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             // khi khởi động sẽ được chạy
@@ -47,8 +79,7 @@ namespace KhoanNhaTrang
 
             cbRange.Items.Add("Upper");
             cbRange.SelectedIndex = 0;
-
-
+            sampleConnectDB();
             // init button
             btnPause.Enabled = false;
             btnEnd.Enabled = false;
@@ -436,6 +467,11 @@ namespace KhoanNhaTrang
             cellHeader.AddElement(new Paragraph(value4));
 
             return cellHeader;
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
