@@ -104,10 +104,14 @@ namespace KhoanNhaTrang
             myPane.YAxis.Title.Text = "Percent";
 
             //Định nghĩa list để vẽ đồ thị.
-            RollingPointPairList list1 = new RollingPointPairList(60000); // Sử dụng list với 60000 điểm
-            LineItem curve1 = myPane.AddCurve("Flowrate", list1, Color.Red, SymbolType.None); // SymbolType là kiểu biểu thị đồ thị : điểm, đường tròn, tam giác....
-            RollingPointPairList list2 = new RollingPointPairList(60000);
-            LineItem curve2 = myPane.AddCurve("Total flow", list2, Color.Blue, SymbolType.None);
+            RollingPointPairList listFlowRate = new RollingPointPairList(60000); // Sử dụng list với 60000 điểm
+            LineItem curveFlowRate = myPane.AddCurve("Flowrate", listFlowRate, Color.Red, SymbolType.None); // SymbolType là kiểu biểu thị đồ thị : điểm, đường tròn, tam giác....
+            RollingPointPairList listFluid = new RollingPointPairList(60000);
+            LineItem curveFluid = myPane.AddCurve("Total flow", listFluid, Color.Blue, SymbolType.None);
+            RollingPointPairList listWC = new RollingPointPairList(60000);
+            LineItem curveWC = myPane.AddCurve("Total flow", listWC, Color.Brown, SymbolType.None);
+            RollingPointPairList listPressure = new RollingPointPairList(60000);
+            LineItem curvePressure = myPane.AddCurve("Total flow", listPressure, Color.Green, SymbolType.None);
 
             // Định hiện thị cho trục thời gian (Trục X)
             myPane.XAxis.Scale.Min = 0;
@@ -122,47 +126,61 @@ namespace KhoanNhaTrang
 
             // Gọi hàm xác định cỡ trục
             myPane.AxisChange();
-
-            // Khởi động timer về vị trí ban đầu
-            tickStart = Environment.TickCount;
         }
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            startDateDate = DateTime.Now;
-            startDate = DateTime.Now.ToString("yyyy-MM-dd").ToString();
-            startHour = DateTime.Now.ToString("hh:mm:ss tt").ToString();
-
-            lbBeginTimeDate.Text = startDate;
-            lbBeginTimeHour.Text = startHour;
-
-            btnStart.Enabled = false;
-            btnPause.Enabled = true;
-            btnEnd.Enabled = true;
-            timer1.Enabled = true;
-            timer1.Start();
-
-            try
+            if (txtMaxOfYFlowrate.Text != null && !"".Equals(txtMaxOfYFlowrate.Text.Trim())
+                && txtMaxOfYTotalFlow.Text != null && !"".Equals(txtMaxOfYTotalFlow.Text.Trim())
+                && txtMaxOfYWC.Text != null && !"".Equals(txtMaxOfYWC.Text.Trim())
+                && txtMaxOfYPressure.Text != null && !"".Equals(txtMaxOfYPressure.Text.Trim()))
             {
-                db.Open();
-                string query = @"SELECT flow_rate, fluid FROM grouting.data";
-                listData = db.Query<Data>(query).ToList();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            finally
-            {
+                txtMaxOfYFlowrate.ReadOnly = true;
+                txtMaxOfYTotalFlow.ReadOnly = true;
+                txtMaxOfYWC.ReadOnly = true;
+                txtMaxOfYPressure.ReadOnly = true;
+
+                startDateDate = DateTime.Now;
+                startDate = DateTime.Now.ToString("yyyy-MM-dd").ToString();
+                startHour = DateTime.Now.ToString("hh:mm:ss tt").ToString();
+
+
+
+                lbBeginTimeDate.Text = startDate;
+                lbBeginTimeHour.Text = startHour;
+
+                btnStart.Enabled = false;
+                btnPause.Enabled = true;
+                btnEnd.Enabled = true;
+                timer1.Enabled = true;
+                timer1.Start();
+
                 try
                 {
-                    db.Close();
+                    db.Open();
+                    string query = @"SELECT flow_rate, fluid, wc, pressure FROM grouting.data";
+                    listData = db.Query<Data>(query).ToList();
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                 }
+                finally
+                {
+                    try
+                    {
+                        db.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+            } else
+            {
+                MessageBox.Show("Các trường Max of Y của Flowrate, Total flow, W/C, Pressure không được rỗng.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -175,12 +193,14 @@ namespace KhoanNhaTrang
                 Draw(data.flow_rate, data.fluid, data.pressure, data.wc);
                 /**/
 
-                lbGroutedTime.Text = (DateTime.Now - startDateDate).Milliseconds.ToString();
-                Draw(listData[index].flow_rate, listData[index].fluid);
+                //lbGroutedTime.Text = (DateTime.Now - startDateDate).Milliseconds.ToString();
+
+                double valueFlowRate = ((listData[index].flow_rate * 100) / Convert.ToDouble(txtMaxOfYFlowrate.Text));
+                double valueFluid = ((listData[index].fluid * 100) / Convert.ToDouble(txtMaxOfYTotalFlow.Text));
+                double valueWC = ((listData[index].wc * 100) / Convert.ToDouble(txtMaxOfYWC.Text));
+                double valuePressure = ((listData[index].pressure * 100) / Convert.ToDouble(txtMaxOfYPressure.Text));
+                Draw(valueFlowRate, valueFluid, valueWC, valuePressure);
                 index++;
-                txtMaxOfYFlowrate.Text = listData[index].flow_rate.ToString();
-                txtMaxOfYTotalFlow.Text = listData[index].fluid.ToString();
-                //Debug.WriteLine("flow_rate : " + listData[index].flow_rate + " - fluid : "  + listData[index].fluid);
             }
             catch (Exception ex)
             {
@@ -188,58 +208,104 @@ namespace KhoanNhaTrang
             }
         }
 
-        private void Draw(float flowRate, float fluid)
+        private void Draw(double flowRate, double fluid, double wc, double pressure)
         {
 
             if (chartTimeCurves.GraphPane.CurveList.Count <= 0)
                 return;
 
             // Đưa về điểm xuất phát
-            LineItem curve1 = chartTimeCurves.GraphPane.CurveList[0] as LineItem;
-            LineItem curve2 = chartTimeCurves.GraphPane.CurveList[1] as LineItem;
+            LineItem curveFlowRate = chartTimeCurves.GraphPane.CurveList[0] as LineItem;
+            LineItem curveFluid = chartTimeCurves.GraphPane.CurveList[1] as LineItem;
+            LineItem curveWC = chartTimeCurves.GraphPane.CurveList[2] as LineItem;
+            LineItem curvePressure = chartTimeCurves.GraphPane.CurveList[3] as LineItem;
 
-            if (curve1 == null)
+            if (curveFlowRate == null)
                 return;
 
-            if (curve2 == null)
+            if (curveFluid == null)
                 return;
 
-            IPointListEdit list1 = curve1.Points as IPointListEdit;
-            IPointListEdit list2 = curve2.Points as IPointListEdit;
-
-            if (list1 == null)
+            if (curveWC == null)
                 return;
 
-            if (list1 == null)
+            if (curvePressure == null)
                 return;
 
-            // Time được tính bằng ms
-            double time = (Environment.TickCount - tickStart) / 1000.0;
+
+            IPointListEdit listFlowRate = curveFlowRate.Points as IPointListEdit;
+            IPointListEdit listFluid = curveFluid.Points as IPointListEdit;
+            IPointListEdit listWC = curveWC.Points as IPointListEdit;
+            IPointListEdit listPressure = curvePressure.Points as IPointListEdit;
+
+
+            if (listFlowRate == null)
+                return;
+
+            if (listFluid == null)
+                return;
+
+            if (listWC == null)
+                return;
+
+            if (listPressure == null)
+                return;
 
             // Thêm điểm trên đồ thị
-            list1.Add(time, flowRate);
-            list2.Add(time, fluid);
+            listFlowRate.Add(tickStart, flowRate);
+            listFluid.Add(tickStart, fluid);
+            listWC.Add(tickStart, wc);
+            listPressure.Add(tickStart, pressure);
 
             // Đoạn chương trình thực hiện vẽ đồ thị
             Scale xScale = chartTimeCurves.GraphPane.XAxis.Scale;
             Scale yScale = chartTimeCurves.GraphPane.YAxis.Scale;
 
             // Tự động Scale theo trục x
-            if (time > xScale.Max - xScale.MajorStep)
+            if (tickStart > xScale.Max - xScale.MajorStep)
             {
-                xScale.Max = time + xScale.MajorStep;
-                xScale.Min = 0;
+                xScale.Max = tickStart + xScale.MajorStep;
+                xScale.Min = xScale.Max - 30.0;
             }
+            tickStart = tickStart + 5;
 
             //// Tự động Scale theo trục y
-            //if (value > yScale.Max - yScale.MajorStep)
-            //{
-            //    yScale.Max = value + yScale.MajorStep;
-            //}
-            //else if (value < yScale.Min + yScale.MajorStep)
-            //{
-            //    yScale.Min = value - yScale.MajorStep;
-            //}
+            if (flowRate > yScale.Max - yScale.MajorStep)
+            {
+                yScale.Max = flowRate + yScale.MajorStep;
+            }
+            else if (flowRate < yScale.Min + yScale.MajorStep)
+            {
+                yScale.Min = flowRate - yScale.MajorStep;
+            }
+
+            if (fluid > yScale.Max - yScale.MajorStep)
+            {
+                yScale.Max = fluid + yScale.MajorStep;
+            }
+            else if (fluid < yScale.Min + yScale.MajorStep)
+            {
+                yScale.Min = fluid - yScale.MajorStep;
+            }
+
+            if (wc > yScale.Max - yScale.MajorStep)
+            {
+                yScale.Max = wc + yScale.MajorStep;
+            }
+            else if (wc < yScale.Min + yScale.MajorStep)
+            {
+                yScale.Min = wc - yScale.MajorStep;
+            }
+
+            if (pressure > yScale.Max - yScale.MajorStep)
+            {
+                yScale.Max = pressure + yScale.MajorStep;
+            }
+            else if (pressure < yScale.Min + yScale.MajorStep)
+            {
+                yScale.Min = pressure - yScale.MajorStep;
+            }
+
 
             // Vẽ đồ thị
             chartTimeCurves.AxisChange();
@@ -263,6 +329,11 @@ namespace KhoanNhaTrang
             btnEnd.Enabled = false;
             btnSaveToAs.Enabled = true;
             btnPrint.Enabled = false;
+
+            txtMaxOfYFlowrate.ReadOnly = true;
+            txtMaxOfYTotalFlow.ReadOnly = true;
+            txtMaxOfYWC.ReadOnly = true;
+            txtMaxOfYPressure.ReadOnly = true;
 
             timer1.Stop();
             timer1.Enabled = false;
@@ -290,7 +361,8 @@ namespace KhoanNhaTrang
 
         private void createPDF(FileStream fs, String path)
         {
-            Document doc = new Document(PageSize.A6, 25, 25, 30, 30);
+            iTextSharp.text.Rectangle pagesize = new iTextSharp.text.Rectangle(320, 1500);
+            Document doc = new Document(pagesize);
             PdfWriter writer = PdfWriter.GetInstance(doc, fs);
             doc.Open();
 
@@ -343,44 +415,35 @@ namespace KhoanNhaTrang
             // Draw Table 1
             PdfPTable tableHeader = new PdfPTable(5);
             tableHeader.WidthPercentage = 108;
-            PdfPCell cellHeader1 = createHeaderCell("Time", "Min");
+            PdfPCell cellHeader1 = createHeaderCell("Time", "Min", true);
             tableHeader.AddCell(cellHeader1);
-            PdfPCell cellHeader2 = createHeaderCell("Flowrate", "L/Min");
+            PdfPCell cellHeader2 = createHeaderCell("Flowrate", "L/Min", false);
             tableHeader.AddCell(cellHeader2);
-            PdfPCell cellHeader3 = createHeaderCell("TFluid", "L");
+            PdfPCell cellHeader3 = createHeaderCell("TFluid", "L", false);
             tableHeader.AddCell(cellHeader3);
-            PdfPCell cellHeader4 = createHeaderCell("W/C", "W:C");  
+            PdfPCell cellHeader4 = createHeaderCell("W/C", "W:C", false);  
             tableHeader.AddCell(cellHeader4);
-            PdfPCell cellHeader5 = createHeaderCell("Pressure", "MPa");
+            PdfPCell cellHeader5 = createHeaderCell("Pressure", "MPa", false);
             tableHeader.AddCell(cellHeader5);
             doc.Add(tableHeader);
             doc.Add(lineSeparator);
 
             PdfPTable tableCell = new PdfPTable(5);
             tableCell.WidthPercentage = 108;
-            float totalfluid = 0;
-            float maxFlowRate = 0;
-            float maxfluid = 0;
+            double totalfluid = 0;
             foreach (Data data in listData)
             {
                 totalfluid = totalfluid + data.fluid;
-                if (maxFlowRate < data.flow_rate)
-                {
-                    maxFlowRate = data.flow_rate;
-                }
-                if (maxfluid < data.fluid)
-                {
-                    maxfluid = data.fluid;
-                }
-                PdfPCell cell1 = createCell("value?");
+
+                PdfPCell cell1 = createCell("value?", true);
                 tableCell.AddCell(cell1);
-                PdfPCell cell2 = createCell(data.flow_rate.ToString());
+                PdfPCell cell2 = createCell(data.flow_rate.ToString(), false);
                 tableCell.AddCell(cell2);
-                PdfPCell cell3 = createCell(data.fluid.ToString());
+                PdfPCell cell3 = createCell(data.fluid.ToString(), false);
                 tableCell.AddCell(cell3);
-                PdfPCell cell4 = createCell("value?");
+                PdfPCell cell4 = createCell(data.wc.ToString(), false);
                 tableCell.AddCell(cell4);
-                PdfPCell cell5 = createCell("value?");
+                PdfPCell cell5 = createCell(data.pressure.ToString(), false);
                 tableCell.AddCell(cell5);
             }
             doc.Add(tableCell);
@@ -420,13 +483,13 @@ namespace KhoanNhaTrang
             tableHeader2.WidthPercentage = 108;
             PdfPCell cellTable2Header1 = createCellChart(" ", " ", "Max of Y", "Min of Y");
             tableHeader2.AddCell(cellTable2Header1);
-            PdfPCell cellTable2Header2 = createCellChart("1", "Flowrate", maxFlowRate.ToString(), "0");
+            PdfPCell cellTable2Header2 = createCellChart("1", "Flowrate", txtMaxOfYFlowrate.Text, "0");
             tableHeader2.AddCell(cellTable2Header2);
-            PdfPCell cellTable2Header3 = createCellChart("2", "TFluid", maxfluid.ToString(), "0");
+            PdfPCell cellTable2Header3 = createCellChart("2", "TFluid", txtMaxOfYTotalFlow.Text, "0");
             tableHeader2.AddCell(cellTable2Header3);
-            PdfPCell cellTable2Header4 = createCellChart("3", "W/C", "value?", "0");
+            PdfPCell cellTable2Header4 = createCellChart("3", "W/C", txtMaxOfYWC.Text, "0");
             tableHeader2.AddCell(cellTable2Header4);
-            PdfPCell cellTable2Header5 = createCellChart("4", "Pressure", "value?", "0");
+            PdfPCell cellTable2Header5 = createCellChart("4", "Pressure", txtMaxOfYPressure.Text, "0");
             tableHeader2.AddCell(cellTable2Header5);
             doc.Add(tableHeader2);
 
@@ -446,9 +509,13 @@ namespace KhoanNhaTrang
 
             doc.Close();
         }
-        private PdfPCell createHeaderCell(String value1, String value2)
+        private PdfPCell createHeaderCell(String value1, String value2, Boolean flgPadding)
         {
             PdfPCell cellHeader = new PdfPCell();
+            if (flgPadding)
+            {
+                cellHeader = new PdfPCell { PaddingLeft = 10};
+            }
             cellHeader.BorderWidthBottom = 0;
             cellHeader.BorderWidthLeft = 0;
             cellHeader.BorderWidthTop = 0;
@@ -458,9 +525,13 @@ namespace KhoanNhaTrang
 
             return cellHeader;
         }
-        private PdfPCell createCell(String value1)
+        private PdfPCell createCell(String value1, Boolean flgPadding)
         {
             PdfPCell cell = new PdfPCell();
+            if (flgPadding)
+            {
+                cell = new PdfPCell { PaddingLeft = 10 };
+            }
             cell.BorderWidthBottom = 0;
             cell.BorderWidthLeft = 0;
             cell.BorderWidthTop = 0;
@@ -476,10 +547,15 @@ namespace KhoanNhaTrang
             cellHeader.BorderWidthLeft = 0;
             cellHeader.BorderWidthTop = 0;
             cellHeader.BorderWidthRight = 0;
-            cellHeader.AddElement(new Paragraph(value1));
-            cellHeader.AddElement(new Paragraph(value2));
-            cellHeader.AddElement(new Paragraph(value3));
-            cellHeader.AddElement(new Paragraph(value4));
+            var parHeader = new Paragraph(value1);
+            parHeader.Alignment = Element.ALIGN_CENTER;
+            cellHeader.AddElement(parHeader);
+            parHeader = new Paragraph(value2);
+            cellHeader.AddElement(parHeader);
+            parHeader = new Paragraph(value3);
+            cellHeader.AddElement(parHeader);
+            parHeader = new Paragraph(value4);
+            cellHeader.AddElement(parHeader);
 
             return cellHeader;
         }
@@ -487,6 +563,62 @@ namespace KhoanNhaTrang
         private void btnClose_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void txtMaxOfYFlowrate_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&(e.KeyChar != '.'))
+            {
+                e.Handled = true;
+            }
+
+            // only allow one decimal point
+            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtMaxOfYTotalFlow_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
+            {
+                e.Handled = true;
+            }
+
+            // only allow one decimal point
+            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtMaxOfYWC_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
+            {
+                e.Handled = true;
+            }
+
+            // only allow one decimal point
+            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtMaxOfYPressure_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
+            {
+                e.Handled = true;
+            }
+
+            // only allow one decimal point
+            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+            {
+                e.Handled = true;
+            }
         }
     }
 }

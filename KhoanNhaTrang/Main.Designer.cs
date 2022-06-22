@@ -830,7 +830,9 @@ namespace KhoanNhaTrang
             this.txtMaxOfYPressure.Name = "txtMaxOfYPressure";
             this.txtMaxOfYPressure.Size = new System.Drawing.Size(140, 26);
             this.txtMaxOfYPressure.TabIndex = 17;
+            this.txtMaxOfYPressure.Text = "100";
             this.txtMaxOfYPressure.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtMaxOfYPressure.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMaxOfYPressure_KeyPress);
             // 
             // label11
             // 
@@ -869,7 +871,9 @@ namespace KhoanNhaTrang
             this.txtMaxOfYWC.Name = "txtMaxOfYWC";
             this.txtMaxOfYWC.Size = new System.Drawing.Size(140, 26);
             this.txtMaxOfYWC.TabIndex = 13;
+            this.txtMaxOfYWC.Text = "100";
             this.txtMaxOfYWC.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtMaxOfYWC.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMaxOfYWC_KeyPress);
             // 
             // label10
             // 
@@ -908,7 +912,9 @@ namespace KhoanNhaTrang
             this.txtMaxOfYTotalFlow.Name = "txtMaxOfYTotalFlow";
             this.txtMaxOfYTotalFlow.Size = new System.Drawing.Size(140, 26);
             this.txtMaxOfYTotalFlow.TabIndex = 9;
+            this.txtMaxOfYTotalFlow.Text = "100";
             this.txtMaxOfYTotalFlow.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtMaxOfYTotalFlow.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMaxOfYTotalFlow_KeyPress);
             // 
             // label9
             // 
@@ -947,7 +953,9 @@ namespace KhoanNhaTrang
             this.txtMaxOfYFlowrate.Name = "txtMaxOfYFlowrate";
             this.txtMaxOfYFlowrate.Size = new System.Drawing.Size(140, 26);
             this.txtMaxOfYFlowrate.TabIndex = 5;
+            this.txtMaxOfYFlowrate.Text = "100";
             this.txtMaxOfYFlowrate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtMaxOfYFlowrate.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMaxOfYFlowrate_KeyPress);
             // 
             // label8
             // 
