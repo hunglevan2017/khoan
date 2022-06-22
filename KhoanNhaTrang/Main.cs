@@ -21,6 +21,13 @@ namespace KhoanNhaTrang
         private List<Data> listData = new List<Data>();
         private int index = 0;
         int tickStart = 0;
+        private DateTime startDateDate;
+        private String startDate;
+        private String startHour;
+        private String endDate;
+        private String endHour;
+
+
 
         public Form1()
         {
@@ -67,6 +74,13 @@ namespace KhoanNhaTrang
         {
             // khi khởi động sẽ được chạy
             //sampleConnectDB();
+            // init combobox
+            cbOrder.Items.Add("I Order");
+            cbOrder.SelectedIndex = 0;
+
+            cbRange.Items.Add("Upper");
+            cbRange.SelectedIndex = 0;
+            sampleConnectDB();
             // init button
             btnPause.Enabled = false;
             btnEnd.Enabled = false;
@@ -107,6 +121,13 @@ namespace KhoanNhaTrang
 
         private void btnStart_Click(object sender, EventArgs e)
         {
+            startDateDate = DateTime.Now;
+            startDate = DateTime.Now.ToString("yyyy-MM-dd").ToString();
+            startHour = DateTime.Now.ToString("hh:mm:ss tt").ToString();
+
+            lbBeginTimeDate.Text = startDate;
+            lbBeginTimeHour.Text = startHour;
+
             btnStart.Enabled = false;
             btnPause.Enabled = true;
             btnEnd.Enabled = true;
@@ -131,7 +152,7 @@ namespace KhoanNhaTrang
                 }
                 catch (Exception ex)
                 {
-
+                    Console.WriteLine(ex.Message);
                 }
             }
         }
@@ -140,6 +161,7 @@ namespace KhoanNhaTrang
         {
             try
             {
+                lbGroutedTime.Text = (DateTime.Now - startDateDate).Milliseconds.ToString();
                 Draw(listData[index].flow_rate, listData[index].fluid);
                 index++;
                 txtMaxOfYFlowrate.Text = listData[index].flow_rate.ToString();
@@ -230,6 +252,8 @@ namespace KhoanNhaTrang
 
             timer1.Stop();
             timer1.Enabled = false;
+            endDate = DateTime.Now.ToString("yyyy-MM-dd").ToString();
+            endHour = DateTime.Now.ToString("hh:mm:ss tt").ToString();
         }
 
         private void btnSaveToAs_Click(object sender, EventArgs e)
@@ -240,126 +264,210 @@ namespace KhoanNhaTrang
             btnSaveToAs.Enabled = false;
             btnPrint.Enabled = true;
 
-            chartTimeCurves.MasterPane.GetImage().Save(@"D:\Download\test.bmp");
+            SaveFileDialog svg = new SaveFileDialog();
+            if (svg.ShowDialog() == DialogResult.OK)
+            {
+                using (FileStream stream = new FileStream(svg.FileName + ".pdf", FileMode.Create))
+                {
+                    createPDF(stream, System.IO.Path.GetDirectoryName(svg.FileName));
+                }
+            }
+        }
 
-            System.IO.FileStream fs = new FileStream(@"D:\Download\First PDF document.pdf", FileMode.Create);
-            Document doc = new Document(PageSize.A4, 25, 25, 30, 30);
+        private void createPDF(FileStream fs, String path)
+        {
+            Document doc = new Document(PageSize.A6, 25, 25, 30, 30);
             PdfWriter writer = PdfWriter.GetInstance(doc, fs);
-
             doc.Open();
-            doc.Add(iTextSharp.text.Image.GetInstance(@"D:\Download\test.bmp"));
 
-            PdfPTable table1 = new PdfPTable(2);
-            table1.DefaultCell.Border = 0;
-            table1.WidthPercentage = 80;
+            // Draw Header
+            var parHeader = new Paragraph("Grouting Record Report");
+            parHeader.Alignment = Element.ALIGN_CENTER;
+            doc.Add(parHeader);
+            // Draw Paragraph 1
+            var parEqui = new Paragraph();
+            parEqui.Add(new Chunk("Equipment: " + "Value?"));
+            parEqui.Add(Chunk.TABBING);
+            parEqui.Add(Chunk.TABBING);
+            parEqui.Add(new Chunk(startDate));
+            doc.Add(parEqui);
+            doc.Add(new Paragraph("Project Name: " + txtProjectName.Text));
+            doc.Add(new Paragraph("Grouting Holes Parameters: " +"Value?"));
+            doc.Add(new Paragraph("Hole No.: " + txtHoleNo.Text));
+            var parOrder = new Paragraph();
+            parOrder.Add(new Chunk("Order: " + cbOrder.Text));
+            parOrder.Add(Chunk.TABBING);
+            parOrder.Add(new Chunk(" Range: " + cbRange.Text));
+            doc.Add(parOrder);
+            var parThe = new Paragraph();
+            parThe.Add(new Chunk("The: " + txtThe.Text));
+            parThe.Add(Chunk.TABBING);
+            parThe.Add(new Chunk(" Sect From: " + txtSectFrom.Text));
+            parThe.Add(Chunk.TABBING);
+            parThe.Add(new Chunk(" To: " + txtTo.Text + " m"));
+            doc.Add(parThe);
+            doc.Add(new Paragraph("Length(m): " + txtLength.Text));
+            doc.Add(new Paragraph("Num.: " + txtNum.Text));
+            doc.Add(new Paragraph("Des of Hole(mm): " + txtDesOfHole.Text));
+            doc.Add(new Paragraph("Dist bw eject and hole(cm): " + txtDistBwEjectAndHole.Text));
+            doc.Add(new Paragraph("Hole High(m): " + txtHoleHigh.Text));
+            doc.Add(new Paragraph("Begin Time: " + startHour));
+            doc.Add(new Paragraph("Recorder: " + txtRecorder.Text));
+            doc.Add(new Paragraph("Leader: " + txtLeader.Text));
+            doc.Add(new Paragraph("Quality: " + txtQuality.Text));
+            doc.Add(new Paragraph("Supervisor: " + "Value?"));
 
-            //var titleFont = new Font(Font.FontFamily, 24);
-            //var subTitleFont = new Font(Font.FontFamily, 16);
+            // Draw Separator
+            Paragraph par = new Paragraph(" ");
+            par.SetLeading(0.7F, 0.7F);
+            Paragraph lineSeparator = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 105.0F, BaseColor.BLACK, Element.ALIGN_LEFT, 1)));
+            lineSeparator.SetLeading(0.5F, 0.5F);
+            doc.Add(lineSeparator);
+            doc.Add(par);
+            doc.Add(lineSeparator);
 
-            PdfPCell cell11 = new PdfPCell();
-            cell11.Colspan = 1;
-            //cell11.AddElement(new Paragraph("ABC Traders Receipt", titleFont));
+            // Draw Table 1
+            PdfPTable tableHeader = new PdfPTable(5);
+            tableHeader.WidthPercentage = 108;
+            PdfPCell cellHeader1 = createHeaderCell("Time", "Min");
+            tableHeader.AddCell(cellHeader1);
+            PdfPCell cellHeader2 = createHeaderCell("Flowrate", "L/Min");
+            tableHeader.AddCell(cellHeader2);
+            PdfPCell cellHeader3 = createHeaderCell("TFluid", "L");
+            tableHeader.AddCell(cellHeader3);
+            PdfPCell cellHeader4 = createHeaderCell("W/C", "W:C");  
+            tableHeader.AddCell(cellHeader4);
+            PdfPCell cellHeader5 = createHeaderCell("Pressure", "MPa");
+            tableHeader.AddCell(cellHeader5);
+            doc.Add(tableHeader);
+            doc.Add(lineSeparator);
 
-           // cell11.AddElement(new Paragraph("Thankyou for shoping at ABC traders,your order details are below", subTitleFont));
+            PdfPTable tableCell = new PdfPTable(5);
+            tableCell.WidthPercentage = 108;
+            float totalfluid = 0;
+            float maxFlowRate = 0;
+            float maxfluid = 0;
+            foreach (Data data in listData)
+            {
+                totalfluid = totalfluid + data.fluid;
+                if (maxFlowRate < data.flow_rate)
+                {
+                    maxFlowRate = data.flow_rate;
+                }
+                if (maxfluid < data.fluid)
+                {
+                    maxfluid = data.fluid;
+                }
+                PdfPCell cell1 = createCell("value?");
+                tableCell.AddCell(cell1);
+                PdfPCell cell2 = createCell(data.flow_rate.ToString());
+                tableCell.AddCell(cell2);
+                PdfPCell cell3 = createCell(data.fluid.ToString());
+                tableCell.AddCell(cell3);
+                PdfPCell cell4 = createCell("value?");
+                tableCell.AddCell(cell4);
+                PdfPCell cell5 = createCell("value?");
+                tableCell.AddCell(cell5);
+            }
+            doc.Add(tableCell);
+            doc.Add(lineSeparator);
 
+            // Draw Paragraph 2
+            var parEnd = new Paragraph();
+            parEnd.Add(new Chunk("End Time: " + endDate));
+            parEnd.Add(Chunk.TABBING);
+            parEnd.Add(Chunk.TABBING);
+            parEnd.Add(new Chunk(endHour));
+            doc.Add(parEnd);
+            var parTotalFluid = new Paragraph();
+            parTotalFluid.Add(new Chunk("Total Fluid: "));
+            parTotalFluid.Add(Chunk.TABBING);
+            parTotalFluid.Add(new Chunk(totalfluid.ToString() + " L"));
+            doc.Add(parTotalFluid);
+            var parAshUsed = new Paragraph();
+            parAshUsed.Add(new Chunk("Ash used: "));
+            parAshUsed.Add(Chunk.TABBING);
+            parAshUsed.Add(new Chunk("value?" + " Kg"));
+            doc.Add(parAshUsed);
+            var parAshDiscarded = new Paragraph();
+            parAshDiscarded.Add(new Chunk("Ash discarded: "));
+            parAshDiscarded.Add(Chunk.TABBING);
+            parAshDiscarded.Add(new Chunk("value?" + " L"));
+            doc.Add(parAshDiscarded);
+            var parCementDiscarded = new Paragraph();
+            parCementDiscarded.Add(new Chunk("Cememt discarded: "));
+            parCementDiscarded.Add(Chunk.TABBING);
+            parCementDiscarded.Add(new Chunk("value?" + " Kg"));
+            doc.Add(parCementDiscarded);
+            doc.Add(lineSeparator);
 
-            cell11.VerticalAlignment = Element.ALIGN_LEFT;
+            // Draw Table 2
+            PdfPTable tableHeader2 = new PdfPTable(5);
+            tableHeader2.WidthPercentage = 108;
+            PdfPCell cellTable2Header1 = createCellChart(" ", " ", "Max of Y", "Min of Y");
+            tableHeader2.AddCell(cellTable2Header1);
+            PdfPCell cellTable2Header2 = createCellChart("1", "Flowrate", maxFlowRate.ToString(), "0");
+            tableHeader2.AddCell(cellTable2Header2);
+            PdfPCell cellTable2Header3 = createCellChart("2", "TFluid", maxfluid.ToString(), "0");
+            tableHeader2.AddCell(cellTable2Header3);
+            PdfPCell cellTable2Header4 = createCellChart("3", "W/C", "value?", "0");
+            tableHeader2.AddCell(cellTable2Header4);
+            PdfPCell cellTable2Header5 = createCellChart("4", "Pressure", "value?", "0");
+            tableHeader2.AddCell(cellTable2Header5);
+            doc.Add(tableHeader2);
 
-            PdfPCell cell12 = new PdfPCell();
-
-
-            cell12.VerticalAlignment = Element.ALIGN_CENTER;
-
-
-            table1.AddCell(cell11);
-
-            table1.AddCell(cell12);
-
-
-            PdfPTable table2 = new PdfPTable(3);
-
-            //One row added
-
-            PdfPCell cell21 = new PdfPCell();
-
-            cell21.AddElement(new Paragraph("Photo Type"));
-
-            PdfPCell cell22 = new PdfPCell();
-
-            cell22.AddElement(new Paragraph("No. of Copies"));
-
-            PdfPCell cell23 = new PdfPCell();
-
-            cell23.AddElement(new Paragraph("Amount"));
-
-
-            table2.AddCell(cell21);
-
-            table2.AddCell(cell22);
-
-            table2.AddCell(cell23);
-
-
-            //New Row Added
-
-            PdfPCell cell31 = new PdfPCell();
-
-            cell31.AddElement(new Paragraph("Safe"));
-
-            cell31.FixedHeight = 300.0f;
-
-            PdfPCell cell32 = new PdfPCell();
-
-            cell32.AddElement(new Paragraph("2"));
-
-            cell32.FixedHeight = 300.0f;
-
-            PdfPCell cell33 = new PdfPCell();
-
-            cell33.AddElement(new Paragraph("20.00 * " + "2" + " = " + (20 * Convert.ToInt32("2")) + ".00"));
-
-            cell33.FixedHeight = 300.0f;
-
-
-
-            table2.AddCell(cell31);
-
-            table2.AddCell(cell32);
-
-            table2.AddCell(cell33);
-
-
-            PdfPCell cell2A = new PdfPCell(table2);
-
-            cell2A.Colspan = 2;
-
-            table1.AddCell(cell2A);
-
-            PdfPCell cell41 = new PdfPCell();
-
-            cell41.AddElement(new Paragraph("Name : " + "ABC"));
-
-            cell41.AddElement(new Paragraph("Advance : " + "advance"));
-
-            cell41.VerticalAlignment = Element.ALIGN_LEFT;
-
-            PdfPCell cell42 = new PdfPCell();
-
-            cell42.AddElement(new Paragraph("Customer ID : " + "011"));
-
-            cell42.AddElement(new Paragraph("Balance : " + "3993"));
-
-            cell42.VerticalAlignment = Element.ALIGN_RIGHT;
-
-
-            table1.AddCell(cell41);
-
-            table1.AddCell(cell42);
-
-
-            doc.Add(table1);
+            // Draw chart
+            String imageChartName = @"\Chart" + DateTime.Now.ToString("yyyyMMddhhmmss").ToString() + ".bmp";
+            chartTimeCurves.MasterPane.GetImage().Save(path + imageChartName);
+            PdfPTable tableChart = new PdfPTable(1);
+            tableChart.WidthPercentage = 108;
+            PdfPCell cellChart = new PdfPCell();
+            cellChart.BorderWidthBottom = 0;
+            cellChart.BorderWidthLeft = 0;
+            cellChart.BorderWidthTop = 0;
+            cellChart.BorderWidthRight = 0;
+            cellChart.AddElement(iTextSharp.text.Image.GetInstance(path + imageChartName));
+            tableChart.AddCell(cellChart);
+            doc.Add(tableChart);
 
             doc.Close();
+        }
+        private PdfPCell createHeaderCell(String value1, String value2)
+        {
+            PdfPCell cellHeader = new PdfPCell();
+            cellHeader.BorderWidthBottom = 0;
+            cellHeader.BorderWidthLeft = 0;
+            cellHeader.BorderWidthTop = 0;
+            cellHeader.BorderWidthRight = 0;
+            cellHeader.AddElement(new Paragraph(value1));
+            cellHeader.AddElement(new Paragraph(value2));
+
+            return cellHeader;
+        }
+        private PdfPCell createCell(String value1)
+        {
+            PdfPCell cell = new PdfPCell();
+            cell.BorderWidthBottom = 0;
+            cell.BorderWidthLeft = 0;
+            cell.BorderWidthTop = 0;
+            cell.BorderWidthRight = 0;
+            cell.AddElement(new Paragraph(value1));
+
+            return cell;
+        }
+        private PdfPCell createCellChart(String value1, String value2, String value3, String value4)
+        {
+            PdfPCell cellHeader = new PdfPCell();
+            cellHeader.BorderWidthBottom = 0;
+            cellHeader.BorderWidthLeft = 0;
+            cellHeader.BorderWidthTop = 0;
+            cellHeader.BorderWidthRight = 0;
+            cellHeader.AddElement(new Paragraph(value1));
+            cellHeader.AddElement(new Paragraph(value2));
+            cellHeader.AddElement(new Paragraph(value3));
+            cellHeader.AddElement(new Paragraph(value4));
+
+            return cellHeader;
         }
 
         private void btnClose_Click(object sender, EventArgs e)
