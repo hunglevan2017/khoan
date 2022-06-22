@@ -27,8 +27,6 @@ namespace KhoanNhaTrang
         private String endDate;
         private String endHour;
 
-
-
         public Form1()
         {
             InitializeComponent();
@@ -38,20 +36,20 @@ namespace KhoanNhaTrang
         static string connStr = ConfigurationManager.ConnectionStrings["connStr"].ConnectionString;
         static IDbConnection db = new MySqlConnection(connStr);
 
-        private void sampleConnectDB()
+        private Data insertDB()
         {
+            var data = new Data();
             try
             {
                 db.Open();
-                var data = new Data();
-                data.flow_rate = 30f;
-                data.fluid = 25f;
-                string query = @"insert into data(flow_rate, fluid) values(@flow_rate, @fluid);
+                data.flow_rate = PLCDB1Read.Instance().flow_rate;
+                data.fluid = PLCDB1Read.Instance().fluid;
+                data.pressure = PLCDB1Read.Instance().pressure;
+                data.wc = PLCDB1Read.Instance().wc;
+                string query = @"insert into data(flow_rate, fluid,pressure,wc) values(@flow_rate, @fluid,@pressure,@wc);
                             SELECT LAST_INSERT_ID()";
                 long id = db.Query<int>(query, data).Single();
                 data.Id = id;
-                MessageBox.Show("ID:" + data.Id);
-
             }
             catch (Exception ex)
             {
@@ -68,19 +66,29 @@ namespace KhoanNhaTrang
 
                 }
             }
+            return data;
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            if (PLC.Instance().Open())
+            {
+
+            }
+            else
+            {
+                MessageBox.Show(" PLC not connected", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+
             // khi khởi động sẽ được chạy
             //sampleConnectDB();
             // init combobox
             cbOrder.Items.Add("I Order");
             cbOrder.SelectedIndex = 0;
-
             cbRange.Items.Add("Upper");
             cbRange.SelectedIndex = 0;
-            sampleConnectDB();
+
             // init button
             btnPause.Enabled = false;
             btnEnd.Enabled = false;
@@ -161,6 +169,12 @@ namespace KhoanNhaTrang
         {
             try
             {
+                /** /
+                PLC.Instance().ReadClass(PLCDB1Read.Instance(), 1);
+                Data data = insertDB();
+                Draw(data.flow_rate, data.fluid, data.pressure, data.wc);
+                /**/
+
                 lbGroutedTime.Text = (DateTime.Now - startDateDate).Milliseconds.ToString();
                 Draw(listData[index].flow_rate, listData[index].fluid);
                 index++;
