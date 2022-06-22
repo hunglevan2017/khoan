@@ -23,11 +23,19 @@ namespace KhoanNhaTrang
             }
             return _instance;
         }
+        public short RawAI1 { get; set; }
+        public short RawAI2 { get; set; }
+        public short RawAI3 { get; set; }
 
-        public float flow_rate { get; set; }
-        public float fluid { get; set; }
-        public float pressure { get; set; }
-        public float wc { get; set; }
+
+
+        public double flow_rate { get; set; }
+        public double fluid { get; set; }
+        public double pressure { get; set; }
+        public double wc { get; set; }
+
+        public bool Outstart { get; set; }
+        public short temp1 { get; set; }
 
     }
 }
