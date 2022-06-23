@@ -21,11 +21,11 @@ namespace KhoanNhaTrang
         private List<Data> listData = new List<Data>();
         private int index = 0;
         int tickStart = 0;
-        private DateTime startDateDate;
         private String startDate;
         private String startHour;
         private String endDate;
         private String endHour;
+        private GraphPane myPane;
 
         public Form1()
         {
@@ -98,8 +98,16 @@ namespace KhoanNhaTrang
             btnAddInfo.Enabled = false;
             btnClose.Enabled = false;
 
+            initChart();
+        }
+
+        private void initChart()
+        {
+            chartTimeCurves.GraphPane.CurveList.Clear();
+            chartTimeCurves.GraphPane.GraphObjList.Clear();
+
             // Khai báo sử dụng Graph loại GraphPane;
-            GraphPane myPane = chartTimeCurves.GraphPane;
+            myPane = chartTimeCurves.GraphPane;
             myPane.Title.Text = "EM Grouting Curves";
             myPane.XAxis.Title.Text = "Thời gian (s)";
             myPane.YAxis.Title.Text = "Percent";
@@ -113,7 +121,7 @@ namespace KhoanNhaTrang
             LineItem curveWC = myPane.AddCurve("W/C", listWC, Color.Brown, SymbolType.None);
             RollingPointPairList listPressure = new RollingPointPairList(60000);
             LineItem curvePressure = myPane.AddCurve("Pressure", listPressure, Color.Green, SymbolType.None);
-            
+
 
             // Định hiện thị cho trục thời gian (Trục X)
             myPane.XAxis.Scale.Min = 0;
@@ -126,7 +134,6 @@ namespace KhoanNhaTrang
             myPane.YAxis.Scale.MinorStep = 1;
             myPane.YAxis.Scale.MajorStep = 10;
 
-            
 
             // Gọi hàm xác định cỡ trục
             myPane.AxisChange();
@@ -139,47 +146,66 @@ namespace KhoanNhaTrang
                 && txtMaxOfYWC.Text != null && !"".Equals(txtMaxOfYWC.Text.Trim())
                 && txtMaxOfYPressure.Text != null && !"".Equals(txtMaxOfYPressure.Text.Trim()))
             {
+                if (tickStart == 0)
+                {
+                    lbGroutedTime.Text = "00:00:00";
+                    string queryCheckManagement = @"SELECT number_equipment FROM management WHERE DATE(insert_date) = DATE(now()) ORDER BY id DESC LIMIT 1;";
+                    int numberEquipment = db.Query<int>(queryCheckManagement).FirstOrDefault();
+                    lbEquipment.Text = numberEquipment.ToString();
+                    if (numberEquipment == 0)
+                    {
+                        numberEquipment++;
+                        string query = @"insert into management(number_equipment) values(" + numberEquipment + ");";
+                        db.Execute(query);
+                    }
+                    else
+                    {
+                        numberEquipment++;
+                        string query = @"update management set number_equipment = " + numberEquipment + " where DATE(insert_date) = DATE(now());";
+                        db.Execute(query);
+                    }
+
+                    startDate = DateTime.Now.ToString("yyyy-MM-dd").ToString();
+                    startHour = DateTime.Now.ToString("hh:mm:ss tt").ToString();
+
+                    lbBeginTimeDate.Text = startDate;
+                    lbBeginTimeHour.Text = startHour;
+
+                    try
+                    {
+                        db.Open();
+                        string query = @"SELECT flow_rate, fluid, wc, pressure,insert_date FROM grouting.data";
+                        listData = db.Query<Data>(query).ToList();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                    finally
+                    {
+                        try
+                        {
+                            db.Close();
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+                    }
+
+                    initChart();
+                }
+                
                 txtMaxOfYFlowrate.ReadOnly = true;
                 txtMaxOfYTotalFlow.ReadOnly = true;
                 txtMaxOfYWC.ReadOnly = true;
                 txtMaxOfYPressure.ReadOnly = true;
-
-                startDateDate = DateTime.Now;
-                startDate = DateTime.Now.ToString("yyyy-MM-dd").ToString();
-                startHour = DateTime.Now.ToString("hh:mm:ss tt").ToString();
-
-
-
-                lbBeginTimeDate.Text = startDate;
-                lbBeginTimeHour.Text = startHour;
 
                 btnStart.Enabled = false;
                 btnPause.Enabled = true;
                 btnEnd.Enabled = true;
                 timer1.Enabled = true;
                 timer1.Start();
-
-                try
-                {
-                    db.Open();
-                    string query = @"SELECT flow_rate, fluid, wc, pressure,insert_date FROM grouting.data";
-                    listData = db.Query<Data>(query).ToList();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-                finally
-                {
-                    try
-                    {
-                        db.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                    }
-                }
             } else
             {
                 MessageBox.Show("Các trường Max of Y của Flowrate, Total flow, W/C, Pressure không được rỗng.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -209,8 +235,6 @@ namespace KhoanNhaTrang
                 listData.Add(data);
                 /**/
 
-                //lbGroutedTime.Text = (DateTime.Now - startDateDate).Milliseconds.ToString();
-
                 double valueFlowRate = ((listData[index].flow_rate * 100) / Convert.ToDouble(txtMaxOfYFlowrate.Text));
                 double valueFluid = ((listData[index].fluid * 100) / Convert.ToDouble(txtMaxOfYTotalFlow.Text));
                 double valueWC = ((listData[index].wc * 100) / Convert.ToDouble(txtMaxOfYWC.Text));
@@ -232,9 +256,13 @@ namespace KhoanNhaTrang
 
             // Đưa về điểm xuất phát
             LineItem curveFlowRate = chartTimeCurves.GraphPane.CurveList[0] as LineItem;
+            curveFlowRate.Line.Width = 3.0F;
             LineItem curveFluid = chartTimeCurves.GraphPane.CurveList[1] as LineItem;
+            curveFluid.Line.Width = 3.0F;
             LineItem curveWC = chartTimeCurves.GraphPane.CurveList[2] as LineItem;
+            curveWC.Line.Width = 3.0F;
             LineItem curvePressure = chartTimeCurves.GraphPane.CurveList[3] as LineItem;
+            curvePressure.Line.Width = 3.0F;
 
             if (curveFlowRate == null)
                 return;
@@ -283,7 +311,13 @@ namespace KhoanNhaTrang
                 xScale.Max = tickStart + xScale.MajorStep;
                 xScale.Min = xScale.Max - 30.0;
             }
+            int seconds = tickStart;
+
+            TimeSpan timeSpan = TimeSpan.FromSeconds(tickStart);
+            string groutedTime = string.Format("{0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
+            lbGroutedTime.Text = groutedTime;
             tickStart = tickStart + 5;
+
 
             //// Tự động Scale theo trục y
             if (flowRate > yScale.Max - yScale.MajorStep)
@@ -335,22 +369,27 @@ namespace KhoanNhaTrang
             btnStart.Enabled = true;
             btnPause.Enabled = false;
             btnEnd.Enabled = true;
+            btnSaveToAs.Enabled = true;
+            btnPrint.Enabled = true;
             timer1.Stop();
         }
 
         private void btnEnd_Click(object sender, EventArgs e)
         {
+            index = 0;
+
             btnStart.Enabled = true;
             btnPause.Enabled = false;
             btnEnd.Enabled = false;
             btnSaveToAs.Enabled = true;
-            btnPrint.Enabled = false;
+            btnPrint.Enabled = true;
 
-            txtMaxOfYFlowrate.ReadOnly = true;
-            txtMaxOfYTotalFlow.ReadOnly = true;
-            txtMaxOfYWC.ReadOnly = true;
-            txtMaxOfYPressure.ReadOnly = true;
+            txtMaxOfYFlowrate.ReadOnly = false;
+            txtMaxOfYTotalFlow.ReadOnly = false;
+            txtMaxOfYWC.ReadOnly = false;
+            txtMaxOfYPressure.ReadOnly = false;
 
+            tickStart = 0;
             timer1.Stop();
             timer1.Enabled = false;
             endDate = DateTime.Now.ToString("yyyy-MM-dd").ToString();
@@ -362,7 +401,7 @@ namespace KhoanNhaTrang
             btnStart.Enabled = true;
             btnPause.Enabled = false;
             btnEnd.Enabled = false;
-            btnSaveToAs.Enabled = false;
+            btnSaveToAs.Enabled = true;
             btnPrint.Enabled = true;
 
             SaveFileDialog svg = new SaveFileDialog();
@@ -375,6 +414,11 @@ namespace KhoanNhaTrang
             }
         }
 
+        private void btnPrint_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void createPDF(FileStream fs, String path)
         {
             iTextSharp.text.Rectangle pagesize = new iTextSharp.text.Rectangle(320, 1500);
@@ -383,12 +427,14 @@ namespace KhoanNhaTrang
             doc.Open();
 
             // Draw Header
-            var parHeader = new Paragraph("Grouting Record Report");
+            iTextSharp.text.Font myFont = FontFactory.GetFont("Arial", 12, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+            var parHeader = new Paragraph("Grouting Record Report", myFont);
             parHeader.Alignment = Element.ALIGN_CENTER;
             doc.Add(parHeader);
             // Draw Paragraph 1
             var parEqui = new Paragraph();
             parEqui.Add(new Chunk("Equipment: " + lbEquipment.Text));
+            parEqui.Add(Chunk.TABBING);
             parEqui.Add(Chunk.TABBING);
             parEqui.Add(Chunk.TABBING);
             parEqui.Add(new Chunk(startDate));
@@ -469,7 +515,6 @@ namespace KhoanNhaTrang
             // Draw Paragraph 2
             var parEnd = new Paragraph();
             parEnd.Add(new Chunk("End Time: " + endDate));
-            parEnd.Add(Chunk.TABBING);
             parEnd.Add(Chunk.TABBING);
             parEnd.Add(new Chunk(endHour));
             doc.Add(parEnd);
@@ -670,5 +715,7 @@ namespace KhoanNhaTrang
         {
 
         }
+
+
     }
 }
