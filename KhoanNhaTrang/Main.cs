@@ -41,11 +41,12 @@ namespace KhoanNhaTrang
             var data = new Data();
             try
             {
+         
                 db.Open();
-                data.flow_rate = PLCDB1Read.Instance().flow_rate;
-                data.fluid = PLCDB1Read.Instance().fluid;
-                data.pressure = PLCDB1Read.Instance().pressure;
-                data.wc = PLCDB1Read.Instance().wc;
+                data.flow_rate = Math.Round(PLCDB1Read.Instance().flow_rate,2) ;
+                data.fluid = Math.Round(PLCDB1Read.Instance().fluid,2);
+                data.pressure = Math.Round(PLCDB1Read.Instance().pressure,2);
+                data.wc = Math.Round(PLCDB1Read.Instance().wc,2);
                 string query = @"insert into data(flow_rate, fluid,pressure,wc) values(@flow_rate, @fluid,@pressure,@wc);
                             SELECT LAST_INSERT_ID()";
                 long id = db.Query<int>(query, data).Single();
@@ -109,9 +110,10 @@ namespace KhoanNhaTrang
             RollingPointPairList listFluid = new RollingPointPairList(60000);
             LineItem curveFluid = myPane.AddCurve("Total flow", listFluid, Color.Blue, SymbolType.None);
             RollingPointPairList listWC = new RollingPointPairList(60000);
-            LineItem curveWC = myPane.AddCurve("Total flow", listWC, Color.Brown, SymbolType.None);
+            LineItem curveWC = myPane.AddCurve("W/C", listWC, Color.Brown, SymbolType.None);
             RollingPointPairList listPressure = new RollingPointPairList(60000);
-            LineItem curvePressure = myPane.AddCurve("Total flow", listPressure, Color.Green, SymbolType.None);
+            LineItem curvePressure = myPane.AddCurve("Pressure", listPressure, Color.Green, SymbolType.None);
+            
 
             // Định hiện thị cho trục thời gian (Trục X)
             myPane.XAxis.Scale.Min = 0;
@@ -123,6 +125,8 @@ namespace KhoanNhaTrang
             myPane.YAxis.Scale.Max = 100;
             myPane.YAxis.Scale.MinorStep = 1;
             myPane.YAxis.Scale.MajorStep = 10;
+
+            
 
             // Gọi hàm xác định cỡ trục
             myPane.AxisChange();
@@ -158,7 +162,7 @@ namespace KhoanNhaTrang
                 try
                 {
                     db.Open();
-                    string query = @"SELECT flow_rate, fluid, wc, pressure FROM grouting.data";
+                    string query = @"SELECT flow_rate, fluid, wc, pressure,insert_date FROM grouting.data";
                     listData = db.Query<Data>(query).ToList();
                 }
                 catch (Exception ex)
@@ -183,6 +187,13 @@ namespace KhoanNhaTrang
             
         }
 
+        private void show_Data_Real_lb(TextBox lb, double value)
+        {
+
+            lb.Text = (value / 1).ToString("0.00");
+
+        }
+
         private void timer1_Tick(object sender, EventArgs e)
         {
             try
@@ -190,7 +201,12 @@ namespace KhoanNhaTrang
                 /** /
                 PLC.Instance().ReadClass(PLCDB1Read.Instance(), 1);
                 Data data = insertDB();
+                show_Data_Real_lb(txtFlowrate, data.flow_rate);
+                show_Data_Real_lb(txtTotalFlow, data.fluid);
+                show_Data_Real_lb(txtWC, data.wc);
+                show_Data_Real_lb(txtPressure, data.pressure);
                 Draw(data.flow_rate, data.fluid, data.pressure, data.wc);
+                listData.Add(data);
                 /**/
 
                 //lbGroutedTime.Text = (DateTime.Now - startDateDate).Milliseconds.ToString();
@@ -372,13 +388,13 @@ namespace KhoanNhaTrang
             doc.Add(parHeader);
             // Draw Paragraph 1
             var parEqui = new Paragraph();
-            parEqui.Add(new Chunk("Equipment: " + "Value?"));
+            parEqui.Add(new Chunk("Equipment: " + lbEquipment.Text));
             parEqui.Add(Chunk.TABBING);
             parEqui.Add(Chunk.TABBING);
             parEqui.Add(new Chunk(startDate));
             doc.Add(parEqui);
             doc.Add(new Paragraph("Project Name: " + txtProjectName.Text));
-            doc.Add(new Paragraph("Grouting Holes Parameters: " +"Value?"));
+            doc.Add(new Paragraph("Grouting Holes Parameters: " ));
             doc.Add(new Paragraph("Hole No.: " + txtHoleNo.Text));
             var parOrder = new Paragraph();
             parOrder.Add(new Chunk("Order: " + cbOrder.Text));
@@ -401,7 +417,7 @@ namespace KhoanNhaTrang
             doc.Add(new Paragraph("Recorder: " + txtRecorder.Text));
             doc.Add(new Paragraph("Leader: " + txtLeader.Text));
             doc.Add(new Paragraph("Quality: " + txtQuality.Text));
-            doc.Add(new Paragraph("Supervisor: " + "Value?"));
+            doc.Add(new Paragraph("Supervisor: "));
 
             // Draw Separator
             Paragraph par = new Paragraph(" ");
@@ -415,7 +431,7 @@ namespace KhoanNhaTrang
             // Draw Table 1
             PdfPTable tableHeader = new PdfPTable(5);
             tableHeader.WidthPercentage = 108;
-            PdfPCell cellHeader1 = createHeaderCell("Time", "Min", true);
+            PdfPCell cellHeader1 = createHeaderCell("Time ", "Min", true);
             tableHeader.AddCell(cellHeader1);
             PdfPCell cellHeader2 = createHeaderCell("Flowrate", "L/Min", false);
             tableHeader.AddCell(cellHeader2);
@@ -435,7 +451,8 @@ namespace KhoanNhaTrang
             {
                 totalfluid = totalfluid + data.fluid;
 
-                PdfPCell cell1 = createCell("value?", true);
+                PdfPCell cell1 = createCell(data.insert_date.ToString("HH:mm:ss"), false);
+                
                 tableCell.AddCell(cell1);
                 PdfPCell cell2 = createCell(data.flow_rate.ToString(), false);
                 tableCell.AddCell(cell2);
@@ -464,17 +481,17 @@ namespace KhoanNhaTrang
             var parAshUsed = new Paragraph();
             parAshUsed.Add(new Chunk("Ash used: "));
             parAshUsed.Add(Chunk.TABBING);
-            parAshUsed.Add(new Chunk("value?" + " Kg"));
+            parAshUsed.Add(new Chunk("     " + " Kg"));
             doc.Add(parAshUsed);
             var parAshDiscarded = new Paragraph();
             parAshDiscarded.Add(new Chunk("Ash discarded: "));
             parAshDiscarded.Add(Chunk.TABBING);
-            parAshDiscarded.Add(new Chunk("value?" + " L"));
+            parAshDiscarded.Add(new Chunk("     " + " L"));
             doc.Add(parAshDiscarded);
             var parCementDiscarded = new Paragraph();
             parCementDiscarded.Add(new Chunk("Cememt discarded: "));
             parCementDiscarded.Add(Chunk.TABBING);
-            parCementDiscarded.Add(new Chunk("value?" + " Kg"));
+            parCementDiscarded.Add(new Chunk("     " + " Kg"));
             doc.Add(parCementDiscarded);
             doc.Add(lineSeparator);
 
@@ -520,8 +537,15 @@ namespace KhoanNhaTrang
             cellHeader.BorderWidthLeft = 0;
             cellHeader.BorderWidthTop = 0;
             cellHeader.BorderWidthRight = 0;
-            cellHeader.AddElement(new Paragraph(value1));
-            cellHeader.AddElement(new Paragraph(value2));
+
+
+            var par1 = new Paragraph(value1);
+            par1.Alignment = Element.ALIGN_CENTER;
+            var par2 = new Paragraph(value2);
+            par2.Alignment = Element.ALIGN_CENTER;
+
+            cellHeader.AddElement(par1);
+            cellHeader.AddElement(par2);
 
             return cellHeader;
         }
@@ -536,7 +560,10 @@ namespace KhoanNhaTrang
             cell.BorderWidthLeft = 0;
             cell.BorderWidthTop = 0;
             cell.BorderWidthRight = 0;
-            cell.AddElement(new Paragraph(value1));
+
+            var par = new Paragraph(value1);
+            par.Alignment = Element.ALIGN_CENTER;
+            cell.AddElement(par);
 
             return cell;
         }
@@ -551,10 +578,13 @@ namespace KhoanNhaTrang
             parHeader.Alignment = Element.ALIGN_CENTER;
             cellHeader.AddElement(parHeader);
             parHeader = new Paragraph(value2);
+            parHeader.Alignment = Element.ALIGN_CENTER;
             cellHeader.AddElement(parHeader);
             parHeader = new Paragraph(value3);
+            parHeader.Alignment = Element.ALIGN_CENTER;
             cellHeader.AddElement(parHeader);
             parHeader = new Paragraph(value4);
+            parHeader.Alignment = Element.ALIGN_CENTER;
             cellHeader.AddElement(parHeader);
 
             return cellHeader;
@@ -619,6 +649,26 @@ namespace KhoanNhaTrang
             {
                 e.Handled = true;
             }
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label21_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtQuality_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

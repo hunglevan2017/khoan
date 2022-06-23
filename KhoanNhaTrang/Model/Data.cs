@@ -12,7 +12,7 @@ namespace KhoanNhaTrang.Model
         public double pressure { get; set; }
         public double wc { get; set; }
 
-        public float insert_date { get; set; }
+        public DateTime insert_date { get; set; }
 
     }
 }

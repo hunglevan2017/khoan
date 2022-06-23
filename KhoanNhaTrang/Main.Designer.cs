@@ -36,47 +36,6 @@ namespace KhoanNhaTrang
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.txtPressure = new System.Windows.Forms.TextBox();
-            this.label26 = new System.Windows.Forms.Label();
-            this.txtTotalFlow = new System.Windows.Forms.TextBox();
-            this.label27 = new System.Windows.Forms.Label();
-            this.btnTest = new System.Windows.Forms.Button();
-            this.txtWC = new System.Windows.Forms.TextBox();
-            this.label24 = new System.Windows.Forms.Label();
-            this.txtFlowrate = new System.Windows.Forms.TextBox();
-            this.label25 = new System.Windows.Forms.Label();
-            this.txtQuality = new System.Windows.Forms.TextBox();
-            this.label21 = new System.Windows.Forms.Label();
-            this.txtLeader = new System.Windows.Forms.TextBox();
-            this.label22 = new System.Windows.Forms.Label();
-            this.txtRecorder = new System.Windows.Forms.TextBox();
-            this.label23 = new System.Windows.Forms.Label();
-            this.txtHoleHigh = new System.Windows.Forms.TextBox();
-            this.label19 = new System.Windows.Forms.Label();
-            this.txtDistBwEjectAndHole = new System.Windows.Forms.TextBox();
-            this.label20 = new System.Windows.Forms.Label();
-            this.txtDesOfHole = new System.Windows.Forms.TextBox();
-            this.label18 = new System.Windows.Forms.Label();
-            this.txtNum = new System.Windows.Forms.TextBox();
-            this.label17 = new System.Windows.Forms.Label();
-            this.txtLength = new System.Windows.Forms.TextBox();
-            this.label16 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.txtTo = new System.Windows.Forms.TextBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.txtSectFrom = new System.Windows.Forms.TextBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.txtThe = new System.Windows.Forms.TextBox();
-            this.label12 = new System.Windows.Forms.Label();
-            this.cbRange = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.cbOrder = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txtHoleNo = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.txtProjectName = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.rdGrout = new System.Windows.Forms.RadioButton();
@@ -127,9 +86,49 @@ namespace KhoanNhaTrang
             this.btnEnd = new System.Windows.Forms.Button();
             this.btnPause = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtProjectName = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtHoleNo = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cbOrder = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.cbRange = new System.Windows.Forms.ComboBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.txtThe = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.txtSectFrom = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.txtTo = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.txtLength = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.txtNum = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.txtDesOfHole = new System.Windows.Forms.TextBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.txtDistBwEjectAndHole = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.txtHoleHigh = new System.Windows.Forms.TextBox();
+            this.label23 = new System.Windows.Forms.Label();
+            this.txtRecorder = new System.Windows.Forms.TextBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.txtLeader = new System.Windows.Forms.TextBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.txtQuality = new System.Windows.Forms.TextBox();
+            this.label25 = new System.Windows.Forms.Label();
+            this.txtFlowrate = new System.Windows.Forms.TextBox();
+            this.label24 = new System.Windows.Forms.Label();
+            this.txtWC = new System.Windows.Forms.TextBox();
+            this.btnTest = new System.Windows.Forms.Button();
+            this.label27 = new System.Windows.Forms.Label();
+            this.txtTotalFlow = new System.Windows.Forms.TextBox();
+            this.label26 = new System.Windows.Forms.Label();
+            this.txtPressure = new System.Windows.Forms.TextBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -140,6 +139,7 @@ namespace KhoanNhaTrang
             this.groupBox4.SuspendLayout();
             this.panel4.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -178,422 +178,10 @@ namespace KhoanNhaTrang
             // panel1
             // 
             this.panel1.Controls.Add(this.groupBox1);
-            this.panel1.Location = new System.Drawing.Point(3, 36);
+            this.panel1.Location = new System.Drawing.Point(93, 36);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(860, 273);
+            this.panel1.Size = new System.Drawing.Size(770, 273);
             this.panel1.TabIndex = 1;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.txtPressure);
-            this.groupBox1.Controls.Add(this.label26);
-            this.groupBox1.Controls.Add(this.txtTotalFlow);
-            this.groupBox1.Controls.Add(this.label27);
-            this.groupBox1.Controls.Add(this.btnTest);
-            this.groupBox1.Controls.Add(this.txtWC);
-            this.groupBox1.Controls.Add(this.label24);
-            this.groupBox1.Controls.Add(this.txtFlowrate);
-            this.groupBox1.Controls.Add(this.label25);
-            this.groupBox1.Controls.Add(this.txtQuality);
-            this.groupBox1.Controls.Add(this.label21);
-            this.groupBox1.Controls.Add(this.txtLeader);
-            this.groupBox1.Controls.Add(this.label22);
-            this.groupBox1.Controls.Add(this.txtRecorder);
-            this.groupBox1.Controls.Add(this.label23);
-            this.groupBox1.Controls.Add(this.txtHoleHigh);
-            this.groupBox1.Controls.Add(this.label19);
-            this.groupBox1.Controls.Add(this.txtDistBwEjectAndHole);
-            this.groupBox1.Controls.Add(this.label20);
-            this.groupBox1.Controls.Add(this.txtDesOfHole);
-            this.groupBox1.Controls.Add(this.label18);
-            this.groupBox1.Controls.Add(this.txtNum);
-            this.groupBox1.Controls.Add(this.label17);
-            this.groupBox1.Controls.Add(this.txtLength);
-            this.groupBox1.Controls.Add(this.label16);
-            this.groupBox1.Controls.Add(this.label15);
-            this.groupBox1.Controls.Add(this.txtTo);
-            this.groupBox1.Controls.Add(this.label14);
-            this.groupBox1.Controls.Add(this.txtSectFrom);
-            this.groupBox1.Controls.Add(this.label13);
-            this.groupBox1.Controls.Add(this.txtThe);
-            this.groupBox1.Controls.Add(this.label12);
-            this.groupBox1.Controls.Add(this.cbRange);
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.cbOrder);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.txtHoleNo);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.txtProjectName);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(4, 3);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(853, 260);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            // 
-            // txtPressure
-            // 
-            this.txtPressure.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.txtPressure.Location = new System.Drawing.Point(529, 220);
-            this.txtPressure.Name = "txtPressure";
-            this.txtPressure.Size = new System.Drawing.Size(311, 23);
-            this.txtPressure.TabIndex = 40;
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label26.Location = new System.Drawing.Point(403, 220);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(126, 20);
-            this.label26.TabIndex = 39;
-            this.label26.Text = "Pressure(MPa) : ";
-            // 
-            // txtTotalFlow
-            // 
-            this.txtTotalFlow.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.txtTotalFlow.Location = new System.Drawing.Point(119, 220);
-            this.txtTotalFlow.Name = "txtTotalFlow";
-            this.txtTotalFlow.Size = new System.Drawing.Size(278, 23);
-            this.txtTotalFlow.TabIndex = 38;
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label27.Location = new System.Drawing.Point(6, 220);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(107, 20);
-            this.label27.TabIndex = 37;
-            this.label27.Text = "Total flow(L) : ";
-            // 
-            // btnTest
-            // 
-            this.btnTest.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.btnTest.Location = new System.Drawing.Point(723, 191);
-            this.btnTest.Name = "btnTest";
-            this.btnTest.Size = new System.Drawing.Size(117, 23);
-            this.btnTest.TabIndex = 36;
-            this.btnTest.Text = "Test";
-            this.btnTest.UseVisualStyleBackColor = true;
-            // 
-            // txtWC
-            // 
-            this.txtWC.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.txtWC.Location = new System.Drawing.Point(420, 191);
-            this.txtWC.Name = "txtWC";
-            this.txtWC.Size = new System.Drawing.Size(290, 23);
-            this.txtWC.TabIndex = 35;
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label24.Location = new System.Drawing.Point(363, 191);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(51, 20);
-            this.label24.TabIndex = 34;
-            this.label24.Text = "W/C : ";
-            // 
-            // txtFlowrate
-            // 
-            this.txtFlowrate.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.txtFlowrate.Location = new System.Drawing.Point(142, 191);
-            this.txtFlowrate.Name = "txtFlowrate";
-            this.txtFlowrate.Size = new System.Drawing.Size(215, 23);
-            this.txtFlowrate.TabIndex = 33;
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label25.Location = new System.Drawing.Point(6, 193);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(130, 20);
-            this.label25.TabIndex = 32;
-            this.label25.Text = "Flowrate(L/Min) : ";
-            // 
-            // txtQuality
-            // 
-            this.txtQuality.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.txtQuality.Location = new System.Drawing.Point(635, 162);
-            this.txtQuality.Name = "txtQuality";
-            this.txtQuality.Size = new System.Drawing.Size(205, 23);
-            this.txtQuality.TabIndex = 31;
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label21.Location = new System.Drawing.Point(560, 162);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(69, 20);
-            this.label21.TabIndex = 30;
-            this.label21.Text = "Quality : ";
-            // 
-            // txtLeader
-            // 
-            this.txtLeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.txtLeader.Location = new System.Drawing.Point(336, 162);
-            this.txtLeader.Name = "txtLeader";
-            this.txtLeader.Size = new System.Drawing.Size(214, 23);
-            this.txtLeader.TabIndex = 29;
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label22.Location = new System.Drawing.Point(259, 162);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(71, 20);
-            this.label22.TabIndex = 28;
-            this.label22.Text = "Leader : ";
-            // 
-            // txtRecorder
-            // 
-            this.txtRecorder.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.txtRecorder.Location = new System.Drawing.Point(101, 162);
-            this.txtRecorder.Name = "txtRecorder";
-            this.txtRecorder.Size = new System.Drawing.Size(152, 23);
-            this.txtRecorder.TabIndex = 27;
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label23.Location = new System.Drawing.Point(6, 165);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(87, 20);
-            this.label23.TabIndex = 26;
-            this.label23.Text = "Recorder : ";
-            // 
-            // txtHoleHigh
-            // 
-            this.txtHoleHigh.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.txtHoleHigh.Location = new System.Drawing.Point(523, 132);
-            this.txtHoleHigh.Name = "txtHoleHigh";
-            this.txtHoleHigh.Size = new System.Drawing.Size(317, 23);
-            this.txtHoleHigh.TabIndex = 25;
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label19.Location = new System.Drawing.Point(403, 133);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(114, 20);
-            this.label19.TabIndex = 24;
-            this.label19.Text = "Hole High(m) : ";
-            // 
-            // txtDistBwEjectAndHole
-            // 
-            this.txtDistBwEjectAndHole.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.txtDistBwEjectAndHole.Location = new System.Drawing.Point(219, 130);
-            this.txtDistBwEjectAndHole.Name = "txtDistBwEjectAndHole";
-            this.txtDistBwEjectAndHole.Size = new System.Drawing.Size(178, 23);
-            this.txtDistBwEjectAndHole.TabIndex = 23;
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label20.Location = new System.Drawing.Point(6, 130);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(207, 20);
-            this.label20.TabIndex = 22;
-            this.label20.Text = "Dist bw eject and hole(cm) : ";
-            // 
-            // txtDesOfHole
-            // 
-            this.txtDesOfHole.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.txtDesOfHole.Location = new System.Drawing.Point(550, 103);
-            this.txtDesOfHole.Name = "txtDesOfHole";
-            this.txtDesOfHole.Size = new System.Drawing.Size(290, 23);
-            this.txtDesOfHole.TabIndex = 21;
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label18.Location = new System.Drawing.Point(403, 104);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(141, 20);
-            this.label18.TabIndex = 20;
-            this.label18.Text = "Des of Hole(mm) : ";
-            // 
-            // txtNum
-            // 
-            this.txtNum.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.txtNum.Location = new System.Drawing.Point(60, 101);
-            this.txtNum.Name = "txtNum";
-            this.txtNum.Size = new System.Drawing.Size(337, 23);
-            this.txtNum.TabIndex = 19;
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label17.Location = new System.Drawing.Point(6, 101);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(58, 20);
-            this.label17.TabIndex = 18;
-            this.label17.Text = "Num. : ";
-            // 
-            // txtLength
-            // 
-            this.txtLength.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.txtLength.Location = new System.Drawing.Point(705, 71);
-            this.txtLength.Name = "txtLength";
-            this.txtLength.Size = new System.Drawing.Size(135, 23);
-            this.txtLength.TabIndex = 17;
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label16.Location = new System.Drawing.Point(617, 73);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(82, 20);
-            this.label16.TabIndex = 16;
-            this.label16.Text = "Length(m)";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label15.Location = new System.Drawing.Point(589, 77);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(22, 20);
-            this.label15.TabIndex = 15;
-            this.label15.Text = "m";
-            // 
-            // txtTo
-            // 
-            this.txtTo.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.txtTo.Location = new System.Drawing.Point(465, 74);
-            this.txtTo.Name = "txtTo";
-            this.txtTo.Size = new System.Drawing.Size(125, 23);
-            this.txtTo.TabIndex = 14;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label14.Location = new System.Drawing.Point(420, 74);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(39, 20);
-            this.label14.TabIndex = 12;
-            this.label14.Text = "To : ";
-            // 
-            // txtSectFrom
-            // 
-            this.txtSectFrom.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.txtSectFrom.Location = new System.Drawing.Point(289, 73);
-            this.txtSectFrom.Name = "txtSectFrom";
-            this.txtSectFrom.Size = new System.Drawing.Size(125, 23);
-            this.txtSectFrom.TabIndex = 11;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label13.Location = new System.Drawing.Point(189, 73);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(95, 20);
-            this.label13.TabIndex = 10;
-            this.label13.Text = "Sect From : ";
-            // 
-            // txtThe
-            // 
-            this.txtThe.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.txtThe.Location = new System.Drawing.Point(60, 72);
-            this.txtThe.Name = "txtThe";
-            this.txtThe.Size = new System.Drawing.Size(114, 23);
-            this.txtThe.TabIndex = 9;
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label12.Location = new System.Drawing.Point(6, 72);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(48, 20);
-            this.label12.TabIndex = 8;
-            this.label12.Text = "The : ";
-            // 
-            // cbRange
-            // 
-            this.cbRange.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.cbRange.FormattingEnabled = true;
-            this.cbRange.Location = new System.Drawing.Point(657, 42);
-            this.cbRange.Name = "cbRange";
-            this.cbRange.Size = new System.Drawing.Size(183, 24);
-            this.cbRange.TabIndex = 7;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label4.Location = new System.Drawing.Point(589, 43);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(69, 20);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "Range : ";
-            // 
-            // cbOrder
-            // 
-            this.cbOrder.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.cbOrder.FormattingEnabled = true;
-            this.cbOrder.Location = new System.Drawing.Point(391, 43);
-            this.cbOrder.Name = "cbOrder";
-            this.cbOrder.Size = new System.Drawing.Size(183, 24);
-            this.cbOrder.TabIndex = 5;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label3.Location = new System.Drawing.Point(336, 43);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(61, 20);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "Order : ";
-            // 
-            // txtHoleNo
-            // 
-            this.txtHoleNo.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.txtHoleNo.Location = new System.Drawing.Point(90, 44);
-            this.txtHoleNo.Name = "txtHoleNo";
-            this.txtHoleNo.Size = new System.Drawing.Size(240, 23);
-            this.txtHoleNo.TabIndex = 3;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label2.Location = new System.Drawing.Point(6, 43);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(82, 20);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Hole No. : ";
-            // 
-            // txtProjectName
-            // 
-            this.txtProjectName.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.txtProjectName.Location = new System.Drawing.Point(127, 13);
-            this.txtProjectName.Name = "txtProjectName";
-            this.txtProjectName.Size = new System.Drawing.Size(713, 23);
-            this.txtProjectName.TabIndex = 1;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label1.Location = new System.Drawing.Point(6, 13);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(116, 20);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Project Name : ";
             // 
             // panel2
             // 
@@ -1135,6 +723,435 @@ namespace KhoanNhaTrang
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.label1.Location = new System.Drawing.Point(66, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(104, 20);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Project Name";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
+            // 
+            // txtProjectName
+            // 
+            this.txtProjectName.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.txtProjectName.Location = new System.Drawing.Point(187, 16);
+            this.txtProjectName.Name = "txtProjectName";
+            this.txtProjectName.Size = new System.Drawing.Size(495, 23);
+            this.txtProjectName.TabIndex = 1;
+            this.txtProjectName.Text = "Ho Chua Nuoc";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.label2.Location = new System.Drawing.Point(66, 46);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(66, 20);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Hole No";
+            // 
+            // txtHoleNo
+            // 
+            this.txtHoleNo.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.txtHoleNo.Location = new System.Drawing.Point(141, 45);
+            this.txtHoleNo.Name = "txtHoleNo";
+            this.txtHoleNo.Size = new System.Drawing.Size(208, 23);
+            this.txtHoleNo.TabIndex = 3;
+            this.txtHoleNo.Text = "TN1";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.label3.Location = new System.Drawing.Point(353, 46);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(49, 20);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "Order";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
+            // 
+            // cbOrder
+            // 
+            this.cbOrder.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.cbOrder.FormattingEnabled = true;
+            this.cbOrder.Items.AddRange(new object[] {
+            "I Order"});
+            this.cbOrder.Location = new System.Drawing.Point(403, 44);
+            this.cbOrder.Name = "cbOrder";
+            this.cbOrder.Size = new System.Drawing.Size(109, 24);
+            this.cbOrder.TabIndex = 5;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.label4.Location = new System.Drawing.Point(515, 46);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(57, 20);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "Range";
+            // 
+            // cbRange
+            // 
+            this.cbRange.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.cbRange.FormattingEnabled = true;
+            this.cbRange.Items.AddRange(new object[] {
+            "Upper"});
+            this.cbRange.Location = new System.Drawing.Point(578, 44);
+            this.cbRange.Name = "cbRange";
+            this.cbRange.Size = new System.Drawing.Size(104, 24);
+            this.cbRange.TabIndex = 7;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.label12.Location = new System.Drawing.Point(66, 75);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(36, 20);
+            this.label12.TabIndex = 8;
+            this.label12.Text = "The";
+            // 
+            // txtThe
+            // 
+            this.txtThe.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.txtThe.Location = new System.Drawing.Point(111, 75);
+            this.txtThe.Name = "txtThe";
+            this.txtThe.Size = new System.Drawing.Size(76, 23);
+            this.txtThe.TabIndex = 9;
+            this.txtThe.Text = "1";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.label13.Location = new System.Drawing.Point(186, 76);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(83, 20);
+            this.label13.TabIndex = 10;
+            this.label13.Text = "Sect From";
+            // 
+            // txtSectFrom
+            // 
+            this.txtSectFrom.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.txtSectFrom.Location = new System.Drawing.Point(270, 75);
+            this.txtSectFrom.Name = "txtSectFrom";
+            this.txtSectFrom.Size = new System.Drawing.Size(79, 23);
+            this.txtSectFrom.TabIndex = 11;
+            this.txtSectFrom.Text = "0.9";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.label14.Location = new System.Drawing.Point(356, 77);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(27, 20);
+            this.label14.TabIndex = 12;
+            this.label14.Text = "To";
+            // 
+            // txtTo
+            // 
+            this.txtTo.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.txtTo.Location = new System.Drawing.Point(389, 75);
+            this.txtTo.Name = "txtTo";
+            this.txtTo.Size = new System.Drawing.Size(81, 23);
+            this.txtTo.TabIndex = 14;
+            this.txtTo.Text = "5.9";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.label15.Location = new System.Drawing.Point(472, 76);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(22, 20);
+            this.label15.TabIndex = 15;
+            this.label15.Text = "m";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.label16.Location = new System.Drawing.Point(498, 77);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(82, 20);
+            this.label16.TabIndex = 16;
+            this.label16.Text = "Length(m)";
+            // 
+            // txtLength
+            // 
+            this.txtLength.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.txtLength.Location = new System.Drawing.Point(586, 75);
+            this.txtLength.Name = "txtLength";
+            this.txtLength.Size = new System.Drawing.Size(96, 23);
+            this.txtLength.TabIndex = 17;
+            this.txtLength.Text = "5.00";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.label17.Location = new System.Drawing.Point(66, 107);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(46, 20);
+            this.label17.TabIndex = 18;
+            this.label17.Text = "Num.";
+            // 
+            // txtNum
+            // 
+            this.txtNum.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.txtNum.Location = new System.Drawing.Point(120, 107);
+            this.txtNum.Name = "txtNum";
+            this.txtNum.Size = new System.Drawing.Size(229, 23);
+            this.txtNum.TabIndex = 19;
+            this.txtNum.Text = "Doan 1";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.label18.Location = new System.Drawing.Point(456, 107);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(133, 20);
+            this.label18.TabIndex = 20;
+            this.label18.Text = "Des of Hole(mm) ";
+            // 
+            // txtDesOfHole
+            // 
+            this.txtDesOfHole.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.txtDesOfHole.Location = new System.Drawing.Point(586, 107);
+            this.txtDesOfHole.Name = "txtDesOfHole";
+            this.txtDesOfHole.Size = new System.Drawing.Size(96, 23);
+            this.txtDesOfHole.TabIndex = 21;
+            this.txtDesOfHole.Text = "76";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.label20.Location = new System.Drawing.Point(66, 134);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(207, 20);
+            this.label20.TabIndex = 22;
+            this.label20.Text = "Dist bw eject and hole(cm) : ";
+            // 
+            // txtDistBwEjectAndHole
+            // 
+            this.txtDistBwEjectAndHole.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.txtDistBwEjectAndHole.Location = new System.Drawing.Point(272, 133);
+            this.txtDistBwEjectAndHole.Name = "txtDistBwEjectAndHole";
+            this.txtDistBwEjectAndHole.Size = new System.Drawing.Size(185, 23);
+            this.txtDistBwEjectAndHole.TabIndex = 23;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.label19.Location = new System.Drawing.Point(480, 136);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(102, 20);
+            this.label19.TabIndex = 24;
+            this.label19.Text = "Hole High(m)";
+            // 
+            // txtHoleHigh
+            // 
+            this.txtHoleHigh.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.txtHoleHigh.Location = new System.Drawing.Point(586, 136);
+            this.txtHoleHigh.Name = "txtHoleHigh";
+            this.txtHoleHigh.Size = new System.Drawing.Size(96, 23);
+            this.txtHoleHigh.TabIndex = 25;
+            this.txtHoleHigh.Text = "142.2";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.label23.Location = new System.Drawing.Point(66, 165);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(75, 20);
+            this.label23.TabIndex = 26;
+            this.label23.Text = "Recorder";
+            // 
+            // txtRecorder
+            // 
+            this.txtRecorder.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.txtRecorder.Location = new System.Drawing.Point(147, 165);
+            this.txtRecorder.Name = "txtRecorder";
+            this.txtRecorder.Size = new System.Drawing.Size(104, 23);
+            this.txtRecorder.TabIndex = 27;
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.label22.Location = new System.Drawing.Point(277, 166);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(59, 20);
+            this.label22.TabIndex = 28;
+            this.label22.Text = "Leader";
+            // 
+            // txtLeader
+            // 
+            this.txtLeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.txtLeader.Location = new System.Drawing.Point(346, 165);
+            this.txtLeader.Name = "txtLeader";
+            this.txtLeader.Size = new System.Drawing.Size(111, 23);
+            this.txtLeader.TabIndex = 29;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.label21.Location = new System.Drawing.Point(482, 165);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(57, 20);
+            this.label21.TabIndex = 30;
+            this.label21.Text = "Quality";
+            this.label21.Click += new System.EventHandler(this.label21_Click);
+            // 
+            // txtQuality
+            // 
+            this.txtQuality.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.txtQuality.Location = new System.Drawing.Point(586, 165);
+            this.txtQuality.Name = "txtQuality";
+            this.txtQuality.Size = new System.Drawing.Size(96, 23);
+            this.txtQuality.TabIndex = 31;
+            this.txtQuality.TextChanged += new System.EventHandler(this.txtQuality_TextChanged);
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.label25.Location = new System.Drawing.Point(66, 196);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(130, 20);
+            this.label25.TabIndex = 32;
+            this.label25.Text = "Flowrate(L/Min) : ";
+            // 
+            // txtFlowrate
+            // 
+            this.txtFlowrate.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.txtFlowrate.Location = new System.Drawing.Point(202, 194);
+            this.txtFlowrate.Name = "txtFlowrate";
+            this.txtFlowrate.Size = new System.Drawing.Size(147, 23);
+            this.txtFlowrate.TabIndex = 33;
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.label24.Location = new System.Drawing.Point(372, 194);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(39, 20);
+            this.label24.TabIndex = 34;
+            this.label24.Text = "W/C";
+            // 
+            // txtWC
+            // 
+            this.txtWC.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.txtWC.Location = new System.Drawing.Point(417, 192);
+            this.txtWC.Name = "txtWC";
+            this.txtWC.Size = new System.Drawing.Size(141, 23);
+            this.txtWC.TabIndex = 35;
+            // 
+            // btnTest
+            // 
+            this.btnTest.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.btnTest.Location = new System.Drawing.Point(564, 192);
+            this.btnTest.Name = "btnTest";
+            this.btnTest.Size = new System.Drawing.Size(117, 23);
+            this.btnTest.TabIndex = 36;
+            this.btnTest.Text = "Test";
+            this.btnTest.UseVisualStyleBackColor = true;
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.label27.Location = new System.Drawing.Point(66, 223);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(107, 20);
+            this.label27.TabIndex = 37;
+            this.label27.Text = "Total flow(L) : ";
+            // 
+            // txtTotalFlow
+            // 
+            this.txtTotalFlow.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.txtTotalFlow.Location = new System.Drawing.Point(202, 223);
+            this.txtTotalFlow.Name = "txtTotalFlow";
+            this.txtTotalFlow.Size = new System.Drawing.Size(147, 23);
+            this.txtTotalFlow.TabIndex = 38;
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.label26.Location = new System.Drawing.Point(372, 223);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(126, 20);
+            this.label26.TabIndex = 39;
+            this.label26.Text = "Pressure(MPa) : ";
+            // 
+            // txtPressure
+            // 
+            this.txtPressure.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.txtPressure.Location = new System.Drawing.Point(502, 220);
+            this.txtPressure.Name = "txtPressure";
+            this.txtPressure.Size = new System.Drawing.Size(180, 23);
+            this.txtPressure.TabIndex = 40;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.txtPressure);
+            this.groupBox1.Controls.Add(this.label26);
+            this.groupBox1.Controls.Add(this.txtTotalFlow);
+            this.groupBox1.Controls.Add(this.label27);
+            this.groupBox1.Controls.Add(this.btnTest);
+            this.groupBox1.Controls.Add(this.txtWC);
+            this.groupBox1.Controls.Add(this.label24);
+            this.groupBox1.Controls.Add(this.txtFlowrate);
+            this.groupBox1.Controls.Add(this.label25);
+            this.groupBox1.Controls.Add(this.txtQuality);
+            this.groupBox1.Controls.Add(this.label21);
+            this.groupBox1.Controls.Add(this.txtLeader);
+            this.groupBox1.Controls.Add(this.label22);
+            this.groupBox1.Controls.Add(this.txtRecorder);
+            this.groupBox1.Controls.Add(this.label23);
+            this.groupBox1.Controls.Add(this.txtHoleHigh);
+            this.groupBox1.Controls.Add(this.label19);
+            this.groupBox1.Controls.Add(this.txtDistBwEjectAndHole);
+            this.groupBox1.Controls.Add(this.label20);
+            this.groupBox1.Controls.Add(this.txtDesOfHole);
+            this.groupBox1.Controls.Add(this.label18);
+            this.groupBox1.Controls.Add(this.txtNum);
+            this.groupBox1.Controls.Add(this.label17);
+            this.groupBox1.Controls.Add(this.txtLength);
+            this.groupBox1.Controls.Add(this.label16);
+            this.groupBox1.Controls.Add(this.label15);
+            this.groupBox1.Controls.Add(this.txtTo);
+            this.groupBox1.Controls.Add(this.label14);
+            this.groupBox1.Controls.Add(this.txtSectFrom);
+            this.groupBox1.Controls.Add(this.label13);
+            this.groupBox1.Controls.Add(this.txtThe);
+            this.groupBox1.Controls.Add(this.label12);
+            this.groupBox1.Controls.Add(this.cbRange);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.cbOrder);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.txtHoleNo);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.txtProjectName);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Location = new System.Drawing.Point(3, 5);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(750, 260);
+            this.groupBox1.TabIndex = 0;
+            this.groupBox1.TabStop = false;
+            // 
             // Form1
             // 
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
@@ -1151,8 +1168,6 @@ namespace KhoanNhaTrang
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
@@ -1166,6 +1181,8 @@ namespace KhoanNhaTrang
             this.groupBox4.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1179,23 +1196,14 @@ namespace KhoanNhaTrang
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.TextBox txtProjectName;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabTimeCurves;
         private System.Windows.Forms.TabPage tabDataGrid;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.ComboBox cbRange;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox cbOrder;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox txtHoleNo;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.GroupBox groupBox4;
         private ZedGraph.ZedGraphControl chartTimeCurves;
@@ -1220,38 +1228,6 @@ namespace KhoanNhaTrang
         private System.Windows.Forms.TextBox txtMinOfYPressure;
         private System.Windows.Forms.TextBox txtMaxOfYPressure;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox txtThe;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox txtSectFrom;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.TextBox txtTo;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.TextBox txtLength;
-        private System.Windows.Forms.TextBox txtNum;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.TextBox txtDesOfHole;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.TextBox txtHoleHigh;
-        private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.TextBox txtDistBwEjectAndHole;
-        private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.TextBox txtQuality;
-        private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.TextBox txtLeader;
-        private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.TextBox txtRecorder;
-        private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.TextBox txtWC;
-        private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.TextBox txtFlowrate;
-        private System.Windows.Forms.Label label25;
-        private System.Windows.Forms.Button btnTest;
-        private System.Windows.Forms.TextBox txtPressure;
-        private System.Windows.Forms.Label label26;
-        private System.Windows.Forms.TextBox txtTotalFlow;
-        private System.Windows.Forms.Label label27;
         private System.Windows.Forms.RadioButton rdGrout;
         private System.Windows.Forms.Label lbEquipment;
         private System.Windows.Forms.Label label28;
@@ -1271,6 +1247,47 @@ namespace KhoanNhaTrang
         private System.Windows.Forms.Button btnEnd;
         private System.Windows.Forms.Button btnPause;
         private System.Windows.Forms.Button btnAddInfo;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TextBox txtPressure;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.TextBox txtTotalFlow;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Button btnTest;
+        private System.Windows.Forms.TextBox txtWC;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.TextBox txtFlowrate;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.TextBox txtQuality;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.TextBox txtLeader;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.TextBox txtRecorder;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.TextBox txtHoleHigh;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.TextBox txtDistBwEjectAndHole;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.TextBox txtDesOfHole;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TextBox txtNum;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.TextBox txtLength;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox txtTo;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox txtSectFrom;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox txtThe;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.ComboBox cbRange;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox cbOrder;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtHoleNo;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txtProjectName;
+        private System.Windows.Forms.Label label1;
     }
 }
 
