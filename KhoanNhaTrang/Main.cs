@@ -49,6 +49,7 @@ namespace KhoanNhaTrang
                 data.pressure = Math.Round(PLCDB1Read.Instance().pressure,2);
                 data.wc = Math.Round(PLCDB1Read.Instance().wc,2);
                 data.management_id = managementId;
+                data.insert_date = new DateTime();
 
                 string query = @"insert into data(flow_rate, fluid,pressure,wc,management_id) values(@flow_rate, @fluid,@pressure,@wc,@management_id);
                             SELECT LAST_INSERT_ID()";
@@ -99,7 +100,7 @@ namespace KhoanNhaTrang
             btnSaveToAs.Enabled = false;
             btnPrint.Enabled = false;
             btnAddInfo.Enabled = false;
-            btnClose.Enabled = false;
+            btnClose.Enabled = true;
 
             initChart();
         }
@@ -173,8 +174,8 @@ namespace KhoanNhaTrang
                     try
                     {
                         db.Open();
-                        query = @"SELECT flow_rate, fluid, wc, pressure,insert_date FROM grouting.data";
-                        listData = db.Query<Data>(query).ToList();
+                        //query = @"SELECT flow_rate, fluid, wc, pressure,insert_date FROM grouting.data";
+                        //listData = db.Query<Data>(query).ToList();
                     }
                     catch (Exception ex)
                     {
@@ -231,18 +232,23 @@ namespace KhoanNhaTrang
                 show_Data_Real_lb(txtWC, data.wc);
                 show_Data_Real_lb(txtPressure, data.pressure);
 
-
-
-                Draw(data.flow_rate, data.fluid, data.pressure, data.wc);
+                double valueFlowRate = ((data.flow_rate * 100) / Convert.ToDouble(txtMaxOfYFlowrate.Text));
+                double valueFluid = ((data.fluid * 100) / Convert.ToDouble(txtMaxOfYTotalFlow.Text));
+                double valueWC = ((data.wc * 100) / Convert.ToDouble(txtMaxOfYWC.Text));
+                double valuePressure = ((data.pressure * 100) / Convert.ToDouble(txtMaxOfYPressure.Text));
+                
+                Draw(valueFlowRate, valueFluid, valueWC, valuePressure);
                 listData.Add(data);
                 /**/
 
+                /** /
                 double valueFlowRate = ((listData[index].flow_rate * 100) / Convert.ToDouble(txtMaxOfYFlowrate.Text));
                 double valueFluid = ((listData[index].fluid * 100) / Convert.ToDouble(txtMaxOfYTotalFlow.Text));
                 double valueWC = ((listData[index].wc * 100) / Convert.ToDouble(txtMaxOfYWC.Text));
                 double valuePressure = ((listData[index].pressure * 100) / Convert.ToDouble(txtMaxOfYPressure.Text));
                 Draw(valueFlowRate, valueFluid, valueWC, valuePressure);
                 index++;
+                /**/
             }
             catch (Exception ex)
             {
@@ -639,7 +645,7 @@ namespace KhoanNhaTrang
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-
+            this.Close();
         }
 
         private void txtMaxOfYFlowrate_KeyPress(object sender, KeyPressEventArgs e)
