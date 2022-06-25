@@ -53,9 +53,13 @@ namespace KhoanNhaTrang
                 data.insert_date = new DateTime();
 
                 string query = @"insert into data(flow_rate, fluid,pressure,wc,management_id) values(@flow_rate, @fluid,@pressure,@wc,@management_id);
-                            SELECT LAST_INSERT_ID()";
-                long id = db.Query<int>(query, data).Single();
-                data.Id = id;
+                            select * from data order by id desc limit 1";
+                data = db.Query<Data>(query, data).Single();
+                data.flow_rate = Math.Round(data.flow_rate, 2);
+                data.fluid = Math.Round(data.fluid, 2);
+                data.pressure = Math.Round(data.pressure, 2);
+                data.wc = Math.Round(data.wc, 2);
+
             }
             catch (Exception ex)
             {
@@ -72,6 +76,8 @@ namespace KhoanNhaTrang
 
                 }
             }
+          
+
             return data;
         }
 
@@ -200,10 +206,10 @@ namespace KhoanNhaTrang
                     initChart();
                 }
                 
-                txtMaxOfYFlowrate.ReadOnly = true;
-                txtMaxOfYTotalFlow.ReadOnly = true;
-                txtMaxOfYWC.ReadOnly = true;
-                txtMaxOfYPressure.ReadOnly = true;
+                txtMaxOfYFlowrate.ReadOnly = false;
+                txtMaxOfYTotalFlow.ReadOnly = false;
+                txtMaxOfYWC.ReadOnly = false;
+                txtMaxOfYPressure.ReadOnly = false;
 
                 btnStart.Enabled = false;
                 btnPause.Enabled = true;
@@ -344,6 +350,7 @@ namespace KhoanNhaTrang
             lbGroutedTime.Text = groutedTime;
             tickStart = tickStart + 5;
 
+            /** /
             // Tự động Scale theo trục y
             if (flowRate > yScale.Max - yScale.MajorStep)
             {
@@ -368,6 +375,7 @@ namespace KhoanNhaTrang
                 yScale.Max = pressure + yScale.MajorStep;
                 yScale.Min = 0;
             }
+            /**/
 
 
             // Vẽ đồ thị
