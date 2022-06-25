@@ -129,14 +129,16 @@ namespace KhoanNhaTrang
 
             // Định hiện thị cho trục thời gian (Trục X)
             myPane.XAxis.Scale.Min = 0;
-            myPane.XAxis.Scale.Max = 30;
+            myPane.XAxis.Scale.Max = 60;
             myPane.XAxis.Scale.MinorStep = 1;
             myPane.XAxis.Scale.MajorStep = 5;
+            myPane.XAxis.MajorGrid.IsVisible = true;
             // Định hiện thị cho trục thời gian(Trục Y)
             myPane.YAxis.Scale.Min = 0;
             myPane.YAxis.Scale.Max = 100;
             myPane.YAxis.Scale.MinorStep = 1;
             myPane.YAxis.Scale.MajorStep = 10;
+            myPane.YAxis.MajorGrid.IsVisible = true;
 
 
             // Gọi hàm xác định cỡ trục
@@ -317,7 +319,7 @@ namespace KhoanNhaTrang
             if (tickStart > xScale.Max - xScale.MajorStep)
             {
                 xScale.Max = tickStart + xScale.MajorStep;
-                xScale.Min = xScale.Max - 30.0;
+                xScale.Min = 0;
             }
             int seconds = tickStart;
 
@@ -326,42 +328,29 @@ namespace KhoanNhaTrang
             lbGroutedTime.Text = groutedTime;
             tickStart = tickStart + 5;
 
-
-            //// Tự động Scale theo trục y
+            // Tự động Scale theo trục y
             if (flowRate > yScale.Max - yScale.MajorStep)
             {
                 yScale.Max = flowRate + yScale.MajorStep;
-            }
-            else if (flowRate < yScale.Min + yScale.MajorStep)
-            {
-                yScale.Min = flowRate - yScale.MajorStep;
+                yScale.Min = 0;
             }
 
             if (fluid > yScale.Max - yScale.MajorStep)
             {
                 yScale.Max = fluid + yScale.MajorStep;
-            }
-            else if (fluid < yScale.Min + yScale.MajorStep)
-            {
-                yScale.Min = fluid - yScale.MajorStep;
+                yScale.Min = 0;
             }
 
             if (wc > yScale.Max - yScale.MajorStep)
             {
                 yScale.Max = wc + yScale.MajorStep;
-            }
-            else if (wc < yScale.Min + yScale.MajorStep)
-            {
-                yScale.Min = wc - yScale.MajorStep;
+                yScale.Min = 0;
             }
 
             if (pressure > yScale.Max - yScale.MajorStep)
             {
                 yScale.Max = pressure + yScale.MajorStep;
-            }
-            else if (pressure < yScale.Min + yScale.MajorStep)
-            {
-                yScale.Min = pressure - yScale.MajorStep;
+                yScale.Min = 0;
             }
 
 
