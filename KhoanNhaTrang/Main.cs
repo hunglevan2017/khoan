@@ -21,6 +21,7 @@ namespace KhoanNhaTrang
         private List<Data> listData = new List<Data>();
         private int index = 0;
         int tickStart = 0;
+        long managementId = 0;
         private String startDate;
         private String startHour;
         private String endDate;
@@ -47,7 +48,9 @@ namespace KhoanNhaTrang
                 data.fluid = Math.Round(PLCDB1Read.Instance().fluid,2);
                 data.pressure = Math.Round(PLCDB1Read.Instance().pressure,2);
                 data.wc = Math.Round(PLCDB1Read.Instance().wc,2);
-                string query = @"insert into data(flow_rate, fluid,pressure,wc) values(@flow_rate, @fluid,@pressure,@wc);
+                data.management_id = managementId;
+
+                string query = @"insert into data(flow_rate, fluid,pressure,wc,management_id) values(@flow_rate, @fluid,@pressure,@wc,@management_id);
                             SELECT LAST_INSERT_ID()";
                 long id = db.Query<int>(query, data).Single();
                 data.Id = id;
@@ -151,19 +154,15 @@ namespace KhoanNhaTrang
                     lbGroutedTime.Text = "00:00:00";
                     string queryCheckManagement = @"SELECT number_equipment FROM management WHERE DATE(insert_date) = DATE(now()) ORDER BY id DESC LIMIT 1;";
                     int numberEquipment = db.Query<int>(queryCheckManagement).FirstOrDefault();
+                    numberEquipment++;
+
+                    string query = @"insert into management(number_equipment) values(" + numberEquipment + ");";
+                    db.Execute(query);
                     lbEquipment.Text = numberEquipment.ToString();
-                    if (numberEquipment == 0)
-                    {
-                        numberEquipment++;
-                        string query = @"insert into management(number_equipment) values(" + numberEquipment + ");";
-                        db.Execute(query);
-                    }
-                    else
-                    {
-                        numberEquipment++;
-                        string query = @"update management set number_equipment = " + numberEquipment + " where DATE(insert_date) = DATE(now());";
-                        db.Execute(query);
-                    }
+
+
+                    queryCheckManagement = @"SELECT id FROM management WHERE DATE(insert_date) = DATE(now()) ORDER BY id DESC LIMIT 1;";
+                    managementId = db.Query<long>(queryCheckManagement).FirstOrDefault();
 
                     startDate = DateTime.Now.ToString("yyyy-MM-dd").ToString();
                     startHour = DateTime.Now.ToString("hh:mm:ss tt").ToString();
@@ -174,7 +173,7 @@ namespace KhoanNhaTrang
                     try
                     {
                         db.Open();
-                        string query = @"SELECT flow_rate, fluid, wc, pressure,insert_date FROM grouting.data";
+                        query = @"SELECT flow_rate, fluid, wc, pressure,insert_date FROM grouting.data";
                         listData = db.Query<Data>(query).ToList();
                     }
                     catch (Exception ex)
@@ -224,13 +223,16 @@ namespace KhoanNhaTrang
         {
             try
             {
-                /** /
+                /**/
                 PLC.Instance().ReadClass(PLCDB1Read.Instance(), 1);
                 Data data = insertDB();
                 show_Data_Real_lb(txtFlowrate, data.flow_rate);
                 show_Data_Real_lb(txtTotalFlow, data.fluid);
                 show_Data_Real_lb(txtWC, data.wc);
                 show_Data_Real_lb(txtPressure, data.pressure);
+
+
+
                 Draw(data.flow_rate, data.fluid, data.pressure, data.wc);
                 listData.Add(data);
                 /**/

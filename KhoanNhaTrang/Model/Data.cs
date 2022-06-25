@@ -14,5 +14,7 @@ namespace KhoanNhaTrang.Model
 
         public DateTime insert_date { get; set; }
 
+        public long management_id { get; set; }
+
     }
 }
