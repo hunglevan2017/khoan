@@ -27,6 +27,7 @@ namespace KhoanNhaTrang
         private String endDate;
         private String endHour;
         private GraphPane myPane;
+        Boolean isInsertData = false;
 
         public Form1()
         {
@@ -76,9 +77,10 @@ namespace KhoanNhaTrang
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            timer1.Start();
             if (PLC.Instance().Open())
             {
-
+               
             }
             else
             {
@@ -207,7 +209,10 @@ namespace KhoanNhaTrang
                 btnPause.Enabled = true;
                 btnEnd.Enabled = true;
                 timer1.Enabled = true;
-                timer1.Start();
+
+
+                isInsertData = true;
+              
             } else
             {
                 MessageBox.Show("Các trường Max of Y của Flowrate, Total flow, W/C, Pressure không được rỗng.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -226,21 +231,32 @@ namespace KhoanNhaTrang
         {
             try
             {
+
+
                 /**/
                 PLC.Instance().ReadClass(PLCDB1Read.Instance(), 1);
-                Data data = insertDB();
-                show_Data_Real_lb(txtFlowrate, data.flow_rate);
-                show_Data_Real_lb(txtTotalFlow, data.fluid);
-                show_Data_Real_lb(txtWC, data.wc);
-                show_Data_Real_lb(txtPressure, data.pressure);
+                show_Data_Real_lb(txtFlowrate, Math.Round(PLCDB1Read.Instance().flow_rate, 2));
+                show_Data_Real_lb(txtTotalFlow, Math.Round(PLCDB1Read.Instance().fluid, 2));
+                show_Data_Real_lb(txtWC, Math.Round(PLCDB1Read.Instance().wc, 2));
+                show_Data_Real_lb(txtPressure, Math.Round(PLCDB1Read.Instance().pressure, 2));
 
-                double valueFlowRate = ((data.flow_rate * 100) / Convert.ToDouble(txtMaxOfYFlowrate.Text));
-                double valueFluid = ((data.fluid * 100) / Convert.ToDouble(txtMaxOfYTotalFlow.Text));
-                double valueWC = ((data.wc * 100) / Convert.ToDouble(txtMaxOfYWC.Text));
-                double valuePressure = ((data.pressure * 100) / Convert.ToDouble(txtMaxOfYPressure.Text));
-                
-                Draw(valueFlowRate, valueFluid, valueWC, valuePressure);
-                listData.Add(data);
+                if (isInsertData)
+                { 
+                    Data data = insertDB();
+
+                    show_Data_Real_lb(txtFlowrate, data.flow_rate);
+                    show_Data_Real_lb(txtTotalFlow, data.fluid);
+                    show_Data_Real_lb(txtWC, data.wc);
+                    show_Data_Real_lb(txtPressure, data.pressure);
+
+                    double valueFlowRate = ((data.flow_rate * 100) / Convert.ToDouble(txtMaxOfYFlowrate.Text));
+                    double valueFluid = ((data.fluid * 100) / Convert.ToDouble(txtMaxOfYTotalFlow.Text));
+                    double valueWC = ((data.wc * 100) / Convert.ToDouble(txtMaxOfYWC.Text));
+                    double valuePressure = ((data.pressure * 100) / Convert.ToDouble(txtMaxOfYPressure.Text));
+                    Draw(valueFlowRate, valueFluid, valueWC, valuePressure);
+                    listData.Add(data);
+                }
+
                 /**/
 
                 /** /
@@ -368,7 +384,7 @@ namespace KhoanNhaTrang
             btnEnd.Enabled = true;
             btnSaveToAs.Enabled = true;
             btnPrint.Enabled = true;
-            timer1.Stop();
+            isInsertData = false;
         }
 
         private void btnEnd_Click(object sender, EventArgs e)
@@ -387,10 +403,11 @@ namespace KhoanNhaTrang
             txtMaxOfYPressure.ReadOnly = false;
 
             tickStart = 0;
-            timer1.Stop();
-            timer1.Enabled = false;
+
             endDate = DateTime.Now.ToString("yyyy-MM-dd").ToString();
             endHour = DateTime.Now.ToString("hh:mm:ss tt").ToString();
+
+            isInsertData = false;
         }
 
         private void btnSaveToAs_Click(object sender, EventArgs e)
