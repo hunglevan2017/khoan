@@ -37,14 +37,14 @@ namespace KhoanNhaTrang
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.txtPressure = new System.Windows.Forms.TextBox();
+            this.txtpressure = new System.Windows.Forms.TextBox();
+            this.txtWC = new System.Windows.Forms.TextBox();
+            this.txttotalflow = new System.Windows.Forms.TextBox();
+            this.txtflowrate = new System.Windows.Forms.TextBox();
             this.label26 = new System.Windows.Forms.Label();
-            this.txtTotalFlow = new System.Windows.Forms.TextBox();
             this.label27 = new System.Windows.Forms.Label();
             this.btnTest = new System.Windows.Forms.Button();
-            this.txtWC = new System.Windows.Forms.TextBox();
             this.label24 = new System.Windows.Forms.Label();
-            this.txtFlowrate = new System.Windows.Forms.TextBox();
             this.label25 = new System.Windows.Forms.Label();
             this.txtQuality = new System.Windows.Forms.TextBox();
             this.label21 = new System.Windows.Forms.Label();
@@ -83,6 +83,7 @@ namespace KhoanNhaTrang
             this.rdWash = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label32 = new System.Windows.Forms.Label();
+            this.txtdensi = new System.Windows.Forms.TextBox();
             this.label30 = new System.Windows.Forms.Label();
             this.lbBeginTimeHour = new System.Windows.Forms.Label();
             this.lbBeginTimeDate = new System.Windows.Forms.Label();
@@ -127,6 +128,7 @@ namespace KhoanNhaTrang
             this.btnEnd = new System.Windows.Forms.Button();
             this.btnPause = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
+            this.label33 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -167,6 +169,7 @@ namespace KhoanNhaTrang
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(104, 26);
             this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // toolStripMenuItem3
             // 
@@ -174,6 +177,7 @@ namespace KhoanNhaTrang
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
             this.toolStripMenuItem3.Size = new System.Drawing.Size(71, 25);
             this.toolStripMenuItem3.Text = "Setting";
+            this.toolStripMenuItem3.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
             // 
             // panel1
             // 
@@ -185,14 +189,14 @@ namespace KhoanNhaTrang
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.txtPressure);
+            this.groupBox1.Controls.Add(this.txtpressure);
+            this.groupBox1.Controls.Add(this.txtWC);
+            this.groupBox1.Controls.Add(this.txttotalflow);
+            this.groupBox1.Controls.Add(this.txtflowrate);
             this.groupBox1.Controls.Add(this.label26);
-            this.groupBox1.Controls.Add(this.txtTotalFlow);
             this.groupBox1.Controls.Add(this.label27);
             this.groupBox1.Controls.Add(this.btnTest);
-            this.groupBox1.Controls.Add(this.txtWC);
             this.groupBox1.Controls.Add(this.label24);
-            this.groupBox1.Controls.Add(this.txtFlowrate);
             this.groupBox1.Controls.Add(this.label25);
             this.groupBox1.Controls.Add(this.txtQuality);
             this.groupBox1.Controls.Add(this.label21);
@@ -231,13 +235,37 @@ namespace KhoanNhaTrang
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             // 
-            // txtPressure
+            // txtpressure
             // 
-            this.txtPressure.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.txtPressure.Location = new System.Drawing.Point(502, 220);
-            this.txtPressure.Name = "txtPressure";
-            this.txtPressure.Size = new System.Drawing.Size(180, 23);
-            this.txtPressure.TabIndex = 40;
+            this.txtpressure.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.txtpressure.Location = new System.Drawing.Point(504, 221);
+            this.txtpressure.Name = "txtpressure";
+            this.txtpressure.Size = new System.Drawing.Size(177, 23);
+            this.txtpressure.TabIndex = 47;
+            // 
+            // txtWC
+            // 
+            this.txtWC.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.txtWC.Location = new System.Drawing.Point(417, 192);
+            this.txtWC.Name = "txtWC";
+            this.txtWC.Size = new System.Drawing.Size(112, 23);
+            this.txtWC.TabIndex = 46;
+            // 
+            // txttotalflow
+            // 
+            this.txttotalflow.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.txttotalflow.Location = new System.Drawing.Point(202, 223);
+            this.txttotalflow.Name = "txttotalflow";
+            this.txttotalflow.Size = new System.Drawing.Size(147, 23);
+            this.txttotalflow.TabIndex = 45;
+            // 
+            // txtflowrate
+            // 
+            this.txtflowrate.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.txtflowrate.Location = new System.Drawing.Point(202, 194);
+            this.txtflowrate.Name = "txtflowrate";
+            this.txtflowrate.Size = new System.Drawing.Size(147, 23);
+            this.txtflowrate.TabIndex = 44;
             // 
             // label26
             // 
@@ -248,14 +276,6 @@ namespace KhoanNhaTrang
             this.label26.Size = new System.Drawing.Size(126, 20);
             this.label26.TabIndex = 39;
             this.label26.Text = "Pressure(MPa) : ";
-            // 
-            // txtTotalFlow
-            // 
-            this.txtTotalFlow.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.txtTotalFlow.Location = new System.Drawing.Point(202, 223);
-            this.txtTotalFlow.Name = "txtTotalFlow";
-            this.txtTotalFlow.Size = new System.Drawing.Size(147, 23);
-            this.txtTotalFlow.TabIndex = 38;
             // 
             // label27
             // 
@@ -270,20 +290,13 @@ namespace KhoanNhaTrang
             // btnTest
             // 
             this.btnTest.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.btnTest.Location = new System.Drawing.Point(564, 192);
+            this.btnTest.Location = new System.Drawing.Point(564, 190);
             this.btnTest.Name = "btnTest";
-            this.btnTest.Size = new System.Drawing.Size(117, 23);
+            this.btnTest.Size = new System.Drawing.Size(117, 25);
             this.btnTest.TabIndex = 36;
             this.btnTest.Text = "Test";
             this.btnTest.UseVisualStyleBackColor = true;
-            // 
-            // txtWC
-            // 
-            this.txtWC.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.txtWC.Location = new System.Drawing.Point(417, 192);
-            this.txtWC.Name = "txtWC";
-            this.txtWC.Size = new System.Drawing.Size(141, 23);
-            this.txtWC.TabIndex = 35;
+            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
             // 
             // label24
             // 
@@ -294,14 +307,6 @@ namespace KhoanNhaTrang
             this.label24.Size = new System.Drawing.Size(39, 20);
             this.label24.TabIndex = 34;
             this.label24.Text = "W/C";
-            // 
-            // txtFlowrate
-            // 
-            this.txtFlowrate.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.txtFlowrate.Location = new System.Drawing.Point(202, 194);
-            this.txtFlowrate.Name = "txtFlowrate";
-            this.txtFlowrate.Size = new System.Drawing.Size(147, 23);
-            this.txtFlowrate.TabIndex = 33;
             // 
             // label25
             // 
@@ -658,6 +663,7 @@ namespace KhoanNhaTrang
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.label32);
+            this.groupBox2.Controls.Add(this.txtdensi);
             this.groupBox2.Controls.Add(this.label30);
             this.groupBox2.Controls.Add(this.lbBeginTimeHour);
             this.groupBox2.Controls.Add(this.lbBeginTimeDate);
@@ -676,12 +682,19 @@ namespace KhoanNhaTrang
             // 
             this.label32.AutoSize = true;
             this.label32.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label32.ForeColor = System.Drawing.Color.Blue;
-            this.label32.Location = new System.Drawing.Point(85, 183);
+            this.label32.Location = new System.Drawing.Point(140, 182);
             this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(83, 20);
-            this.label32.TabIndex = 10;
-            this.label32.Text = "1.147 kg/L";
+            this.label32.Size = new System.Drawing.Size(39, 20);
+            this.label32.TabIndex = 48;
+            this.label32.Text = "kg/L";
+            // 
+            // txtdensi
+            // 
+            this.txtdensi.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.txtdensi.Location = new System.Drawing.Point(88, 182);
+            this.txtdensi.Name = "txtdensi";
+            this.txtdensi.Size = new System.Drawing.Size(50, 23);
+            this.txtdensi.TabIndex = 48;
             // 
             // label30
             // 
@@ -794,6 +807,7 @@ namespace KhoanNhaTrang
             // groupBox5
             // 
             this.groupBox5.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.groupBox5.Controls.Add(this.label33);
             this.groupBox5.Controls.Add(this.textBox5);
             this.groupBox5.Controls.Add(this.txtMinOfYPressure);
             this.groupBox5.Controls.Add(this.txtMaxOfYPressure);
@@ -885,7 +899,7 @@ namespace KhoanNhaTrang
             this.txtMaxOfYWC.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.txtMaxOfYWC.Location = new System.Drawing.Point(487, 50);
             this.txtMaxOfYWC.Name = "txtMaxOfYWC";
-            this.txtMaxOfYWC.Size = new System.Drawing.Size(140, 26);
+            this.txtMaxOfYWC.Size = new System.Drawing.Size(96, 26);
             this.txtMaxOfYWC.TabIndex = 13;
             this.txtMaxOfYWC.Text = "100";
             this.txtMaxOfYWC.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -1128,6 +1142,8 @@ namespace KhoanNhaTrang
             this.btnEnd.Text = "End";
             this.btnEnd.UseVisualStyleBackColor = true;
             this.btnEnd.Click += new System.EventHandler(this.btnEnd_Click);
+            this.btnEnd.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnEnd_MouseDown);
+            this.btnEnd.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnEnd_MouseUp);
             // 
             // btnPause
             // 
@@ -1139,6 +1155,8 @@ namespace KhoanNhaTrang
             this.btnPause.Text = "Pause";
             this.btnPause.UseVisualStyleBackColor = true;
             this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
+            this.btnPause.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnPause_MouseDown);
+            this.btnPause.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnPause_MouseUp);
             // 
             // btnStart
             // 
@@ -1150,6 +1168,18 @@ namespace KhoanNhaTrang
             this.btnStart.Text = "Start";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            this.btnStart.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnStart_MouseDown);
+            this.btnStart.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnStart_MouseUp);
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.label33.Location = new System.Drawing.Point(589, 52);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(26, 20);
+            this.label33.TabIndex = 20;
+            this.label33.Text = ": 1";
             // 
             // Form1
             // 
@@ -1237,7 +1267,6 @@ namespace KhoanNhaTrang
         private System.Windows.Forms.Label label31;
         private System.Windows.Forms.Label lbBeginTimeHour;
         private System.Windows.Forms.Label label30;
-        private System.Windows.Forms.Label label32;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Button btnClose;
@@ -1247,14 +1276,10 @@ namespace KhoanNhaTrang
         private System.Windows.Forms.Button btnPause;
         private System.Windows.Forms.Button btnAddInfo;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox txtPressure;
         private System.Windows.Forms.Label label26;
-        private System.Windows.Forms.TextBox txtTotalFlow;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.Button btnTest;
-        private System.Windows.Forms.TextBox txtWC;
         private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.TextBox txtFlowrate;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.TextBox txtQuality;
         private System.Windows.Forms.Label label21;
@@ -1287,6 +1312,13 @@ namespace KhoanNhaTrang
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtProjectName;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txtpressure;
+        private System.Windows.Forms.TextBox txtWC;
+        private System.Windows.Forms.TextBox txttotalflow;
+        private System.Windows.Forms.TextBox txtflowrate;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.TextBox txtdensi;
+        private System.Windows.Forms.Label label33;
     }
 }
 

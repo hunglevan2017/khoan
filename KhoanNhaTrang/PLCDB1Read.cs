@@ -30,11 +30,12 @@ namespace KhoanNhaTrang
 
 
         public double flow_rate { get; set; }
-        public double fluid { get; set; }
         public double pressure { get; set; }
         public double wc { get; set; }
-
+        public double fluid { get; set; }
         public bool Outstart { get; set; }
+        public short wc_1 { get; set; }
+        public double cement_total { get; set; }
         public short temp1 { get; set; }
 
     }

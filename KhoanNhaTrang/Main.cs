@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Text;
 using System.Linq;
 using System.Windows.Forms;
 using ZedGraph;
@@ -48,7 +49,7 @@ namespace KhoanNhaTrang
                 data.flow_rate = Math.Round(PLCDB1Read.Instance().flow_rate,2) ;
                 data.fluid = Math.Round(PLCDB1Read.Instance().fluid,2);
                 data.pressure = Math.Round(PLCDB1Read.Instance().pressure,2);
-                data.wc = Math.Round(PLCDB1Read.Instance().wc,2);
+                data.wc = PLCDB1Read.Instance().wc_1;
                 data.management_id = managementId;
                 data.insert_date = new DateTime();
 
@@ -152,9 +153,14 @@ namespace KhoanNhaTrang
             // Gọi hàm xác định cỡ trục
             myPane.AxisChange();
         }
-
-        private void btnStart_Click(object sender, EventArgs e)
+        private void btnStart_MouseDown(object sender, MouseEventArgs e)
         {
+            PLC.Instance().SetBit("DB2.DBX48.0");
+        }
+
+        private void btnStart_MouseUp(object sender, MouseEventArgs e)
+        {
+            PLC.Instance().ResetBit("DB2.DBX48.0");
             if (txtMaxOfYFlowrate.Text != null && !"".Equals(txtMaxOfYFlowrate.Text.Trim())
                 && txtMaxOfYTotalFlow.Text != null && !"".Equals(txtMaxOfYTotalFlow.Text.Trim())
                 && txtMaxOfYWC.Text != null && !"".Equals(txtMaxOfYWC.Text.Trim())
@@ -205,7 +211,7 @@ namespace KhoanNhaTrang
 
                     initChart();
                 }
-                
+
                 txtMaxOfYFlowrate.ReadOnly = false;
                 txtMaxOfYTotalFlow.ReadOnly = false;
                 txtMaxOfYWC.ReadOnly = false;
@@ -218,11 +224,83 @@ namespace KhoanNhaTrang
 
 
                 isInsertData = true;
-              
-            } else
+
+            }
+            else
             {
                 MessageBox.Show("Các trường Max of Y của Flowrate, Total flow, W/C, Pressure không được rỗng.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            //if (txtMaxOfYFlowrate.Text != null && !"".Equals(txtMaxOfYFlowrate.Text.Trim())
+            //    && txtMaxOfYTotalFlow.Text != null && !"".Equals(txtMaxOfYTotalFlow.Text.Trim())
+            //    && txtMaxOfYWC.Text != null && !"".Equals(txtMaxOfYWC.Text.Trim())
+            //    && txtMaxOfYPressure.Text != null && !"".Equals(txtMaxOfYPressure.Text.Trim()))
+            //{
+            //    if (tickStart == 0)
+            //    {
+            //        lbGroutedTime.Text = "00:00:00";
+            //        string queryCheckManagement = @"SELECT number_equipment FROM management WHERE DATE(insert_date) = DATE(now()) ORDER BY id DESC LIMIT 1;";
+            //        int numberEquipment = db.Query<int>(queryCheckManagement).FirstOrDefault();
+            //        numberEquipment++;
+
+            //        string query = @"insert into management(number_equipment) values(" + numberEquipment + ");";
+            //        db.Execute(query);
+            //        lbEquipment.Text = numberEquipment.ToString();
+
+
+            //        queryCheckManagement = @"SELECT id FROM management WHERE DATE(insert_date) = DATE(now()) ORDER BY id DESC LIMIT 1;";
+            //        managementId = db.Query<long>(queryCheckManagement).FirstOrDefault();
+
+            //        startDate = DateTime.Now.ToString("yyyy-MM-dd").ToString();
+            //        startHour = DateTime.Now.ToString("hh:mm:ss tt").ToString();
+
+            //        lbBeginTimeDate.Text = startDate;
+            //        lbBeginTimeHour.Text = startHour;
+
+            //        try
+            //        {
+            //            db.Open();
+            //            //query = @"SELECT flow_rate, fluid, wc, pressure,insert_date FROM grouting.data";
+            //            //listData = db.Query<Data>(query).ToList();
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            Console.WriteLine(ex.Message);
+            //        }
+            //        finally
+            //        {
+            //            try
+            //            {
+            //                db.Close();
+            //            }
+            //            catch (Exception ex)
+            //            {
+            //                Console.WriteLine(ex.Message);
+            //            }
+            //        }
+
+            //        initChart();
+            //    }
+                
+            //    txtMaxOfYFlowrate.ReadOnly = false;
+            //    txtMaxOfYTotalFlow.ReadOnly = false;
+            //    txtMaxOfYWC.ReadOnly = false;
+            //    txtMaxOfYPressure.ReadOnly = false;
+
+            //    btnStart.Enabled = false;
+            //    btnPause.Enabled = true;
+            //    btnEnd.Enabled = true;
+            //    timer1.Enabled = true;
+
+
+            //    isInsertData = true;
+              
+            //} else
+            //{
+            //    MessageBox.Show("Các trường Max of Y của Flowrate, Total flow, W/C, Pressure không được rỗng.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //}
             
         }
 
@@ -232,7 +310,12 @@ namespace KhoanNhaTrang
             lb.Text = (value / 1).ToString("0.00");
 
         }
+        private void show_Data_Int_lb(TextBox lb, short value)
+        {
 
+            lb.Text = value.ToString();
+
+        }
         private void timer1_Tick(object sender, EventArgs e)
         {
             try
@@ -241,19 +324,21 @@ namespace KhoanNhaTrang
 
                 /**/
                 PLC.Instance().ReadClass(PLCDB1Read.Instance(), 1);
-                show_Data_Real_lb(txtFlowrate, Math.Round(PLCDB1Read.Instance().flow_rate, 2));
-                show_Data_Real_lb(txtTotalFlow, Math.Round(PLCDB1Read.Instance().fluid, 2));
-                show_Data_Real_lb(txtWC, Math.Round(PLCDB1Read.Instance().wc, 2));
-                show_Data_Real_lb(txtPressure, Math.Round(PLCDB1Read.Instance().pressure, 2));
+                PLC.Instance().ReadClass(PLCDB2Write.Instance(), 2);
+                show_Data_Real_lb(txtflowrate, Math.Round(PLCDB1Read.Instance().flow_rate, 2));
+                show_Data_Real_lb(txttotalflow, Math.Round(PLCDB1Read.Instance().fluid, 2));
+                show_Data_Real_lb(txtdensi, PLCDB1Read.Instance().wc);
+                //show_Data_Real_lb(txtWC, Math.Round(PLCDB1Read.Instance().wc, 2));
+                show_Data_Real_lb(txtpressure, Math.Round(PLCDB1Read.Instance().pressure, 2));
 
                 if (isInsertData)
                 { 
                     Data data = insertDB();
 
-                    show_Data_Real_lb(txtFlowrate, data.flow_rate);
-                    show_Data_Real_lb(txtTotalFlow, data.fluid);
+                    show_Data_Real_lb(txtflowrate, data.flow_rate);
+                    show_Data_Real_lb(txttotalflow, data.fluid);
                     show_Data_Real_lb(txtWC, data.wc);
-                    show_Data_Real_lb(txtPressure, data.pressure);
+                    show_Data_Real_lb(txtpressure, data.pressure);
 
                     double valueFlowRate = ((data.flow_rate * 100) / Convert.ToDouble(txtMaxOfYFlowrate.Text));
                     double valueFluid = ((data.fluid * 100) / Convert.ToDouble(txtMaxOfYTotalFlow.Text));
@@ -384,9 +469,9 @@ namespace KhoanNhaTrang
             chartTimeCurves.Invalidate();
             chartTimeCurves.Refresh();
         }
-
-        private void btnPause_Click(object sender, EventArgs e)
+        private void btnPause_MouseDown(object sender, MouseEventArgs e)
         {
+            PLC.Instance().SetBit("DB2.DBX48.1");
             btnStart.Enabled = true;
             btnPause.Enabled = false;
             btnEnd.Enabled = true;
@@ -394,9 +479,23 @@ namespace KhoanNhaTrang
             btnPrint.Enabled = true;
             isInsertData = false;
         }
-
-        private void btnEnd_Click(object sender, EventArgs e)
+        private void btnPause_MouseUp(object sender, MouseEventArgs e)
         {
+            PLC.Instance().ResetBit("DB2.DBX48.1");
+        }
+        private void btnPause_Click(object sender, EventArgs e)
+        {
+            //PLC.Instance().ResetBit("DB2.DBX48.1");
+            //btnStart.Enabled = true;
+            //btnPause.Enabled = false;
+            //btnEnd.Enabled = true;
+            //btnSaveToAs.Enabled = true;
+            //btnPrint.Enabled = true;
+            //isInsertData = false;
+        }
+        private void btnEnd_MouseDown(object sender, MouseEventArgs e)
+        {
+            PLC.Instance().SetBit("DB2.DBX48.2");
             index = 0;
 
             btnStart.Enabled = true;
@@ -416,6 +515,34 @@ namespace KhoanNhaTrang
             endHour = DateTime.Now.ToString("hh:mm:ss tt").ToString();
 
             isInsertData = false;
+        }
+
+        private void btnEnd_MouseUp(object sender, MouseEventArgs e)
+        {
+            PLC.Instance().ResetBit("DB2.DBX48.2");
+        }
+        private void btnEnd_Click(object sender, EventArgs e)
+        {
+            //PLC.Instance().ResetBit("DB2.DBX48.1");
+            //index = 0;
+
+            //btnStart.Enabled = true;
+            //btnPause.Enabled = false;
+            //btnEnd.Enabled = false;
+            //btnSaveToAs.Enabled = true;
+            //btnPrint.Enabled = true;
+
+            //txtMaxOfYFlowrate.ReadOnly = false;
+            //txtMaxOfYTotalFlow.ReadOnly = false;
+            //txtMaxOfYWC.ReadOnly = false;
+            //txtMaxOfYPressure.ReadOnly = false;
+
+            //tickStart = 0;
+
+            //endDate = DateTime.Now.ToString("yyyy-MM-dd").ToString();
+            //endHour = DateTime.Now.ToString("hh:mm:ss tt").ToString();
+
+            //isInsertData = false;
         }
 
         private void btnSaveToAs_Click(object sender, EventArgs e)
@@ -738,6 +865,37 @@ namespace KhoanNhaTrang
 
         }
 
+        private void toolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            frParameter _frShow = new frParameter();
+            _frShow.ShowDialog();
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btnTest_Click(object sender, EventArgs e)
+        {
+            PLC.Instance().SetBit("DB2.DBX48.3");
+            show_Data_Int_lb(txtWC, PLCDB1Read.Instance().wc_1);
+        }
+
+        private void ON_OFF_ALARM(bool output, TextBox lb)
+        {
+            if (output == true) // khong error
+            {
+                lb.Text = "RECORDER RUNNING";
+                lb.BackColor = Color.Lime;
+            }
+
+            else //on
+            {
+                lb.Text = "RECORDER STOOPING";
+                lb.BackColor = Color.Red;
+            }
+        }
 
     }
 }
