@@ -96,6 +96,7 @@ namespace KhoanNhaTrang
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabTimeCurves = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.label33 = new System.Windows.Forms.Label();
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.txtMinOfYPressure = new System.Windows.Forms.TextBox();
             this.txtMaxOfYPressure = new System.Windows.Forms.TextBox();
@@ -128,7 +129,6 @@ namespace KhoanNhaTrang
             this.btnEnd = new System.Windows.Forms.Button();
             this.btnPause = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
-            this.label33 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -833,6 +833,16 @@ namespace KhoanNhaTrang
             this.groupBox5.TabIndex = 1;
             this.groupBox5.TabStop = false;
             // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.label33.Location = new System.Drawing.Point(589, 52);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(26, 20);
+            this.label33.TabIndex = 20;
+            this.label33.Text = ": 1";
+            // 
             // textBox5
             // 
             this.textBox5.BackColor = System.Drawing.Color.Green;
@@ -1064,7 +1074,7 @@ namespace KhoanNhaTrang
             // 
             // timer1
             // 
-            this.timer1.Interval = 60000;
+            this.timer1.Interval = 5000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // panel4
@@ -1170,16 +1180,6 @@ namespace KhoanNhaTrang
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             this.btnStart.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnStart_MouseDown);
             this.btnStart.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnStart_MouseUp);
-            // 
-            // label33
-            // 
-            this.label33.AutoSize = true;
-            this.label33.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label33.Location = new System.Drawing.Point(589, 52);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(26, 20);
-            this.label33.TabIndex = 20;
-            this.label33.Text = ": 1";
             // 
             // Form1
             // 

@@ -19,6 +19,7 @@ namespace KhoanNhaTrang
 
     public partial class Form1 : Form
     {
+        int limitPercentScaleY = 60;
         private List<Data> listData = new List<Data>();
         private int index = 0;
         int tickStart = 0;
@@ -52,7 +53,7 @@ namespace KhoanNhaTrang
                     data.flow_rate = double.Parse(txtflowrate.Text);
                     data.fluid = double.Parse(txttotalflow.Text);
                     data.pressure = double.Parse(txtpressure.Text);
-                    data.wc = double.Parse(txtpressure.Text);
+                    data.wc = double.Parse(txtWC.Text);
                     data.management_id = managementId;
                     data.insert_date = new DateTime();
                 }
@@ -335,12 +336,26 @@ namespace KhoanNhaTrang
 
         public void simulator() {
             int min = 50;
-            int max = 100;
+            int max = 200;
             Random _random = new Random();
             txtflowrate.Text = _random.Next(min, max).ToString();
-            txttotalflow.Text = _random.Next(min, max).ToString();
-            txtWC.Text = _random.Next(min, max).ToString();
-            txtpressure.Text = _random.Next(min, max).ToString();
+            txttotalflow.Text = _random.Next(50, 100).ToString();
+            txtWC.Text = _random.Next(1, 10).ToString();
+            txtpressure.Text = _random.Next(30, 40).ToString();
+        }
+
+        public void reDraw()
+        {
+            tickStart = 0;
+            initChart();
+            for (int i = 0; i < listData.Count;i++)
+            {
+                double valueFlowRate = ((listData[i].flow_rate * 100) / Convert.ToDouble(txtMaxOfYFlowrate.Text));
+                double valueFluid = ((listData[i].fluid * 100) / Convert.ToDouble(txtMaxOfYTotalFlow.Text));
+                double valueWC = ((listData[i].wc * 100) / Convert.ToDouble(txtMaxOfYWC.Text));
+                double valuePressure = ((listData[i].pressure * 100) / Convert.ToDouble(txtMaxOfYPressure.Text));
+                Draw(valueFlowRate, valueFluid, valueWC, valuePressure);
+            }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -375,32 +390,43 @@ namespace KhoanNhaTrang
                     double valueWC = ((data.wc * 100) / Convert.ToDouble(txtMaxOfYWC.Text));
                     double valuePressure = ((data.pressure * 100) / Convert.ToDouble(txtMaxOfYPressure.Text));
 
-                    while (valueFlowRate > 100)
+                    listData.Add(data);
+                    Boolean isRedraw = false;
+
+                    while (valueFlowRate > limitPercentScaleY)
                     {
                         txtMaxOfYFlowrate.Text = (Convert.ToDouble(txtMaxOfYFlowrate.Text) * 2).ToString();
                         valueFlowRate = ((data.flow_rate * 100) / Convert.ToDouble(txtMaxOfYFlowrate.Text));
+                        reDraw();
+                        isRedraw = true;
                     }
 
-                    while (valueFluid > 100)
+                    while (valueFluid > limitPercentScaleY)
                     {
                         txtMaxOfYTotalFlow.Text = (Convert.ToDouble(txtMaxOfYTotalFlow.Text) * 2).ToString();
                         valueFluid = ((data.fluid * 100) / Convert.ToDouble(txtMaxOfYTotalFlow.Text));
+                        reDraw();
+                        isRedraw = true;
                     }
 
-                    while (valueWC > 100)
+                    while (valueWC > limitPercentScaleY)
                     {
                         txtMaxOfYWC.Text = (Convert.ToDouble(txtMaxOfYWC.Text) * 2).ToString();
                         valueWC = ((data.wc * 100) / Convert.ToDouble(txtMaxOfYWC.Text));
+                        reDraw();
+                        isRedraw = true;
                     }
 
-                    while (valuePressure > 100)
+                    while (valuePressure > limitPercentScaleY)
                     {
                         txtMaxOfYPressure.Text = (Convert.ToDouble(txtMaxOfYPressure.Text) * 2).ToString();
                         valuePressure = ((data.wc * 100) / Convert.ToDouble(txtMaxOfYPressure.Text));
+                        reDraw();
+                        isRedraw = true;
                     }
 
-                    Draw(valueFlowRate, valueFluid, valueWC, valuePressure);
-                    listData.Add(data);
+                    reDraw();
+
                 }
 
                 /**/
