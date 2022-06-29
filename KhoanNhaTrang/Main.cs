@@ -532,7 +532,7 @@ namespace KhoanNhaTrang
             }
             int seconds = tickStart;
 
-            TimeSpan timeSpan = TimeSpan.FromSeconds(tickStart);
+            TimeSpan timeSpan = TimeSpan.FromSeconds(tickStart*60);
             string groutedTime = string.Format("{0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
             lbGroutedTime.Text = groutedTime;
             tickStart = tickStart + (timer1.Interval/1000);
@@ -672,155 +672,192 @@ namespace KhoanNhaTrang
 
         private void createPDF(FileStream fs, String path)
         {
-            iTextSharp.text.Rectangle pagesize = new iTextSharp.text.Rectangle(320, 1500);
-            Document doc = new Document(pagesize);
-            PdfWriter writer = PdfWriter.GetInstance(doc, fs);
-            doc.Open();
-
-            // Draw Header
-            iTextSharp.text.Font myFont = FontFactory.GetFont("Arial", 12, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
-            var parHeader = new Paragraph("Grouting Record Report", myFont);
-            parHeader.Alignment = Element.ALIGN_CENTER;
-            doc.Add(parHeader);
-            // Draw Paragraph 1
-            var parEqui = new Paragraph();
-            parEqui.Add(new Chunk("Equipment: " + lbEquipment.Text));
-            parEqui.Add(Chunk.TABBING);
-            parEqui.Add(Chunk.TABBING);
-            parEqui.Add(Chunk.TABBING);
-            parEqui.Add(new Chunk(startDate));
-            doc.Add(parEqui);
-            doc.Add(new Paragraph("Project Name: " + txtProjectName.Text));
-            doc.Add(new Paragraph("Grouting Holes Parameters: " ));
-            doc.Add(new Paragraph("Hole No.: " + txtHoleNo.Text));
-            var parOrder = new Paragraph();
-            parOrder.Add(new Chunk("Order: " + cbOrder.Text));
-            parOrder.Add(Chunk.TABBING);
-            parOrder.Add(new Chunk(" Range: " + cbRange.Text));
-            doc.Add(parOrder);
-            var parThe = new Paragraph();
-            parThe.Add(new Chunk("The: " + txtThe.Text));
-            parThe.Add(Chunk.TABBING);
-            parThe.Add(new Chunk(" Sect From: " + txtSectFrom.Text));
-            parThe.Add(Chunk.TABBING);
-            parThe.Add(new Chunk(" To: " + txtTo.Text + " m"));
-            doc.Add(parThe);
-            doc.Add(new Paragraph("Length(m): " + txtLength.Text));
-            doc.Add(new Paragraph("Num.: " + txtNum.Text));
-            doc.Add(new Paragraph("Des of Hole(mm): " + txtDesOfHole.Text));
-            doc.Add(new Paragraph("Dist bw eject and hole(cm): " + txtDistBwEjectAndHole.Text));
-            doc.Add(new Paragraph("Hole High(m): " + txtHoleHigh.Text));
-            doc.Add(new Paragraph("Begin Time: " + startHour));
-            doc.Add(new Paragraph("Recorder: " + txtRecorder.Text));
-            doc.Add(new Paragraph("Leader: " + txtLeader.Text));
-            doc.Add(new Paragraph("Quality: " + txtQuality.Text));
-            doc.Add(new Paragraph("Supervisor: "));
-
-            // Draw Separator
-            Paragraph par = new Paragraph(" ");
-            par.SetLeading(0.7F, 0.7F);
-            Paragraph lineSeparator = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 105.0F, BaseColor.BLACK, Element.ALIGN_LEFT, 1)));
-            lineSeparator.SetLeading(0.5F, 0.5F);
-            doc.Add(lineSeparator);
-            doc.Add(par);
-            doc.Add(lineSeparator);
-
-            // Draw Table 1
-            PdfPTable tableHeader = new PdfPTable(5);
-            tableHeader.WidthPercentage = 108;
-            PdfPCell cellHeader1 = createHeaderCell("Time ", "Min", true);
-            tableHeader.AddCell(cellHeader1);
-            PdfPCell cellHeader2 = createHeaderCell("Flowrate", "L/Min", false);
-            tableHeader.AddCell(cellHeader2);
-            PdfPCell cellHeader3 = createHeaderCell("TFluid", "L", false);
-            tableHeader.AddCell(cellHeader3);
-            PdfPCell cellHeader4 = createHeaderCell("W/C", "W:C", false);  
-            tableHeader.AddCell(cellHeader4);
-            PdfPCell cellHeader5 = createHeaderCell("Pressure", "MPa", false);
-            tableHeader.AddCell(cellHeader5);
-            doc.Add(tableHeader);
-            doc.Add(lineSeparator);
-
-            PdfPTable tableCell = new PdfPTable(5);
-            tableCell.WidthPercentage = 108;
-            double totalfluid = 0;
-            foreach (Data data in listData)
+            List<Data> listDataReport = new List<Data>();
+            try
             {
-                totalfluid = totalfluid + data.fluid;
-
-                PdfPCell cell1 = createCell(data.insert_date.ToString("HH:mm:ss"), false);
-                
-                tableCell.AddCell(cell1);
-                PdfPCell cell2 = createCell(data.flow_rate.ToString(), false);
-                tableCell.AddCell(cell2);
-                PdfPCell cell3 = createCell(data.fluid.ToString(), false);
-                tableCell.AddCell(cell3);
-                PdfPCell cell4 = createCell(data.wc.ToString()+":1", false);
-                tableCell.AddCell(cell4);
-                PdfPCell cell5 = createCell(data.pressure.ToString(), false);
-                tableCell.AddCell(cell5);
+                db.Open();
+                var param = new DynamicParameters();
+                param.Add("management_id", managementId);
+                string query = @"SELECT flow_rate, fluid, wc, pressure FROM grouting.data Where management_id = @management_id GROUP BY  UNIX_TIMESTAMP(insert_date) DIV 300";
+                listDataReport = db.Query<Data>(query, param).ToList();
             }
-            doc.Add(tableCell);
-            doc.Add(lineSeparator);
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                try
+                {
+                    db.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            if (listDataReport != null && listDataReport.Any())
+            {
+                iTextSharp.text.Rectangle pagesize = new iTextSharp.text.Rectangle(320, 1500);
+                Document doc = new Document(pagesize);
+                PdfWriter writer = PdfWriter.GetInstance(doc, fs);
+                doc.Open();
 
-            // Draw Paragraph 2
-            var parEnd = new Paragraph();
-            parEnd.Add(new Chunk("End Time: " + endDate));
-            parEnd.Add(Chunk.TABBING);
-            parEnd.Add(new Chunk(endHour));
-            doc.Add(parEnd);
-            var parTotalFluid = new Paragraph();
-            parTotalFluid.Add(new Chunk("Total Fluid: "));
-            parTotalFluid.Add(Chunk.TABBING);
-            parTotalFluid.Add(new Chunk(totalfluid.ToString() + " L"));
-            doc.Add(parTotalFluid);
-            var parAshUsed = new Paragraph();
-            parAshUsed.Add(new Chunk("Ash used: "));
-            parAshUsed.Add(Chunk.TABBING);
-            parAshUsed.Add(new Chunk("     " + " Kg"));
-            doc.Add(parAshUsed);
-            var parAshDiscarded = new Paragraph();
-            parAshDiscarded.Add(new Chunk("Ash discarded: "));
-            parAshDiscarded.Add(Chunk.TABBING);
-            parAshDiscarded.Add(new Chunk("     " + " L"));
-            doc.Add(parAshDiscarded);
-            var parCementDiscarded = new Paragraph();
-            parCementDiscarded.Add(new Chunk("Cememt discarded: "));
-            parCementDiscarded.Add(Chunk.TABBING);
-            parCementDiscarded.Add(new Chunk("     " + " Kg"));
-            doc.Add(parCementDiscarded);
-            doc.Add(lineSeparator);
+                // Draw Header
+                iTextSharp.text.Font myFont = FontFactory.GetFont("Arial", 12, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+                var parHeader = new Paragraph("Grouting Record Report", myFont);
+                parHeader.Alignment = Element.ALIGN_CENTER;
+                doc.Add(parHeader);
+                // Draw Paragraph 1
+                var parEqui = new Paragraph();
+                parEqui.Add(new Chunk("Equipment: " + lbEquipment.Text));
+                parEqui.Add(Chunk.TABBING);
+                parEqui.Add(Chunk.TABBING);
+                parEqui.Add(Chunk.TABBING);
+                parEqui.Add(new Chunk(startDate));
+                doc.Add(parEqui);
+                doc.Add(new Paragraph("Project Name: " + txtProjectName.Text));
+                doc.Add(new Paragraph("Grouting Holes Parameters: "));
+                doc.Add(new Paragraph("Hole No.: " + txtHoleNo.Text));
+                var parOrder = new Paragraph();
+                parOrder.Add(new Chunk("Order: " + cbOrder.Text));
+                parOrder.Add(Chunk.TABBING);
+                parOrder.Add(new Chunk(" Range: " + cbRange.Text));
+                doc.Add(parOrder);
+                var parThe = new Paragraph();
+                parThe.Add(new Chunk("The: " + txtThe.Text));
+                parThe.Add(Chunk.TABBING);
+                parThe.Add(new Chunk(" Sect From: " + txtSectFrom.Text));
+                parThe.Add(Chunk.TABBING);
+                parThe.Add(new Chunk(" To: " + txtTo.Text + " m"));
+                doc.Add(parThe);
+                doc.Add(new Paragraph("Length(m): " + txtLength.Text));
+                doc.Add(new Paragraph("Num.: " + txtNum.Text));
+                doc.Add(new Paragraph("Des of Hole(mm): " + txtDesOfHole.Text));
+                doc.Add(new Paragraph("Dist bw eject and hole(cm): " + txtDistBwEjectAndHole.Text));
+                doc.Add(new Paragraph("Hole High(m): " + txtHoleHigh.Text));
+                doc.Add(new Paragraph("Begin Time: " + startHour));
+                doc.Add(new Paragraph("Recorder: " + txtRecorder.Text));
+                doc.Add(new Paragraph("Leader: " + txtLeader.Text));
+                doc.Add(new Paragraph("Quality: " + txtQuality.Text));
+                doc.Add(new Paragraph("Supervisor: "));
 
-            // Draw Table 2
-            PdfPTable tableHeader2 = new PdfPTable(5);
-            tableHeader2.WidthPercentage = 108;
-            PdfPCell cellTable2Header1 = createCellChart(" ", " ", "Max of Y", "Min of Y");
-            tableHeader2.AddCell(cellTable2Header1);
-            PdfPCell cellTable2Header2 = createCellChart("1", "Flowrate", txtMaxOfYFlowrate.Text, "0");
-            tableHeader2.AddCell(cellTable2Header2);
-            PdfPCell cellTable2Header3 = createCellChart("2", "TFluid", txtMaxOfYTotalFlow.Text, "0");
-            tableHeader2.AddCell(cellTable2Header3);
-            PdfPCell cellTable2Header4 = createCellChart("3", "W/C", txtMaxOfYWC.Text, "0");
-            tableHeader2.AddCell(cellTable2Header4);
-            PdfPCell cellTable2Header5 = createCellChart("4", "Pressure", txtMaxOfYPressure.Text, "0");
-            tableHeader2.AddCell(cellTable2Header5);
-            doc.Add(tableHeader2);
+                // Draw Separator
+                Paragraph par = new Paragraph(" ");
+                par.SetLeading(0.7F, 0.7F);
+                Paragraph lineSeparator = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 105.0F, BaseColor.BLACK, Element.ALIGN_LEFT, 1)));
+                lineSeparator.SetLeading(0.5F, 0.5F);
+                doc.Add(lineSeparator);
+                doc.Add(par);
+                doc.Add(lineSeparator);
 
-            // Draw chart
-            String imageChartName = @"\Chart" + DateTime.Now.ToString("yyyyMMddhhmmss").ToString() + ".bmp";
-            chartTimeCurves.MasterPane.GetImage().Save(path + imageChartName);
-            PdfPTable tableChart = new PdfPTable(1);
-            tableChart.WidthPercentage = 108;
-            PdfPCell cellChart = new PdfPCell();
-            cellChart.BorderWidthBottom = 0;
-            cellChart.BorderWidthLeft = 0;
-            cellChart.BorderWidthTop = 0;
-            cellChart.BorderWidthRight = 0;
-            cellChart.AddElement(iTextSharp.text.Image.GetInstance(path + imageChartName));
-            tableChart.AddCell(cellChart);
-            doc.Add(tableChart);
+                // Draw Table 1
+                PdfPTable tableHeader = new PdfPTable(5);
+                tableHeader.WidthPercentage = 108;
+                PdfPCell cellHeader1 = createHeaderCell("Time ", "Min", true);
+                tableHeader.AddCell(cellHeader1);
+                PdfPCell cellHeader2 = createHeaderCell("Flowrate", "L/Min", false);
+                tableHeader.AddCell(cellHeader2);
+                PdfPCell cellHeader3 = createHeaderCell("TFluid", "L", false);
+                tableHeader.AddCell(cellHeader3);
+                PdfPCell cellHeader4 = createHeaderCell("W/C", "W:C", false);
+                tableHeader.AddCell(cellHeader4);
+                PdfPCell cellHeader5 = createHeaderCell("Pressure", "MPa", false);
+                tableHeader.AddCell(cellHeader5);
+                doc.Add(tableHeader);
+                doc.Add(lineSeparator);
 
-            doc.Close();
+                PdfPTable tableCell = new PdfPTable(5);
+                tableCell.WidthPercentage = 108;
+                double totalfluid = 0;
+
+
+                String timeMin = "00:00:01";
+                int timeMinute = 5;
+                foreach (Data data in listDataReport)
+                {
+                    totalfluid = totalfluid + data.fluid;
+                    PdfPCell cell1 = createCell(timeMin, false);
+                    tableCell.AddCell(cell1);
+                    PdfPCell cell2 = createCell(data.flow_rate.ToString(), false);
+                    tableCell.AddCell(cell2);
+                    PdfPCell cell3 = createCell(data.fluid.ToString(), false);
+                    tableCell.AddCell(cell3);
+                    PdfPCell cell4 = createCell(data.wc.ToString() + ":1", false);
+                    tableCell.AddCell(cell4);
+                    PdfPCell cell5 = createCell(data.pressure.ToString(), false);
+                    tableCell.AddCell(cell5);
+
+                    TimeSpan timeMinSpan = TimeSpan.FromMinutes(timeMinute);
+                    timeMin = string.Format("{0:D2}:{1:D2}:{2:D2}", timeMinSpan.Hours, timeMinSpan.Minutes, timeMinSpan.Seconds);
+                    timeMinute = timeMinute + 5;
+                }
+                doc.Add(tableCell);
+                doc.Add(lineSeparator);
+
+                // Draw Paragraph 2
+                var parEnd = new Paragraph();
+                parEnd.Add(new Chunk("End Time: " + endDate));
+                parEnd.Add(Chunk.TABBING);
+                parEnd.Add(new Chunk(endHour));
+                doc.Add(parEnd);
+                var parTotalFluid = new Paragraph();
+                parTotalFluid.Add(new Chunk("Total Fluid: "));
+                parTotalFluid.Add(Chunk.TABBING);
+                parTotalFluid.Add(new Chunk(totalfluid.ToString() + " L"));
+                doc.Add(parTotalFluid);
+                var parAshUsed = new Paragraph();
+                parAshUsed.Add(new Chunk("Ash used: "));
+                parAshUsed.Add(Chunk.TABBING);
+                parAshUsed.Add(new Chunk("     " + " Kg"));
+                doc.Add(parAshUsed);
+                var parAshDiscarded = new Paragraph();
+                parAshDiscarded.Add(new Chunk("Ash discarded: "));
+                parAshDiscarded.Add(Chunk.TABBING);
+                parAshDiscarded.Add(new Chunk("     " + " L"));
+                doc.Add(parAshDiscarded);
+                var parCementDiscarded = new Paragraph();
+                parCementDiscarded.Add(new Chunk("Cememt discarded: "));
+                parCementDiscarded.Add(Chunk.TABBING);
+                parCementDiscarded.Add(new Chunk("     " + " Kg"));
+                doc.Add(parCementDiscarded);
+                doc.Add(lineSeparator);
+
+                // Draw Table 2
+                PdfPTable tableHeader2 = new PdfPTable(5);
+                tableHeader2.WidthPercentage = 108;
+                PdfPCell cellTable2Header1 = createCellChart(" ", " ", "Max of Y", "Min of Y");
+                tableHeader2.AddCell(cellTable2Header1);
+                PdfPCell cellTable2Header2 = createCellChart("1", "Flowrate", txtMaxOfYFlowrate.Text, "0");
+                tableHeader2.AddCell(cellTable2Header2);
+                PdfPCell cellTable2Header3 = createCellChart("2", "TFluid", txtMaxOfYTotalFlow.Text, "0");
+                tableHeader2.AddCell(cellTable2Header3);
+                PdfPCell cellTable2Header4 = createCellChart("3", "W/C", txtMaxOfYWC.Text, "0");
+                tableHeader2.AddCell(cellTable2Header4);
+                PdfPCell cellTable2Header5 = createCellChart("4", "Pressure", txtMaxOfYPressure.Text, "0");
+                tableHeader2.AddCell(cellTable2Header5);
+                doc.Add(tableHeader2);
+
+                // Draw chart
+                String imageChartName = @"\Chart" + DateTime.Now.ToString("yyyyMMddhhmmss").ToString() + ".bmp";
+                chartTimeCurves.MasterPane.GetImage().Save(path + imageChartName);
+                PdfPTable tableChart = new PdfPTable(1);
+                tableChart.WidthPercentage = 108;
+                PdfPCell cellChart = new PdfPCell();
+                cellChart.BorderWidthBottom = 0;
+                cellChart.BorderWidthLeft = 0;
+                cellChart.BorderWidthTop = 0;
+                cellChart.BorderWidthRight = 0;
+                cellChart.AddElement(iTextSharp.text.Image.GetInstance(path + imageChartName));
+                tableChart.AddCell(cellChart);
+                doc.Add(tableChart);
+
+                doc.Close();
+            } else
+            {
+                MessageBox.Show("Có lỗi xảy ra vui lòng thử lại.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
         }
         private PdfPCell createHeaderCell(String value1, String value2, Boolean flgPadding)
         {
