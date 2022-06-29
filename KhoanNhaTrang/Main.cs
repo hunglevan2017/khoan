@@ -29,6 +29,7 @@ namespace KhoanNhaTrang
         private String endHour;
         private GraphPane myPane;
         Boolean isInsertData = false;
+        Boolean debugMode = true;
 
         public Form1()
         {
@@ -44,14 +45,25 @@ namespace KhoanNhaTrang
             var data = new Data();
             try
             {
-         
+
                 db.Open();
-                data.flow_rate = Math.Round(PLCDB1Read.Instance().flow_rate,2) ;
-                data.fluid = Math.Round(PLCDB1Read.Instance().fluid,2);
-                data.pressure = Math.Round(PLCDB1Read.Instance().pressure,2);
-                data.wc = PLCDB1Read.Instance().wc_1;
-                data.management_id = managementId;
-                data.insert_date = new DateTime();
+                if (debugMode)
+                {
+                    data.flow_rate = double.Parse(txtflowrate.Text);
+                    data.fluid = double.Parse(txttotalflow.Text);
+                    data.pressure = double.Parse(txtpressure.Text);
+                    data.wc = double.Parse(txtpressure.Text);
+                    data.management_id = managementId;
+                    data.insert_date = new DateTime();
+                }
+                else {
+                    data.flow_rate = Math.Round(PLCDB1Read.Instance().flow_rate, 2);
+                    data.fluid = Math.Round(PLCDB1Read.Instance().fluid, 2);
+                    data.pressure = Math.Round(PLCDB1Read.Instance().pressure, 2);
+                    data.wc = PLCDB1Read.Instance().wc_1;
+                    data.management_id = managementId;
+                    data.insert_date = new DateTime();
+                }
 
                 string query = @"insert into data(flow_rate, fluid,pressure,wc,management_id) values(@flow_rate, @fluid,@pressure,@wc,@management_id);
                             select * from data order by id desc limit 1";
@@ -77,7 +89,7 @@ namespace KhoanNhaTrang
 
                 }
             }
-          
+
 
             return data;
         }
@@ -87,7 +99,7 @@ namespace KhoanNhaTrang
             timer1.Start();
             if (PLC.Instance().Open())
             {
-               
+
             }
             else
             {
@@ -135,20 +147,19 @@ namespace KhoanNhaTrang
             RollingPointPairList listPressure = new RollingPointPairList(60000);
             LineItem curvePressure = myPane.AddCurve("Pressure", listPressure, Color.Green, SymbolType.None);
 
-
             // Định hiện thị cho trục thời gian (Trục X)
             myPane.XAxis.Scale.Min = 0;
             myPane.XAxis.Scale.Max = 60;
             myPane.XAxis.Scale.MinorStep = 1;
             myPane.XAxis.Scale.MajorStep = 5;
             myPane.XAxis.MajorGrid.IsVisible = true;
+
             // Định hiện thị cho trục thời gian(Trục Y)
             myPane.YAxis.Scale.Min = 0;
             myPane.YAxis.Scale.Max = 100;
             myPane.YAxis.Scale.MinorStep = 1;
             myPane.YAxis.Scale.MajorStep = 10;
             myPane.YAxis.MajorGrid.IsVisible = true;
-
 
             // Gọi hàm xác định cỡ trục
             myPane.AxisChange();
@@ -283,7 +294,7 @@ namespace KhoanNhaTrang
 
             //        initChart();
             //    }
-                
+
             //    txtMaxOfYFlowrate.ReadOnly = false;
             //    txtMaxOfYTotalFlow.ReadOnly = false;
             //    txtMaxOfYWC.ReadOnly = false;
@@ -296,19 +307,22 @@ namespace KhoanNhaTrang
 
 
             //    isInsertData = true;
-              
+
             //} else
             //{
             //    MessageBox.Show("Các trường Max of Y của Flowrate, Total flow, W/C, Pressure không được rỗng.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
             //}
-            
+
+        }
+
+        private void show_Data_Real_lb_wc(TextBox lb, double value)
+        {
+            lb.Text = value +":1";
         }
 
         private void show_Data_Real_lb(TextBox lb, double value)
         {
-
             lb.Text = (value / 1).ToString("0.00");
-
         }
         private void show_Data_Int_lb(TextBox lb, short value)
         {
@@ -316,34 +330,75 @@ namespace KhoanNhaTrang
             lb.Text = value.ToString();
 
         }
+
+   
+
+        public void simulator() {
+            int min = 50;
+            int max = 100;
+            Random _random = new Random();
+            txtflowrate.Text = _random.Next(min, max).ToString();
+            txttotalflow.Text = _random.Next(min, max).ToString();
+            txtWC.Text = _random.Next(min, max).ToString();
+            txtpressure.Text = _random.Next(min, max).ToString();
+        }
+
         private void timer1_Tick(object sender, EventArgs e)
         {
             try
             {
-
-
-                /**/
-                PLC.Instance().ReadClass(PLCDB1Read.Instance(), 1);
-                PLC.Instance().ReadClass(PLCDB2Write.Instance(), 2);
-                show_Data_Real_lb(txtflowrate, Math.Round(PLCDB1Read.Instance().flow_rate, 2));
-                show_Data_Real_lb(txttotalflow, Math.Round(PLCDB1Read.Instance().fluid, 2));
-                show_Data_Real_lb(txtdensi, PLCDB1Read.Instance().wc);
-                //show_Data_Real_lb(txtWC, Math.Round(PLCDB1Read.Instance().wc, 2));
-                show_Data_Real_lb(txtpressure, Math.Round(PLCDB1Read.Instance().pressure, 2));
+                if (debugMode)
+                    simulator();
+                else
+                {
+                    //Read value from PLC
+                    PLC.Instance().ReadClass(PLCDB1Read.Instance(), 1);
+                    PLC.Instance().ReadClass(PLCDB2Write.Instance(), 2);
+                    show_Data_Real_lb(txtflowrate, Math.Round(PLCDB1Read.Instance().flow_rate, 2));
+                    show_Data_Real_lb(txttotalflow, Math.Round(PLCDB1Read.Instance().fluid, 2));
+                    show_Data_Real_lb(txtdensi, PLCDB1Read.Instance().wc);
+                    show_Data_Real_lb(txtWC, Math.Round(PLCDB1Read.Instance().wc, 2));
+                    show_Data_Real_lb(txtpressure, Math.Round(PLCDB1Read.Instance().pressure, 2));
+                }
 
                 if (isInsertData)
                 { 
                     Data data = insertDB();
-
+                        
                     show_Data_Real_lb(txtflowrate, data.flow_rate);
                     show_Data_Real_lb(txttotalflow, data.fluid);
-                    show_Data_Real_lb(txtWC, data.wc);
+                    show_Data_Real_lb_wc(txtWC, data.wc);
                     show_Data_Real_lb(txtpressure, data.pressure);
 
                     double valueFlowRate = ((data.flow_rate * 100) / Convert.ToDouble(txtMaxOfYFlowrate.Text));
                     double valueFluid = ((data.fluid * 100) / Convert.ToDouble(txtMaxOfYTotalFlow.Text));
                     double valueWC = ((data.wc * 100) / Convert.ToDouble(txtMaxOfYWC.Text));
                     double valuePressure = ((data.pressure * 100) / Convert.ToDouble(txtMaxOfYPressure.Text));
+
+                    while (valueFlowRate > 100)
+                    {
+                        txtMaxOfYFlowrate.Text = (Convert.ToDouble(txtMaxOfYFlowrate.Text) * 2).ToString();
+                        valueFlowRate = ((data.flow_rate * 100) / Convert.ToDouble(txtMaxOfYFlowrate.Text));
+                    }
+
+                    while (valueFluid > 100)
+                    {
+                        txtMaxOfYTotalFlow.Text = (Convert.ToDouble(txtMaxOfYTotalFlow.Text) * 2).ToString();
+                        valueFluid = ((data.fluid * 100) / Convert.ToDouble(txtMaxOfYTotalFlow.Text));
+                    }
+
+                    while (valueWC > 100)
+                    {
+                        txtMaxOfYWC.Text = (Convert.ToDouble(txtMaxOfYWC.Text) * 2).ToString();
+                        valueWC = ((data.wc * 100) / Convert.ToDouble(txtMaxOfYWC.Text));
+                    }
+
+                    while (valuePressure > 100)
+                    {
+                        txtMaxOfYPressure.Text = (Convert.ToDouble(txtMaxOfYPressure.Text) * 2).ToString();
+                        valuePressure = ((data.wc * 100) / Convert.ToDouble(txtMaxOfYPressure.Text));
+                    }
+
                     Draw(valueFlowRate, valueFluid, valueWC, valuePressure);
                     listData.Add(data);
                 }
@@ -373,13 +428,13 @@ namespace KhoanNhaTrang
 
             // Đưa về điểm xuất phát
             LineItem curveFlowRate = chartTimeCurves.GraphPane.CurveList[0] as LineItem;
-            curveFlowRate.Line.Width = 3.0F;
+            curveFlowRate.Line.Width = 2.0F;
             LineItem curveFluid = chartTimeCurves.GraphPane.CurveList[1] as LineItem;
-            curveFluid.Line.Width = 3.0F;
+            curveFluid.Line.Width = 2.0F;
             LineItem curveWC = chartTimeCurves.GraphPane.CurveList[2] as LineItem;
-            curveWC.Line.Width = 3.0F;
+            curveWC.Line.Width = 2.0F;
             LineItem curvePressure = chartTimeCurves.GraphPane.CurveList[3] as LineItem;
-            curvePressure.Line.Width = 3.0F;
+            curvePressure.Line.Width = 2.0F;
 
             if (curveFlowRate == null)
                 return;
@@ -433,7 +488,7 @@ namespace KhoanNhaTrang
             TimeSpan timeSpan = TimeSpan.FromSeconds(tickStart);
             string groutedTime = string.Format("{0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
             lbGroutedTime.Text = groutedTime;
-            tickStart = tickStart + 5;
+            tickStart = tickStart + 1;
 
             /** /
             // Tự động Scale theo trục y
@@ -653,7 +708,7 @@ namespace KhoanNhaTrang
                 tableCell.AddCell(cell2);
                 PdfPCell cell3 = createCell(data.fluid.ToString(), false);
                 tableCell.AddCell(cell3);
-                PdfPCell cell4 = createCell(data.wc.ToString(), false);
+                PdfPCell cell4 = createCell(data.wc.ToString()+":1", false);
                 tableCell.AddCell(cell4);
                 PdfPCell cell5 = createCell(data.pressure.ToString(), false);
                 tableCell.AddCell(cell5);
