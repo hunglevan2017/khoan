@@ -19,7 +19,7 @@ namespace KhoanNhaTrang
 
     public partial class Form1 : Form
     {
-        int limitPercentScaleY = 60;
+        int limitPercentScaleY = 70;
         private List<Data> listData = new List<Data>();
         private int index = 0;
         int tickStart = 0;
@@ -31,6 +31,9 @@ namespace KhoanNhaTrang
         private GraphPane myPane;
         Boolean isInsertData = false;
         Boolean debugMode = true;
+
+
+        float widthBorderGraph = 2.0F;
 
         public Form1()
         {
@@ -425,7 +428,8 @@ namespace KhoanNhaTrang
                         isRedraw = true;
                     }
 
-                    reDraw();
+                    if(!isRedraw)
+                        Draw(valueFlowRate, valueFluid, valueWC, valuePressure);
 
                 }
 
@@ -454,13 +458,13 @@ namespace KhoanNhaTrang
 
             // Đưa về điểm xuất phát
             LineItem curveFlowRate = chartTimeCurves.GraphPane.CurveList[0] as LineItem;
-            curveFlowRate.Line.Width = 2.0F;
+            curveFlowRate.Line.Width = widthBorderGraph;
             LineItem curveFluid = chartTimeCurves.GraphPane.CurveList[1] as LineItem;
-            curveFluid.Line.Width = 2.0F;
+            curveFluid.Line.Width = widthBorderGraph;
             LineItem curveWC = chartTimeCurves.GraphPane.CurveList[2] as LineItem;
-            curveWC.Line.Width = 2.0F;
+            curveWC.Line.Width = widthBorderGraph;
             LineItem curvePressure = chartTimeCurves.GraphPane.CurveList[3] as LineItem;
-            curvePressure.Line.Width = 2.0F;
+            curvePressure.Line.Width = widthBorderGraph;
 
             if (curveFlowRate == null)
                 return;
@@ -506,7 +510,8 @@ namespace KhoanNhaTrang
             // Tự động Scale theo trục x
             if (tickStart > xScale.Max - xScale.MajorStep)
             {
-                xScale.Max = tickStart + xScale.MajorStep;
+                //xScale.Max = tickStart + xScale.MajorStep;
+                xScale.Max = tickStart + xScale.Max;
                 xScale.Min = 0;
             }
             int seconds = tickStart;
@@ -514,7 +519,7 @@ namespace KhoanNhaTrang
             TimeSpan timeSpan = TimeSpan.FromSeconds(tickStart);
             string groutedTime = string.Format("{0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
             lbGroutedTime.Text = groutedTime;
-            tickStart = tickStart + 1;
+            tickStart = tickStart + (timer1.Interval/1000);
 
             /** /
             // Tự động Scale theo trục y
