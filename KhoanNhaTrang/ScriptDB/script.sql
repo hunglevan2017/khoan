@@ -17,6 +17,7 @@ CREATE TABLE `grouting`.`data` (
  CREATE TABLE `grouting`.`management` (
    `id` bigint NOT NULL AUTO_INCREMENT,
    `number_equipment` INT NOT NULL DEFAULT 0,
+   `cement_total`float,
    `insert_date` timestamp default now(),
    PRIMARY KEY (`id`))
  ENGINE = InnoDB

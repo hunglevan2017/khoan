@@ -32,6 +32,8 @@ namespace KhoanNhaTrang
         Boolean isInsertData = false;
         Boolean debugMode = true;
 
+        
+
 
         float widthBorderGraph = 2.0F;
 
@@ -71,6 +73,20 @@ namespace KhoanNhaTrang
 
                 string query = @"insert into data(flow_rate, fluid,pressure,wc,management_id) values(@flow_rate, @fluid,@pressure,@wc,@management_id);
                             select * from data order by id desc limit 1";
+                data = db.Query<Data>(query, data).Single();
+                data.flow_rate = Math.Round(data.flow_rate, 2);
+                data.fluid = Math.Round(data.fluid, 2);
+                data.pressure = Math.Round(data.pressure, 2);
+                data.wc = Math.Round(data.wc, 2);
+
+                //Update Cement total
+                var param = new DynamicParameters();
+                param.Add("Id", managementId);
+                param.Add("cement_total", Math.Round(PLCDB1Read.Instance().cement_total, 2));
+                query = "update management set cement_total = @cement_total where Id = @Id";
+                db.Execute(query, param);
+
+
                 data = db.Query<Data>(query, data).Single();
                 data.flow_rate = Math.Round(data.flow_rate, 2);
                 data.fluid = Math.Round(data.fluid, 2);
