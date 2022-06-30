@@ -166,6 +166,25 @@ namespace KhoanNhaTrang
             myPane.XAxis.Scale.MajorStep = 5;
             myPane.XAxis.MajorGrid.IsVisible = true;
 
+            // Set Scale to default X
+            myPane.XAxis.Scale.MinAuto = true;
+            myPane.XAxis.Scale.MaxAuto = true;
+            myPane.XAxis.Scale.MajorStepAuto = true;
+            myPane.XAxis.Scale.MinorStepAuto = true;
+            myPane.XAxis.CrossAuto = true;
+            myPane.XAxis.Scale.MagAuto = true;
+            myPane.XAxis.Scale.FormatAuto = true;
+
+            // Set Scale to default Y
+            myPane.YAxis.Scale.MinAuto = true;
+            myPane.YAxis.Scale.MaxAuto = true;
+            myPane.YAxis.Scale.MajorStepAuto = true;
+            myPane.YAxis.Scale.MinorStepAuto = true;
+            myPane.YAxis.CrossAuto = true;
+            myPane.YAxis.Scale.MagAuto = true;
+            myPane.YAxis.Scale.FormatAuto = true;
+
+
             // Định hiện thị cho trục thời gian(Trục Y)
             myPane.YAxis.Scale.Min = 0;
             myPane.YAxis.Scale.Max = 100;
@@ -528,7 +547,7 @@ namespace KhoanNhaTrang
             TimeSpan timeSpan = TimeSpan.FromSeconds(tickStart);
             string groutedTime = string.Format("{0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
             lbGroutedTime.Text = groutedTime;
-            tickStart = tickStart + 1;
+            tickStart = tickStart + 5;
 
             /** /
             // Tự động Scale theo trục y
