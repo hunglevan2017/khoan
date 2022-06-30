@@ -544,10 +544,10 @@ namespace KhoanNhaTrang
             }
             int seconds = tickStart;
 
-            TimeSpan timeSpan = TimeSpan.FromSeconds(tickStart);
+            TimeSpan timeSpan = TimeSpan.FromSeconds(tickStart*60);
             string groutedTime = string.Format("{0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
             lbGroutedTime.Text = groutedTime;
-            tickStart = tickStart + 5;
+            tickStart = tickStart + 1;
 
             /** /
             // Tự động Scale theo trục y
