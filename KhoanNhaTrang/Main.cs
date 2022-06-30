@@ -30,7 +30,7 @@ namespace KhoanNhaTrang
         private String endHour;
         private GraphPane myPane;
         Boolean isInsertData = false;
-        Boolean debugMode = true;
+        Boolean debugMode = false;
 
         
 
@@ -544,10 +544,10 @@ namespace KhoanNhaTrang
             }
             int seconds = tickStart;
 
-            TimeSpan timeSpan = TimeSpan.FromSeconds(tickStart*60);
+            TimeSpan timeSpan = TimeSpan.FromSeconds(tickStart);
             string groutedTime = string.Format("{0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
             lbGroutedTime.Text = groutedTime;
-            tickStart = tickStart + 1;
+            tickStart = tickStart + 5;
 
             /** /
             // Tự động Scale theo trục y
@@ -706,6 +706,17 @@ namespace KhoanNhaTrang
                                 where MOD(row_num-1,5)=0
                                 order by id";
                 listDataReport = db.Query<Data>(query, param).ToList();
+                List<Data> tmpReport = new List<Data>();
+                foreach (Data temp in listDataReport) {
+
+                    temp.flow_rate = Math.Round(temp.flow_rate, 2);
+                    temp.fluid = Math.Round(temp.fluid, 2);
+                    temp.pressure = Math.Round(temp.pressure, 2);
+                    temp.wc = Math.Round(temp.wc, 2);
+                    tmpReport.Add(temp);
+                }
+                listDataReport = tmpReport;
+
             }
             catch (Exception ex)
             {
