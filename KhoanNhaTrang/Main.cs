@@ -85,14 +85,6 @@ namespace KhoanNhaTrang
                 param.Add("cement_total", Math.Round(PLCDB1Read.Instance().cement_total, 2));
                 query = "update management set cement_total = @cement_total where Id = @Id";
                 db.Execute(query, param);
-
-
-                data = db.Query<Data>(query, data).Single();
-                data.flow_rate = Math.Round(data.flow_rate, 2);
-                data.fluid = Math.Round(data.fluid, 2);
-                data.pressure = Math.Round(data.pressure, 2);
-                data.wc = Math.Round(data.wc, 2);
-
             }
             catch (Exception ex)
             {
@@ -391,7 +383,7 @@ namespace KhoanNhaTrang
                     show_Data_Real_lb(txtflowrate, Math.Round(PLCDB1Read.Instance().flow_rate, 2));
                     show_Data_Real_lb(txttotalflow, Math.Round(PLCDB1Read.Instance().fluid, 2));
                     show_Data_Real_lb(txtdensi, PLCDB1Read.Instance().wc);
-                    show_Data_Real_lb(txtWC, Math.Round(PLCDB1Read.Instance().wc, 2));
+                    show_Data_Real_lb(txtWC, PLCDB1Read.Instance().wc_1);
                     show_Data_Real_lb(txtpressure, Math.Round(PLCDB1Read.Instance().pressure, 2));
                 }
 
@@ -535,7 +527,7 @@ namespace KhoanNhaTrang
             TimeSpan timeSpan = TimeSpan.FromSeconds(tickStart*60);
             string groutedTime = string.Format("{0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
             lbGroutedTime.Text = groutedTime;
-            tickStart = tickStart + (timer1.Interval/1000);
+            tickStart = tickStart + 1;
 
             /** /
             // Tự động Scale theo trục y
@@ -814,7 +806,7 @@ namespace KhoanNhaTrang
                 var parAshDiscarded = new Paragraph();
                 parAshDiscarded.Add(new Chunk("Ash discarded: "));
                 parAshDiscarded.Add(Chunk.TABBING);
-                parAshDiscarded.Add(new Chunk("     " + " L"));
+                parAshDiscarded.Add(new Chunk(PLCDB1Read.Instance().cement_total + " L"));
                 doc.Add(parAshDiscarded);
                 var parCementDiscarded = new Paragraph();
                 parCementDiscarded.Add(new Chunk("Cememt discarded: "));
@@ -1036,5 +1028,41 @@ namespace KhoanNhaTrang
             }
         }
 
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            if (!debugMode) { 
+                PLC.Instance().ReadClass(PLCDB1Read.Instance(), 1);
+                PLC.Instance().ReadClass(PLCDB2Write.Instance(), 2);
+                show_Data_Real_lb(txtflowrate, Math.Round(PLCDB1Read.Instance().flow_rate, 2));
+                show_Data_Real_lb(txttotalflow, Math.Round(PLCDB1Read.Instance().fluid, 2));
+                show_Data_Real_lb(txtdensi, PLCDB1Read.Instance().wc);
+                show_Data_Real_lb_wc(txtWC, PLCDB1Read.Instance().wc_1);
+                show_Data_Real_lb(txtpressure, Math.Round(PLCDB1Read.Instance().pressure, 2));
+            }
+        }
+
+        private void txtMaxOfYFlowrate_TextChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txtMaxOfYFlowrate.Text))
+                reDraw();
+        }
+
+        private void txtMaxOfYTotalFlow_TextChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txtMaxOfYFlowrate.Text))
+                reDraw();
+        }
+
+        private void txtMaxOfYWC_TextChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txtMaxOfYFlowrate.Text))
+                reDraw();
+        }
+
+        private void txtMaxOfYPressure_TextChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txtMaxOfYFlowrate.Text))
+                reDraw();
+        }
     }
 }

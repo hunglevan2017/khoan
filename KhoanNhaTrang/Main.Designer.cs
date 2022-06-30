@@ -129,6 +129,7 @@ namespace KhoanNhaTrang
             this.btnEnd = new System.Windows.Forms.Button();
             this.btnPause = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -872,6 +873,7 @@ namespace KhoanNhaTrang
             this.txtMaxOfYPressure.TabIndex = 17;
             this.txtMaxOfYPressure.Text = "100";
             this.txtMaxOfYPressure.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtMaxOfYPressure.TextChanged += new System.EventHandler(this.txtMaxOfYPressure_TextChanged);
             this.txtMaxOfYPressure.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMaxOfYPressure_KeyPress);
             // 
             // label11
@@ -913,6 +915,7 @@ namespace KhoanNhaTrang
             this.txtMaxOfYWC.TabIndex = 13;
             this.txtMaxOfYWC.Text = "100";
             this.txtMaxOfYWC.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtMaxOfYWC.TextChanged += new System.EventHandler(this.txtMaxOfYWC_TextChanged);
             this.txtMaxOfYWC.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMaxOfYWC_KeyPress);
             // 
             // label10
@@ -954,6 +957,7 @@ namespace KhoanNhaTrang
             this.txtMaxOfYTotalFlow.TabIndex = 9;
             this.txtMaxOfYTotalFlow.Text = "100";
             this.txtMaxOfYTotalFlow.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtMaxOfYTotalFlow.TextChanged += new System.EventHandler(this.txtMaxOfYTotalFlow_TextChanged);
             this.txtMaxOfYTotalFlow.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMaxOfYTotalFlow_KeyPress);
             // 
             // label9
@@ -995,6 +999,7 @@ namespace KhoanNhaTrang
             this.txtMaxOfYFlowrate.TabIndex = 5;
             this.txtMaxOfYFlowrate.Text = "100";
             this.txtMaxOfYFlowrate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtMaxOfYFlowrate.TextChanged += new System.EventHandler(this.txtMaxOfYFlowrate_TextChanged);
             this.txtMaxOfYFlowrate.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMaxOfYFlowrate_KeyPress);
             // 
             // label8
@@ -1181,6 +1186,11 @@ namespace KhoanNhaTrang
             this.btnStart.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnStart_MouseDown);
             this.btnStart.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnStart_MouseUp);
             // 
+            // timer2
+            // 
+            this.timer2.Interval = 1000;
+            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
+            // 
             // Form1
             // 
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
@@ -1319,6 +1329,7 @@ namespace KhoanNhaTrang
         private System.Windows.Forms.Label label32;
         private System.Windows.Forms.TextBox txtdensi;
         private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.Timer timer2;
     }
 }
 
