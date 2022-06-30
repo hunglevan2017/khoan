@@ -175,6 +175,7 @@ namespace KhoanNhaTrang
 
             // Gọi hàm xác định cỡ trục
             myPane.AxisChange();
+
         }
         private void btnStart_MouseDown(object sender, MouseEventArgs e)
         {
@@ -524,7 +525,7 @@ namespace KhoanNhaTrang
             }
             int seconds = tickStart;
 
-            TimeSpan timeSpan = TimeSpan.FromSeconds(tickStart*60);
+            TimeSpan timeSpan = TimeSpan.FromSeconds(tickStart);
             string groutedTime = string.Format("{0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
             lbGroutedTime.Text = groutedTime;
             tickStart = tickStart + 1;
@@ -664,13 +665,27 @@ namespace KhoanNhaTrang
 
         private void createPDF(FileStream fs, String path)
         {
+
+
+            
+
+
             List<Data> listDataReport = new List<Data>();
             try
             {
                 db.Open();
                 var param = new DynamicParameters();
                 param.Add("management_id", managementId);
-                string query = @"SELECT flow_rate, fluid, wc, pressure FROM grouting.data Where management_id = @management_id GROUP BY  UNIX_TIMESTAMP(insert_date) DIV 300";
+                string query = @"select flow_rate, fluid, wc, pressure ,insert_date
+                                from  (
+	                                SELECT *,   
+		                                ROW_NUMBER() OVER(PARTITION BY management_id) AS row_num  
+	                                FROM grouting.data
+	                                where management_id =@management_id
+                                    order by id
+                                ) t
+                                where MOD(row_num-1,5)=0
+                                order by id";
                 listDataReport = db.Query<Data>(query, param).ToList();
             }
             catch (Exception ex)
@@ -1063,6 +1078,11 @@ namespace KhoanNhaTrang
         {
             if (!string.IsNullOrWhiteSpace(txtMaxOfYFlowrate.Text))
                 reDraw();
+        }
+
+        private void chartTimeCurves_VisibleChanged(object sender, EventArgs e)
+        {
+            chartTimeCurves.RestoreScale(myPane);
         }
     }
 }

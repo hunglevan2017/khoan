@@ -1065,6 +1065,7 @@ namespace KhoanNhaTrang
             this.chartTimeCurves.Size = new System.Drawing.Size(815, 349);
             this.chartTimeCurves.TabIndex = 0;
             this.chartTimeCurves.UseExtendedPrintDialog = true;
+            this.chartTimeCurves.VisibleChanged += new System.EventHandler(this.chartTimeCurves_VisibleChanged);
             // 
             // tabDataGrid
             // 
@@ -1079,7 +1080,7 @@ namespace KhoanNhaTrang
             // 
             // timer1
             // 
-            this.timer1.Interval = 60000;
+            this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // panel4
