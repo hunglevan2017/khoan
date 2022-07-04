@@ -35,6 +35,8 @@ namespace KhoanNhaTrang
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.timeUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.txtpressure = new System.Windows.Forms.TextBox();
@@ -149,7 +151,8 @@ namespace KhoanNhaTrang
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1,
-            this.toolStripMenuItem3});
+            this.toolStripMenuItem3,
+            this.toolToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1077, 29);
@@ -179,6 +182,22 @@ namespace KhoanNhaTrang
             this.toolStripMenuItem3.Size = new System.Drawing.Size(71, 25);
             this.toolStripMenuItem3.Text = "Setting";
             this.toolStripMenuItem3.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
+            // 
+            // toolToolStripMenuItem
+            // 
+            this.toolToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.timeUpdateToolStripMenuItem});
+            this.toolToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.toolToolStripMenuItem.Name = "toolToolStripMenuItem";
+            this.toolToolStripMenuItem.Size = new System.Drawing.Size(68, 25);
+            this.toolToolStripMenuItem.Text = "Config";
+            // 
+            // timeUpdateToolStripMenuItem
+            // 
+            this.timeUpdateToolStripMenuItem.Name = "timeUpdateToolStripMenuItem";
+            this.timeUpdateToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.timeUpdateToolStripMenuItem.Text = "Time Update";
+            this.timeUpdateToolStripMenuItem.Click += new System.EventHandler(this.timeUpdateToolStripMenuItem_Click);
             // 
             // panel1
             // 
@@ -1331,6 +1350,8 @@ namespace KhoanNhaTrang
         private System.Windows.Forms.TextBox txtdensi;
         private System.Windows.Forms.Label label33;
         private System.Windows.Forms.Timer timer2;
+        private System.Windows.Forms.ToolStripMenuItem toolToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem timeUpdateToolStripMenuItem;
     }
 }
 

@@ -7,6 +7,9 @@
     <Compile Update="frParameter.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="frTimeStore.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Main.cs">
       <SubType>Form</SubType>
     </Compile>

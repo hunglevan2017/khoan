@@ -13,6 +13,7 @@ using System.Drawing;
 using System.IO;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using System.Diagnostics;
 
 namespace KhoanNhaTrang
 {
@@ -31,8 +32,11 @@ namespace KhoanNhaTrang
         private GraphPane myPane;
         Boolean isInsertData = false;
         Boolean debugMode = false;
+        Config config = new Config();
+        DateTime lastInsert;
+        Boolean firstInsert;
 
-        
+
 
 
         float widthBorderGraph = 2.0F;
@@ -44,7 +48,7 @@ namespace KhoanNhaTrang
         //Dapper 
         //https://hanhtranglaptrinh.net/dapper-c-la-gi-micro-orm-trong-net/
         static string connStr = ConfigurationManager.ConnectionStrings["connStr"].ConnectionString;
-        static IDbConnection db = new MySqlConnection(connStr);
+        public static IDbConnection db = new MySqlConnection(connStr);
 
         private Data insertDB()
         {
@@ -69,16 +73,32 @@ namespace KhoanNhaTrang
                     data.wc = PLCDB1Read.Instance().wc_1;
                     data.management_id = managementId;
                     data.insert_date = new DateTime();
+
+                }
+                string query = "";
+
+
+                Debug.WriteLine("data.insert_date:" +data.insert_date.ToString());
+                Debug.WriteLine("lastInsert:" + lastInsert.ToString());
+                Debug.WriteLine((data.insert_date - lastInsert).TotalSeconds.ToString());
+
+                if (!firstInsert)
+                { 
+                    int a = 4;
                 }
 
-                string query = @"insert into data(flow_rate, fluid,pressure,wc,management_id) values(@flow_rate, @fluid,@pressure,@wc,@management_id);
+                if ((data.insert_date - lastInsert).TotalSeconds > config.time_store_db || firstInsert)
+                {
+                    query = @"insert into data(flow_rate, fluid,pressure,wc,management_id) values(@flow_rate, @fluid,@pressure,@wc,@management_id);
                             select * from data order by id desc limit 1";
-                data = db.Query<Data>(query, data).Single();
-                data.flow_rate = Math.Round(data.flow_rate, 2);
-                data.fluid = Math.Round(data.fluid, 2);
-                data.pressure = Math.Round(data.pressure, 2);
-                data.wc = Math.Round(data.wc, 2);
-
+                    data = db.Query<Data>(query, data).Single();
+                    data.flow_rate = Math.Round(data.flow_rate, 2);
+                    data.fluid = Math.Round(data.fluid, 2);
+                    data.pressure = Math.Round(data.pressure, 2);
+                    data.wc = Math.Round(data.wc, 2);
+                    lastInsert = data.insert_date;
+                    firstInsert = false;
+                }
                 //Update Cement total
                 var param = new DynamicParameters();
                 param.Add("Id", managementId);
@@ -276,6 +296,24 @@ namespace KhoanNhaTrang
         }
         private void btnStart_Click(object sender, EventArgs e)
         {
+
+
+            lastInsert = new DateTime();
+            firstInsert = true;
+
+
+            string query = @"select * from config order by id desc limit 1";
+            config = db.Query<Config>(query, config).Single();
+
+
+
+
+            timer1.Stop();
+            timer1.Interval = config.time_update_ui * 1000;
+            btnEnd.Enabled = true;
+            timer1.Start();
+
+
             //if (txtMaxOfYFlowrate.Text != null && !"".Equals(txtMaxOfYFlowrate.Text.Trim())
             //    && txtMaxOfYTotalFlow.Text != null && !"".Equals(txtMaxOfYTotalFlow.Text.Trim())
             //    && txtMaxOfYWC.Text != null && !"".Equals(txtMaxOfYWC.Text.Trim())
@@ -391,6 +429,8 @@ namespace KhoanNhaTrang
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+
+
             try
             {
                 if (debugMode)
@@ -547,7 +587,7 @@ namespace KhoanNhaTrang
             TimeSpan timeSpan = TimeSpan.FromSeconds(tickStart);
             string groutedTime = string.Format("{0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
             lbGroutedTime.Text = groutedTime;
-            tickStart = tickStart + 5;
+            tickStart = tickStart + config.time_update_ui;
 
             /** /
             // Tự động Scale theo trục y
@@ -1113,6 +1153,12 @@ namespace KhoanNhaTrang
         private void chartTimeCurves_VisibleChanged(object sender, EventArgs e)
         {
             chartTimeCurves.RestoreScale(myPane);
+        }
+
+        private void timeUpdateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frTimeStore fr = new frTimeStore();
+            fr.Show();
         }
     }
 }
