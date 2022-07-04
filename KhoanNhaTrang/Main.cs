@@ -724,11 +724,6 @@ namespace KhoanNhaTrang
 
         private void createPDF(FileStream fs, String path)
         {
-
-
-            
-
-
             List<Data> listDataReport = new List<Data>();
             try
             {
@@ -845,7 +840,7 @@ namespace KhoanNhaTrang
 
 
                 String timeMin = "00:00:01";
-                int timeMinute = 5;
+                int seconds = config.time_store_db;
                 foreach (Data data in listDataReport)
                 {
                     totalfluid = totalfluid + data.fluid;
@@ -860,9 +855,9 @@ namespace KhoanNhaTrang
                     PdfPCell cell5 = createCell(data.pressure.ToString(), false);
                     tableCell.AddCell(cell5);
 
-                    TimeSpan timeMinSpan = TimeSpan.FromMinutes(timeMinute);
+                    TimeSpan timeMinSpan = TimeSpan.FromSeconds(seconds);
                     timeMin = string.Format("{0:D2}:{1:D2}:{2:D2}", timeMinSpan.Hours, timeMinSpan.Minutes, timeMinSpan.Seconds);
-                    timeMinute = timeMinute + 5;
+                    seconds = seconds + config.time_store_db;
                 }
                 doc.Add(tableCell);
                 doc.Add(lineSeparator);
