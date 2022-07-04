@@ -735,16 +735,11 @@ namespace KhoanNhaTrang
                 db.Open();
                 var param = new DynamicParameters();
                 param.Add("management_id", managementId);
-                string query = @"select flow_rate, fluid, wc, pressure ,insert_date
-                                from  (
-	                                SELECT *,   
-		                                ROW_NUMBER() OVER(PARTITION BY management_id) AS row_num  
+                string query = @"
+	                                SELECT flow_rate, fluid, wc, pressure ,insert_date
 	                                FROM grouting.data
 	                                where management_id =@management_id
-                                    order by id
-                                ) t
-                                where MOD(row_num-1,5)=0
-                                order by id";
+                                    order by id";
                 listDataReport = db.Query<Data>(query, param).ToList();
                 List<Data> tmpReport = new List<Data>();
                 foreach (Data temp in listDataReport) {
