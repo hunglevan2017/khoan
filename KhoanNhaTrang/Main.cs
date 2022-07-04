@@ -87,7 +87,7 @@ namespace KhoanNhaTrang
                     int a = 4;
                 }
 
-                if ((data.insert_date - lastInsert).TotalSeconds > config.time_store_db || firstInsert)
+                if (tickStart%config.time_store_db==0 || firstInsert)
                 {
                     query = @"insert into data(flow_rate, fluid,pressure,wc,management_id) values(@flow_rate, @fluid,@pressure,@wc,@management_id);
                             select * from data order by id desc limit 1";
