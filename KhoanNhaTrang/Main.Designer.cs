@@ -195,7 +195,7 @@ namespace KhoanNhaTrang
             // timeUpdateToolStripMenuItem
             // 
             this.timeUpdateToolStripMenuItem.Name = "timeUpdateToolStripMenuItem";
-            this.timeUpdateToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.timeUpdateToolStripMenuItem.Size = new System.Drawing.Size(168, 26);
             this.timeUpdateToolStripMenuItem.Text = "Time Update";
             this.timeUpdateToolStripMenuItem.Click += new System.EventHandler(this.timeUpdateToolStripMenuItem_Click);
             // 
@@ -890,7 +890,7 @@ namespace KhoanNhaTrang
             this.txtMaxOfYPressure.Name = "txtMaxOfYPressure";
             this.txtMaxOfYPressure.Size = new System.Drawing.Size(140, 26);
             this.txtMaxOfYPressure.TabIndex = 17;
-            this.txtMaxOfYPressure.Text = "100";
+            this.txtMaxOfYPressure.Text = "10";
             this.txtMaxOfYPressure.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtMaxOfYPressure.TextChanged += new System.EventHandler(this.txtMaxOfYPressure_TextChanged);
             this.txtMaxOfYPressure.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMaxOfYPressure_KeyPress);
@@ -932,7 +932,7 @@ namespace KhoanNhaTrang
             this.txtMaxOfYWC.Name = "txtMaxOfYWC";
             this.txtMaxOfYWC.Size = new System.Drawing.Size(96, 26);
             this.txtMaxOfYWC.TabIndex = 13;
-            this.txtMaxOfYWC.Text = "100";
+            this.txtMaxOfYWC.Text = "10";
             this.txtMaxOfYWC.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtMaxOfYWC.TextChanged += new System.EventHandler(this.txtMaxOfYWC_TextChanged);
             this.txtMaxOfYWC.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMaxOfYWC_KeyPress);
