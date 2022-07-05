@@ -25,5 +25,5 @@ CREATE TABLE `config` (
   `time_update_ui` int DEFAULT '1',
   `time_store_db` int DEFAULT '60',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 INSERT INTO `grouting`.`config` ( `time_update_ui`, `time_store_db`) VALUES ( '1', '60');

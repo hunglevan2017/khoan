@@ -31,19 +31,33 @@ namespace KhoanNhaTrang
         private String endHour;
         private GraphPane myPane;
         Boolean isInsertData = false;
-        Boolean debugMode = false;
+        Boolean debugMode = true;
         Config config = new Config();
         DateTime lastInsert;
         Boolean firstInsert;
-
-
+        MaxY maxY = new MaxY();
 
 
         float widthBorderGraph = 2.0F;
 
+        public void changeMaxY() {
+            if(!txtMaxOfYFlowrate.Text.Equals(""))
+                maxY.flow = int.Parse(txtMaxOfYFlowrate.Text);
+
+            if (!txtMaxOfYTotalFlow.Text.Equals(""))
+                maxY.fluid = int.Parse(txtMaxOfYTotalFlow.Text);
+
+            if (!txtMaxOfYWC.Text.Equals(""))
+                maxY.wc = int.Parse(txtMaxOfYWC.Text);
+
+            if (!txtMaxOfYPressure.Text.Equals(""))
+                maxY.pressure = int.Parse(txtMaxOfYPressure.Text);
+        }
+
         public Form1()
         {
             InitializeComponent();
+            changeMaxY();
         }
         //Dapper 
         //https://hanhtranglaptrinh.net/dapper-c-la-gi-micro-orm-trong-net/
@@ -296,93 +310,15 @@ namespace KhoanNhaTrang
         }
         private void btnStart_Click(object sender, EventArgs e)
         {
-
-
+            changeMaxY();
             lastInsert = new DateTime();
             firstInsert = true;
-
-
             string query = @"select * from config order by id desc limit 1";
             config = db.Query<Config>(query, config).Single();
-
-
-
-
             timer1.Stop();
             timer1.Interval = config.time_update_ui * 1000;
             btnEnd.Enabled = true;
             timer1.Start();
-
-
-            //if (txtMaxOfYFlowrate.Text != null && !"".Equals(txtMaxOfYFlowrate.Text.Trim())
-            //    && txtMaxOfYTotalFlow.Text != null && !"".Equals(txtMaxOfYTotalFlow.Text.Trim())
-            //    && txtMaxOfYWC.Text != null && !"".Equals(txtMaxOfYWC.Text.Trim())
-            //    && txtMaxOfYPressure.Text != null && !"".Equals(txtMaxOfYPressure.Text.Trim()))
-            //{
-            //    if (tickStart == 0)
-            //    {
-            //        lbGroutedTime.Text = "00:00:00";
-            //        string queryCheckManagement = @"SELECT number_equipment FROM management WHERE DATE(insert_date) = DATE(now()) ORDER BY id DESC LIMIT 1;";
-            //        int numberEquipment = db.Query<int>(queryCheckManagement).FirstOrDefault();
-            //        numberEquipment++;
-
-            //        string query = @"insert into management(number_equipment) values(" + numberEquipment + ");";
-            //        db.Execute(query);
-            //        lbEquipment.Text = numberEquipment.ToString();
-
-
-            //        queryCheckManagement = @"SELECT id FROM management WHERE DATE(insert_date) = DATE(now()) ORDER BY id DESC LIMIT 1;";
-            //        managementId = db.Query<long>(queryCheckManagement).FirstOrDefault();
-
-            //        startDate = DateTime.Now.ToString("yyyy-MM-dd").ToString();
-            //        startHour = DateTime.Now.ToString("hh:mm:ss tt").ToString();
-
-            //        lbBeginTimeDate.Text = startDate;
-            //        lbBeginTimeHour.Text = startHour;
-
-            //        try
-            //        {
-            //            db.Open();
-            //            //query = @"SELECT flow_rate, fluid, wc, pressure,insert_date FROM grouting.data";
-            //            //listData = db.Query<Data>(query).ToList();
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            Console.WriteLine(ex.Message);
-            //        }
-            //        finally
-            //        {
-            //            try
-            //            {
-            //                db.Close();
-            //            }
-            //            catch (Exception ex)
-            //            {
-            //                Console.WriteLine(ex.Message);
-            //            }
-            //        }
-
-            //        initChart();
-            //    }
-
-            //    txtMaxOfYFlowrate.ReadOnly = false;
-            //    txtMaxOfYTotalFlow.ReadOnly = false;
-            //    txtMaxOfYWC.ReadOnly = false;
-            //    txtMaxOfYPressure.ReadOnly = false;
-
-            //    btnStart.Enabled = false;
-            //    btnPause.Enabled = true;
-            //    btnEnd.Enabled = true;
-            //    timer1.Enabled = true;
-
-
-            //    isInsertData = true;
-
-            //} else
-            //{
-            //    MessageBox.Show("Các trường Max of Y của Flowrate, Total flow, W/C, Pressure không được rỗng.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //}
-
         }
 
         private void show_Data_Real_lb_wc(TextBox lb, double value)
@@ -419,10 +355,10 @@ namespace KhoanNhaTrang
             initChart();
             for (int i = 0; i < listData.Count;i++)
             {
-                double valueFlowRate = ((listData[i].flow_rate * 100) / Convert.ToDouble(txtMaxOfYFlowrate.Text));
-                double valueFluid = ((listData[i].fluid * 100) / Convert.ToDouble(txtMaxOfYTotalFlow.Text));
-                double valueWC = ((listData[i].wc * 100) / Convert.ToDouble(txtMaxOfYWC.Text));
-                double valuePressure = ((listData[i].pressure * 100) / Convert.ToDouble(txtMaxOfYPressure.Text));
+                double valueFlowRate = ((listData[i].flow_rate * 100) / Convert.ToDouble(maxY.flow));
+                double valueFluid = ((listData[i].fluid * 100) / Convert.ToDouble(maxY.fluid));
+                double valueWC = ((listData[i].wc * 100) / Convert.ToDouble(maxY.wc));
+                double valuePressure = ((listData[i].pressure * 100) / Convert.ToDouble(maxY.pressure));
                 Draw(valueFlowRate, valueFluid, valueWC, valuePressure);
             }
         }
@@ -456,10 +392,10 @@ namespace KhoanNhaTrang
                     show_Data_Real_lb_wc(txtWC, data.wc);
                     show_Data_Real_lb(txtpressure, data.pressure);
 
-                    double valueFlowRate = ((data.flow_rate * 100) / Convert.ToDouble(txtMaxOfYFlowrate.Text));
-                    double valueFluid = ((data.fluid * 100) / Convert.ToDouble(txtMaxOfYTotalFlow.Text));
-                    double valueWC = ((data.wc * 100) / Convert.ToDouble(txtMaxOfYWC.Text));
-                    double valuePressure = ((data.pressure * 100) / Convert.ToDouble(txtMaxOfYPressure.Text));
+                    double valueFlowRate = ((data.flow_rate * 100) / Convert.ToDouble(maxY.flow));
+                    double valueFluid = ((data.fluid * 100) / Convert.ToDouble(maxY.fluid));
+                    double valueWC = ((data.wc * 100) / Convert.ToDouble(maxY.wc));
+                    double valuePressure = ((data.pressure * 100) / Convert.ToDouble(maxY.pressure));
 
                     listData.Add(data);
                     Boolean isRedraw = false;
@@ -468,6 +404,7 @@ namespace KhoanNhaTrang
                     {
                         txtMaxOfYFlowrate.Text = (Convert.ToDouble(txtMaxOfYFlowrate.Text) * 2).ToString();
                         valueFlowRate = ((data.flow_rate * 100) / Convert.ToDouble(txtMaxOfYFlowrate.Text));
+                        changeMaxY();
                         reDraw();
                         isRedraw = true;
                     }
@@ -476,6 +413,7 @@ namespace KhoanNhaTrang
                     {
                         txtMaxOfYTotalFlow.Text = (Convert.ToDouble(txtMaxOfYTotalFlow.Text) * 2).ToString();
                         valueFluid = ((data.fluid * 100) / Convert.ToDouble(txtMaxOfYTotalFlow.Text));
+                        changeMaxY();
                         reDraw();
                         isRedraw = true;
                     }
@@ -484,6 +422,7 @@ namespace KhoanNhaTrang
                     {
                         txtMaxOfYWC.Text = (Convert.ToDouble(txtMaxOfYWC.Text) * 2).ToString();
                         valueWC = ((data.wc * 100) / Convert.ToDouble(txtMaxOfYWC.Text));
+                        changeMaxY();
                         reDraw();
                         isRedraw = true;
                     }
@@ -492,6 +431,7 @@ namespace KhoanNhaTrang
                     {
                         txtMaxOfYPressure.Text = (Convert.ToDouble(txtMaxOfYPressure.Text) * 2).ToString();
                         valuePressure = ((data.wc * 100) / Convert.ToDouble(txtMaxOfYPressure.Text));
+                        changeMaxY();
                         reDraw();
                         isRedraw = true;
                     }
@@ -1007,6 +947,15 @@ namespace KhoanNhaTrang
             {
                 e.Handled = true;
             }
+
+
+            if ((int)e.KeyChar == (int)Keys.Enter)
+            {
+                changeMaxY();
+                reDraw();
+            }
+
+
         }
 
         private void txtMaxOfYTotalFlow_KeyPress(object sender, KeyPressEventArgs e)
@@ -1021,6 +970,12 @@ namespace KhoanNhaTrang
             {
                 e.Handled = true;
             }
+            if ((int)e.KeyChar == (int)Keys.Enter)
+            {
+                changeMaxY();
+                reDraw();
+            }
+
         }
 
         private void txtMaxOfYWC_KeyPress(object sender, KeyPressEventArgs e)
@@ -1035,6 +990,12 @@ namespace KhoanNhaTrang
             {
                 e.Handled = true;
             }
+            if ((int)e.KeyChar == (int)Keys.Enter)
+            {
+                changeMaxY();
+                reDraw();
+            }
+
         }
 
         private void txtMaxOfYPressure_KeyPress(object sender, KeyPressEventArgs e)
@@ -1049,6 +1010,12 @@ namespace KhoanNhaTrang
             {
                 e.Handled = true;
             }
+            if ((int)e.KeyChar == (int)Keys.Enter)
+            {
+                changeMaxY();
+                reDraw();
+            }
+
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -1118,26 +1085,22 @@ namespace KhoanNhaTrang
 
         private void txtMaxOfYFlowrate_TextChanged(object sender, EventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(txtMaxOfYFlowrate.Text))
-                reDraw();
+          
         }
 
         private void txtMaxOfYTotalFlow_TextChanged(object sender, EventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(txtMaxOfYFlowrate.Text))
-                reDraw();
+           
         }
 
         private void txtMaxOfYWC_TextChanged(object sender, EventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(txtMaxOfYFlowrate.Text))
-                reDraw();
+
         }
 
         private void txtMaxOfYPressure_TextChanged(object sender, EventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(txtMaxOfYFlowrate.Text))
-                reDraw();
+  
         }
 
         private void chartTimeCurves_VisibleChanged(object sender, EventArgs e)
