@@ -31,7 +31,7 @@ namespace KhoanNhaTrang
         private String endHour;
         private GraphPane myPane;
         Boolean isInsertData = false;
-        Boolean debugMode = true;
+        Boolean debugMode = false;
         Config config = new Config();
         DateTime lastInsert;
         Boolean firstInsert;
@@ -821,7 +821,7 @@ namespace KhoanNhaTrang
                 var parAshDiscarded = new Paragraph();
                 parAshDiscarded.Add(new Chunk("Ash discarded: "));
                 parAshDiscarded.Add(Chunk.TABBING);
-                parAshDiscarded.Add(new Chunk(PLCDB1Read.Instance().cement_total + " L"));
+                parAshDiscarded.Add(    new Chunk(Math.Round(PLCDB1Read.Instance().cement_total, 2) + " L"));
                 doc.Add(parAshDiscarded);
                 var parCementDiscarded = new Paragraph();
                 parCementDiscarded.Add(new Chunk("Cememt discarded: "));
@@ -1112,6 +1112,11 @@ namespace KhoanNhaTrang
         {
             frTimeStore fr = new frTimeStore();
             fr.Show();
+        }
+
+        private void btnPrint_Click_1(object sender, EventArgs e)
+        {
+
         }
     }
 }
