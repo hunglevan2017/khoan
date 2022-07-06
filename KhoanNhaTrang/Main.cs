@@ -20,7 +20,7 @@ namespace KhoanNhaTrang
 
     public partial class Form1 : Form
     {
-        int limitPercentScaleY = 70;
+        int limitPercentScaleY = 95;
         private List<Data> listData = new List<Data>();
         private int index = 0;
         int tickStart = 0;
@@ -84,7 +84,8 @@ namespace KhoanNhaTrang
                     data.flow_rate = Math.Round(PLCDB1Read.Instance().flow_rate, 2);
                     data.fluid = Math.Round(PLCDB1Read.Instance().fluid, 2);
                     data.pressure = Math.Round(PLCDB1Read.Instance().pressure, 2);
-                    data.wc = PLCDB1Read.Instance().wc_1;
+                    //data.wc = PLCDB1Read.Instance().wc_1;
+                    data.wc = double.Parse( (txtWC.Text).Replace(":1","") );
                     data.management_id = managementId;
                     data.insert_date = new DateTime();
 
@@ -245,6 +246,7 @@ namespace KhoanNhaTrang
             {
                 if (tickStart == 0)
                 {
+                    PLC.Instance().SetBit("DB2.DBX48.4");
                     lbGroutedTime.Text = "00:00:00";
                     string queryCheckManagement = @"SELECT number_equipment FROM management WHERE DATE(insert_date) = DATE(now()) ORDER BY id DESC LIMIT 1;";
                     int numberEquipment = db.Query<int>(queryCheckManagement).FirstOrDefault();
@@ -379,7 +381,7 @@ namespace KhoanNhaTrang
                     show_Data_Real_lb(txtflowrate, Math.Round(PLCDB1Read.Instance().flow_rate, 2));
                     show_Data_Real_lb(txttotalflow, Math.Round(PLCDB1Read.Instance().fluid, 2));
                     show_Data_Real_lb(txtdensi, PLCDB1Read.Instance().wc);
-                    show_Data_Real_lb(txtWC, PLCDB1Read.Instance().wc_1);
+                    //show_Data_Real_lb(txtWC, PLCDB1Read.Instance().wc_1);
                     show_Data_Real_lb(txtpressure, Math.Round(PLCDB1Read.Instance().pressure, 2));
                 }
 
@@ -389,7 +391,7 @@ namespace KhoanNhaTrang
                         
                     show_Data_Real_lb(txtflowrate, data.flow_rate);
                     show_Data_Real_lb(txttotalflow, data.fluid);
-                    show_Data_Real_lb_wc(txtWC, data.wc);
+                    //show_Data_Real_lb_wc(txtWC, data.wc);
                     show_Data_Real_lb(txtpressure, data.pressure);
 
                     double valueFlowRate = ((data.flow_rate * 100) / Convert.ToDouble(maxY.flow));
@@ -589,6 +591,7 @@ namespace KhoanNhaTrang
         }
         private void btnEnd_MouseDown(object sender, MouseEventArgs e)
         {
+            //Data data = insertDB();
             PLC.Instance().SetBit("DB2.DBX48.2");
             index = 0;
 
@@ -617,26 +620,31 @@ namespace KhoanNhaTrang
         }
         private void btnEnd_Click(object sender, EventArgs e)
         {
-            //PLC.Instance().ResetBit("DB2.DBX48.1");
-            //index = 0;
+            try
+            {
+                db.Open();
+                //Update Cement total
+                var param = new DynamicParameters();
+                param.Add("Id", managementId);
+                param.Add("cement_total", Math.Round(PLCDB1Read.Instance().cement_total, 2));
+                String query = "update management set cement_total = @cement_total where Id = @Id";
+                db.Execute(query, param);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                try
+                {
+                    db.Close();
+                }
+                catch (Exception ex)
+                {
 
-            //btnStart.Enabled = true;
-            //btnPause.Enabled = false;
-            //btnEnd.Enabled = false;
-            //btnSaveToAs.Enabled = true;
-            //btnPrint.Enabled = true;
-
-            //txtMaxOfYFlowrate.ReadOnly = false;
-            //txtMaxOfYTotalFlow.ReadOnly = false;
-            //txtMaxOfYWC.ReadOnly = false;
-            //txtMaxOfYPressure.ReadOnly = false;
-
-            //tickStart = 0;
-
-            //endDate = DateTime.Now.ToString("yyyy-MM-dd").ToString();
-            //endHour = DateTime.Now.ToString("hh:mm:ss tt").ToString();
-
-            //isInsertData = false;
+                }
+            }
         }
 
         private void btnSaveToAs_Click(object sender, EventArgs e)
@@ -665,6 +673,7 @@ namespace KhoanNhaTrang
         private void createPDF(FileStream fs, String path)
         {
             List<Data> listDataReport = new List<Data>();
+            Management tmp = new Management();
             try
             {
                 db.Open();
@@ -686,6 +695,11 @@ namespace KhoanNhaTrang
                     tmpReport.Add(temp);
                 }
                 listDataReport = tmpReport;
+
+                query = @"SELECT * FROM grouting.management where Id =@Id";
+                tmp.Id = managementId;
+                tmp = db.Query<Management>(query, tmp).Single();
+
 
             }
             catch (Exception ex)
@@ -811,7 +825,7 @@ namespace KhoanNhaTrang
                 var parTotalFluid = new Paragraph();
                 parTotalFluid.Add(new Chunk("Total Fluid: "));
                 parTotalFluid.Add(Chunk.TABBING);
-                parTotalFluid.Add(new Chunk(totalfluid.ToString() + " L"));
+                parTotalFluid.Add(new Chunk(tmp.cement_total + " L"));
                 doc.Add(parTotalFluid);
                 var parAshUsed = new Paragraph();
                 parAshUsed.Add(new Chunk("Ash used: "));
@@ -1052,7 +1066,7 @@ namespace KhoanNhaTrang
         private void btnTest_Click(object sender, EventArgs e)
         {
             PLC.Instance().SetBit("DB2.DBX48.3");
-            show_Data_Int_lb(txtWC, PLCDB1Read.Instance().wc_1);
+            show_Data_Real_lb_wc(txtWC, PLCDB1Read.Instance().wc_1);
         }
 
         private void ON_OFF_ALARM(bool output, TextBox lb)
@@ -1078,7 +1092,7 @@ namespace KhoanNhaTrang
                 show_Data_Real_lb(txtflowrate, Math.Round(PLCDB1Read.Instance().flow_rate, 2));
                 show_Data_Real_lb(txttotalflow, Math.Round(PLCDB1Read.Instance().fluid, 2));
                 show_Data_Real_lb(txtdensi, PLCDB1Read.Instance().wc);
-                show_Data_Real_lb_wc(txtWC, PLCDB1Read.Instance().wc_1);
+                //show_Data_Real_lb_wc(txtWC, PLCDB1Read.Instance().wc_1);
                 show_Data_Real_lb(txtpressure, Math.Round(PLCDB1Read.Instance().pressure, 2));
             }
         }

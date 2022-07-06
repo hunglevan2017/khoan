@@ -43,8 +43,9 @@ namespace KhoanNhaTrang
       
         public bool Start { get; set; }
         public bool Stop { get; set; }
-        public bool Reset { get; set; }
+        public bool End { get; set; }
         public bool test { get; set; }
+        public bool clear { get; set; }
         public short temp { get; set; }
     }
 }
