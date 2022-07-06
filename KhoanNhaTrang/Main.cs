@@ -623,12 +623,12 @@ namespace KhoanNhaTrang
             try
             {
                 db.Open();
-                //Update Cement total
-                var param = new DynamicParameters();
-                param.Add("Id", managementId);
-                param.Add("cement_total", Math.Round(PLCDB1Read.Instance().cement_total, 2));
-                String query = "update management set cement_total = @cement_total where Id = @Id";
-                db.Execute(query, param);
+               
+               // var param = new DynamicParameters();
+                //param.Add("Id", managementId);
+                //param.Add("cement_total", Math.Round(PLCDB1Read.Instance().cement_total, 2));
+                //String query = "update management set cement_total = @cement_total where Id = @Id";
+                //db.Execute(query, param);
             }
             catch (Exception ex)
             {
@@ -673,7 +673,6 @@ namespace KhoanNhaTrang
         private void createPDF(FileStream fs, String path)
         {
             List<Data> listDataReport = new List<Data>();
-            Management tmp = new Management();
             try
             {
                 db.Open();
@@ -695,12 +694,6 @@ namespace KhoanNhaTrang
                     tmpReport.Add(temp);
                 }
                 listDataReport = tmpReport;
-
-                query = @"SELECT * FROM grouting.management where Id =@Id";
-                tmp.Id = managementId;
-                tmp = db.Query<Management>(query, tmp).Single();
-
-
             }
             catch (Exception ex)
             {
@@ -797,7 +790,7 @@ namespace KhoanNhaTrang
                 int seconds = config.time_store_db;
                 foreach (Data data in listDataReport)
                 {
-                    totalfluid = totalfluid + data.fluid;
+                    totalfluid =  data.fluid;
                     PdfPCell cell1 = createCell(timeMin, false);
                     tableCell.AddCell(cell1);
                     PdfPCell cell2 = createCell(data.flow_rate.ToString(), false);
@@ -825,7 +818,7 @@ namespace KhoanNhaTrang
                 var parTotalFluid = new Paragraph();
                 parTotalFluid.Add(new Chunk("Total Fluid: "));
                 parTotalFluid.Add(Chunk.TABBING);
-                parTotalFluid.Add(new Chunk(tmp.cement_total + " L"));
+                parTotalFluid.Add(new Chunk(Math.Round(totalfluid, 2) + " L"));
                 doc.Add(parTotalFluid);
                 var parAshUsed = new Paragraph();
                 parAshUsed.Add(new Chunk("Ash used: "));
