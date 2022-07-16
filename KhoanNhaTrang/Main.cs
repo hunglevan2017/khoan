@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Text;
 using System.Linq;
 using System.Windows.Forms;
 using ZedGraph;
@@ -658,9 +657,10 @@ namespace KhoanNhaTrang
             SaveFileDialog svg = new SaveFileDialog();
             if (svg.ShowDialog() == DialogResult.OK)
             {
-                using (FileStream stream = new FileStream(svg.FileName + ".pdf", FileMode.Create))
+                using (FileStream stream = new FileStream(svg.FileName + ".xlsx", FileMode.Create))
                 {
-                    createPDF(stream, System.IO.Path.GetDirectoryName(svg.FileName));
+                    //createPDF(stream, System.IO.Path.GetDirectoryName(svg.FileName));
+                    createExcel(stream, System.IO.Path.GetDirectoryName(svg.FileName));
                 }
             }
         }
@@ -668,6 +668,168 @@ namespace KhoanNhaTrang
         private void btnPrint_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void createExcel(FileStream fs, String path)
+        {
+            List<Data> listDataReport = new List<Data>();
+            try
+            {
+                db.Open();
+                var param = new DynamicParameters();
+                param.Add("management_id", managementId);
+                string query = @"
+                                 SELECT flow_rate, fluid, wc, pressure ,insert_date
+                                 FROM grouting.data
+                                 where management_id =@management_id
+                                    order by id";
+                listDataReport = db.Query<Data>(query, param).ToList();
+                List<Data> tmpReport = new List<Data>();
+                foreach (Data temp in listDataReport)
+                {
+
+                    temp.flow_rate = Math.Round(temp.flow_rate, 2);
+                    temp.fluid = Math.Round(temp.fluid, 2);
+                    temp.pressure = Math.Round(temp.pressure, 2);
+                    temp.wc = Math.Round(temp.wc, 2);
+                    tmpReport.Add(temp);
+                }
+                listDataReport = tmpReport;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                try
+                {
+                    db.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            if (listDataReport != null && listDataReport.Any())
+            {
+                var ds = new DataSet();
+               
+                // Paragrap1
+                var par1 = new DataTable();
+                par1.Columns.Add("equipment");
+                par1.Columns.Add("projectname");
+                par1.Columns.Add("grouting"); 
+                par1.Columns.Add("holeno");
+                par1.Columns.Add("order");
+                par1.Columns.Add("the");
+                par1.Columns.Add("length");
+                par1.Columns.Add("num");
+                par1.Columns.Add("desofhole");
+                par1.Columns.Add("distbwejectandhole");
+                par1.Columns.Add("holehigh");
+                par1.Columns.Add("begintime");
+                par1.Columns.Add("recorder");
+                par1.Columns.Add("leader");
+                par1.Columns.Add("quality");
+                object[] values = new object[15];
+                values[0] = "Equipment: " + lbEquipment.Text + "  " + startDate;
+                values[1] = "Project Name: " + txtProjectName.Text;
+                values[2] = "Grouting Holes Parameters: ";
+                values[3] = "Hole No.: " + txtHoleNo.Text;
+                values[4] = "Order: " + cbOrder.Text  + " Range: " + cbRange.Text;
+                values[5] = "The: " + txtThe.Text + " Sect From: " + txtSectFrom.Text + " To: " + txtTo.Text + "m";
+                values[6] = "Length(m): " + txtLength.Text;
+                values[7] = "Num.: " + txtNum.Text;
+                values[8] = "Des of Hole(mm): " + txtDesOfHole.Text;
+                values[9] = "Dist bw eject and hole(cm): " + txtDistBwEjectAndHole.Text;
+                values[10] = "Hole High(m): " + txtHoleHigh.Text;
+                values[11] = "Begin Time: " + startHour;
+                values[12] = "Recorder: " + txtRecorder.Text;
+                values[13] = "Leader: " + txtLeader.Text;
+                values[14] = "Quality: " + txtQuality.Text;
+                par1.Rows.Add(values);
+                par1.TableName = "par1";
+                ds.Tables.Add(par1);
+
+                // Table 1
+                var tab1 = new DataTable();
+                tab1.Columns.Add("time", typeof(string));
+                tab1.Columns.Add("flowrate", typeof(string));
+                tab1.Columns.Add("tfluid", typeof(string));
+                tab1.Columns.Add("wc", typeof(string));
+                tab1.Columns.Add("pressure", typeof(string));
+                String timeMin = "00:00:01";
+                int seconds = config.time_store_db;
+                double totalfluid = 0;
+                foreach (Data data in listDataReport)
+                {
+                    totalfluid = data.fluid;
+                    tab1.Rows.Add(timeMin, data.flow_rate.ToString(), data.fluid.ToString(), data.wc.ToString(), data.pressure.ToString());
+                    TimeSpan timeMinSpan = TimeSpan.FromSeconds(seconds);
+                    timeMin = string.Format("{0:D2}:{1:D2}:{2:D2}", timeMinSpan.Hours, timeMinSpan.Minutes, timeMinSpan.Seconds);
+                    seconds = seconds + config.time_store_db;
+                }
+                tab1.TableName = "tab1";
+                ds.Tables.Add(tab1);
+
+                // Paragrap 2
+                var par2 = new DataTable();
+                par2.Columns.Add("endtime");
+                par2.Columns.Add("totalfluid");
+                par2.Columns.Add("ashused");
+                par2.Columns.Add("ashdiscarded");
+                par2.Columns.Add("cemmentdiscarded");
+                object[] values2 = new object[5];
+                values2[0] = "End Time: " + endDate;
+                values2[1] = "Total Fluid: " + Math.Round(totalfluid, 2) + " L";
+                values2[2] = "Ash used:    Kg" ;
+                values2[3] = "Ash discarded: " + Math.Round(PLCDB1Read.Instance().cement_total, 2) + " L";
+                values2[4] = "Cememt discarded:    Kg";
+                par2.Rows.Add(values2);
+                par2.TableName = "par2";
+                ds.Tables.Add(par2);
+
+                // Paragrap 3
+                var par3 = new DataTable();
+                par3.Columns.Add("maxofflowrate");
+                par3.Columns.Add("maxoftfluid");
+                par3.Columns.Add("maxofwc");
+                par3.Columns.Add("maxofpressure");
+                par3.Columns.Add("minofflowrate");
+                par3.Columns.Add("minoftfluid");
+                par3.Columns.Add("minofwc");
+                par3.Columns.Add("minofpressure");
+                object[] values3 = new object[8];
+                values3[0] = txtMaxOfYFlowrate.Text;
+                values3[1] = txtMaxOfYTotalFlow.Text;
+                values3[2] = txtMaxOfYWC.Text;
+                values3[3] = txtMaxOfYPressure.Text;
+                values3[4] = "0";
+                values3[5] = "0";
+                values3[6] = "0";
+                values3[7] = "0";
+                par3.Rows.Add(values3);
+                par3.TableName = "par3";
+                ds.Tables.Add(par3);
+
+                // chart 
+                var chart = new DataTable();
+                chart.Columns.Add("timecurves");
+                chart.Rows.Add("");
+                chart.TableName = "chart";
+                ds.Tables.Add(chart);
+
+                // Draw chart
+                String imageChartName = @"\Chart" + DateTime.Now.ToString("yyyyMMddhhmmss").ToString() + ".bmp";
+                chartTimeCurves.MasterPane.GetImage().Save(path + imageChartName);
+
+                ExportExcelToTemplateEpplus.TemplateExcel.FillReport(fs, "Template.xlsx", ds, listDataReport.Count -1, path + imageChartName,  new string[] { "{", "}" });
+            }
+            else
+            {
+                MessageBox.Show("Có lỗi xảy ra vui lòng thử lại.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void createPDF(FileStream fs, String path)
@@ -1119,11 +1281,6 @@ namespace KhoanNhaTrang
         {
             frTimeStore fr = new frTimeStore();
             fr.Show();
-        }
-
-        private void btnPrint_Click_1(object sender, EventArgs e)
-        {
-
         }
     }
 }
