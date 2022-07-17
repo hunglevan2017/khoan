@@ -607,7 +607,7 @@ namespace KhoanNhaTrang
 
             tickStart = 0;
 
-            endDate = DateTime.Now.ToString("yyyy-MM-dd").ToString();
+            endDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").ToString();
             endHour = DateTime.Now.ToString("hh:mm:ss tt").ToString();
 
             isInsertData = false;
@@ -765,7 +765,7 @@ namespace KhoanNhaTrang
                 foreach (Data data in listDataReport)
                 {
                     totalfluid = data.fluid;
-                    tab1.Rows.Add(timeMin, data.flow_rate.ToString(), data.fluid.ToString(), data.wc.ToString(), data.pressure.ToString());
+                    tab1.Rows.Add(timeMin, Math.Round(data.flow_rate, 2).ToString("0.00"), Math.Round(data.fluid, 1).ToString("0.0"), data.wc.ToString() + ":1", Math.Round(data.pressure, 2).ToString("0.00"));
                     TimeSpan timeMinSpan = TimeSpan.FromSeconds(seconds);
                     timeMin = string.Format("{0:D2}:{1:D2}:{2:D2}", timeMinSpan.Hours, timeMinSpan.Minutes, timeMinSpan.Seconds);
                     seconds = seconds + config.time_store_db;
