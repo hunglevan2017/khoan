@@ -607,7 +607,7 @@ namespace KhoanNhaTrang
 
             tickStart = 0;
 
-            endDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").ToString();
+            endDate = DateTime.Now.ToString("yyyy-MM-dd     hh:mm:ss tt").ToString();
             endHour = DateTime.Now.ToString("hh:mm:ss tt").ToString();
 
             isInsertData = false;
