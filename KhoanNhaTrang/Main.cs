@@ -669,9 +669,11 @@ namespace KhoanNhaTrang
             btnPrint.Enabled = true;
 
             SaveFileDialog svg = new SaveFileDialog();
+            svg.FileName = "untitled";
+            svg.Filter = "Excel files|.xlsx";
             if (svg.ShowDialog() == DialogResult.OK)
             {
-                using (FileStream stream = new FileStream(svg.FileName + ".xlsx", FileMode.Create))
+                using (FileStream stream = new FileStream(svg.FileName, FileMode.Create))
                 {
                     //createPDF(stream, System.IO.Path.GetDirectoryName(svg.FileName));
                     createExcel(stream, System.IO.Path.GetDirectoryName(svg.FileName));
@@ -834,9 +836,8 @@ namespace KhoanNhaTrang
                 String imageChartName = @"\Chart" + DateTime.Now.ToString("yyyyMMddhhmmss").ToString() + ".bmp";
                 ZedGraphControl tmp = new ZedGraphControl();
                 tmp = chartTimeCurves;
-                GraphPane graphPane = tmp.GraphPane;
+                GraphPane graphPane = tmp.GraphPane.Clone();
                 graphPane.XAxis.MajorGrid.IsVisible = true;
-                graphPane.YAxis.MajorGrid.IsVisible = true;
 
                 graphPane.XAxis.MajorGrid.DashOn = 10.0F;
                 graphPane.YAxis.MajorGrid.DashOn = 10.0F;
@@ -855,9 +856,10 @@ namespace KhoanNhaTrang
                 graphPane.YAxis.Scale.Min = 0;
                 graphPane.YAxis.Scale.Max = 100;
                 graphPane.YAxis.Scale.MinorStep = 1;
-                graphPane.YAxis.Scale.MajorStep = 20;
+                graphPane.YAxis.Scale.MajorStep = 10;
+                graphPane.YAxis.MajorGrid.IsVisible = true;
 
-                Bitmap bitmap = tmp.MasterPane.GetImage();
+                Bitmap bitmap = graphPane.GetImage();
                 ToGrayScale(bitmap);
                 bitmap.Save(path + imageChartName);
 
@@ -868,18 +870,21 @@ namespace KhoanNhaTrang
                 MessageBox.Show("Có lỗi xảy ra vui lòng thử lại.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         public void ToGrayScale(Bitmap Bmp)
         {
             int rgb;
             Color c;
 
             for (int y = 0; y < Bmp.Height; y++)
+            {
                 for (int x = 0; x < Bmp.Width; x++)
                 {
                     c = Bmp.GetPixel(x, y);
                     rgb = (int)Math.Round(.299 * c.R + .587 * c.G + .114 * c.B);
                     Bmp.SetPixel(x, y, Color.FromArgb(rgb, rgb, rgb));
                 }
+            }
         }
 
         private void createPDF(FileStream fs, String path)

@@ -54,8 +54,8 @@ namespace ExportExcelToTemplateEpplus
                                     ExcelPicture excelImage = null;
                                     excelImage = ws.Drawings.AddPicture("Debopam Pal", pathImage);
                                     excelImage.From.Column = 0;
-                                    excelImage.From.Row = c.Start.Row;
-                                    excelImage.SetSize(170, 100);
+                                    excelImage.From.Row = c.Start.Row - 1;
+                                    excelImage.SetSize(170, 120);
                                     // 2x2 px space for better alignment
                                     excelImage.From.ColumnOff = 2 * 9525;
                                     excelImage.From.RowOff = 2 * 9525;
