@@ -394,7 +394,7 @@ namespace KhoanNhaTrang
                     show_Data_Real_lb(txtflowrate, Math.Round(PLCDB1Read.Instance().flow_rate, 2));
                     show_Data_Real_lb(txttotalflow, Math.Round(PLCDB1Read.Instance().fluid, 2));
                     show_Data_Real_lb(txtdensi, PLCDB1Read.Instance().wc);
-                    //show_Data_Real_lb(txtWC, PLCDB1Read.Instance().wc_1);
+                    show_Data_Real_lb_wc(txtWC, PLCDB1Read.Instance().wc_1);
                     show_Data_Real_lb(txtpressure, Math.Round(PLCDB1Read.Instance().pressure, 2));
                 }
 
@@ -832,7 +832,34 @@ namespace KhoanNhaTrang
 
                 // Draw chart
                 String imageChartName = @"\Chart" + DateTime.Now.ToString("yyyyMMddhhmmss").ToString() + ".bmp";
-                chartTimeCurves.MasterPane.GetImage().Save(path + imageChartName);
+                ZedGraphControl tmp = new ZedGraphControl();
+                tmp = chartTimeCurves;
+                GraphPane graphPane = tmp.GraphPane;
+                graphPane.XAxis.MajorGrid.IsVisible = true;
+                graphPane.YAxis.MajorGrid.IsVisible = true;
+
+                graphPane.XAxis.MajorGrid.DashOn = 10.0F;
+                graphPane.YAxis.MajorGrid.DashOn = 10.0F;
+
+                graphPane.XAxis.Scale.FontSpec.Size = 32;
+                graphPane.YAxis.Scale.FontSpec.Size = 32;
+
+                graphPane.YAxis.Title.IsVisible = false;
+                graphPane.XAxis.Title.IsVisible = false;
+                graphPane.Title.IsVisible = false;
+
+                graphPane.Border.IsVisible = false;
+                graphPane.Legend.IsVisible = false;
+                graphPane.Title.IsVisible = false;
+
+                graphPane.YAxis.Scale.Min = 0;
+                graphPane.YAxis.Scale.Max = 100;
+                graphPane.YAxis.Scale.MinorStep = 1;
+                graphPane.YAxis.Scale.MajorStep = 20;
+
+                Bitmap bitmap = tmp.MasterPane.GetImage();
+                ToGrayScale(bitmap);
+                bitmap.Save(path + imageChartName);
 
                 ExportExcelToTemplateEpplus.TemplateExcel.FillReport(fs, "Template.xlsx", ds, listDataReport.Count -1, path + imageChartName,  new string[] { "{", "}" });
             }
@@ -840,6 +867,19 @@ namespace KhoanNhaTrang
             {
                 MessageBox.Show("Có lỗi xảy ra vui lòng thử lại.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+        public void ToGrayScale(Bitmap Bmp)
+        {
+            int rgb;
+            Color c;
+
+            for (int y = 0; y < Bmp.Height; y++)
+                for (int x = 0; x < Bmp.Width; x++)
+                {
+                    c = Bmp.GetPixel(x, y);
+                    rgb = (int)Math.Round(.299 * c.R + .587 * c.G + .114 * c.B);
+                    Bmp.SetPixel(x, y, Color.FromArgb(rgb, rgb, rgb));
+                }
         }
 
         private void createPDF(FileStream fs, String path)
@@ -1231,7 +1271,7 @@ namespace KhoanNhaTrang
         private void btnTest_Click(object sender, EventArgs e)
         {
             PLC.Instance().SetBit("DB2.DBX48.3");
-            show_Data_Real_lb_wc(txtWC, PLCDB1Read.Instance().wc_1);
+            //show_Data_Real_lb_wc(txtWC, PLCDB1Read.Instance().wc_1);
         }
 
         private void ON_OFF_ALARM(bool output, TextBox lb)
@@ -1257,6 +1297,7 @@ namespace KhoanNhaTrang
                 show_Data_Real_lb(txtflowrate, Math.Round(PLCDB1Read.Instance().flow_rate, 2));
                 show_Data_Real_lb(txttotalflow, Math.Round(PLCDB1Read.Instance().fluid, 2));
                 show_Data_Real_lb(txtdensi, PLCDB1Read.Instance().wc);
+                show_Data_Real_lb_wc(txtWC, PLCDB1Read.Instance().wc_1);
                 //show_Data_Real_lb_wc(txtWC, PLCDB1Read.Instance().wc_1);
                 show_Data_Real_lb(txtpressure, Math.Round(PLCDB1Read.Instance().pressure, 2));
             }
