@@ -143,12 +143,17 @@ namespace KhoanNhaTrang
         private void Form1_Load(object sender, EventArgs e)
         {
             timer1.Start();
+        
             if (PLC.Instance().Open())
             {
-
+                show_Data_Real_lb_wc(txtWC, PLCDB1Read.Instance().WC_start);
+                lbAlarmPLC.Text = "PLC Connected";
+                lbAlarmPLC.BackColor = Color.Lime;
             }
             else
             {
+                lbAlarmPLC.Text = "PLC not connected";
+                lbAlarmPLC.BackColor = Color.Red;
                 MessageBox.Show(" PLC not connected", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
@@ -192,6 +197,14 @@ namespace KhoanNhaTrang
             LineItem curveWC = myPane.AddCurve("W/C", listWC, Color.Brown, SymbolType.None);
             RollingPointPairList listPressure = new RollingPointPairList(60000);
             LineItem curvePressure = myPane.AddCurve("Pressure", listPressure, Color.Green, SymbolType.None);
+            //RollingPointPairList listFlowRate = new RollingPointPairList(60000); // Sử dụng list với 60000 điểm
+            //LineItem curveFlowRate = myPane.AddCurve("Flowrate", listFlowRate, Color.Black, SymbolType.None); // SymbolType là kiểu biểu thị đồ thị : điểm, đường tròn, tam giác....
+            //RollingPointPairList listFluid = new RollingPointPairList(60000);
+            //LineItem curveFluid = myPane.AddCurve("Total flow", listFluid, Color.Black, SymbolType.None);
+            //RollingPointPairList listWC = new RollingPointPairList(60000);
+            //LineItem curveWC = myPane.AddCurve("W/C", listWC, Color.Black, SymbolType.None);
+            //RollingPointPairList listPressure = new RollingPointPairList(60000);
+            //LineItem curvePressure = myPane.AddCurve("Pressure", listPressure, Color.Black, SymbolType.None);
 
             // Định hiện thị cho trục thời gian (Trục X)
             myPane.XAxis.Scale.Min = 0;
@@ -311,6 +324,7 @@ namespace KhoanNhaTrang
         }
         private void btnStart_Click(object sender, EventArgs e)
         {
+            show_Data_Real_lb_wc(txtWC, PLCDB1Read.Instance().WC_start);
             changeMaxY();
             lastInsert = new DateTime();
             firstInsert = true;
@@ -324,7 +338,7 @@ namespace KhoanNhaTrang
 
         private void show_Data_Real_lb_wc(TextBox lb, double value)
         {
-            lb.Text = value +":1";
+            lb.Text = value.ToString("0.0") +":1";
         }
 
         private void show_Data_Real_lb(TextBox lb, double value)

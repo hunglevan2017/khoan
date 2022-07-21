@@ -132,6 +132,7 @@ namespace KhoanNhaTrang
             this.btnPause = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.lbAlarmPLC = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -1072,6 +1073,7 @@ namespace KhoanNhaTrang
             // 
             // chartTimeCurves
             // 
+            this.chartTimeCurves.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chartTimeCurves.Location = new System.Drawing.Point(6, 25);
             this.chartTimeCurves.Name = "chartTimeCurves";
             this.chartTimeCurves.ScrollGrace = 0D;
@@ -1211,10 +1213,23 @@ namespace KhoanNhaTrang
             this.timer2.Interval = 1000;
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
+            // lbAlarmPLC
+            // 
+            this.lbAlarmPLC.BackColor = System.Drawing.Color.Red;
+            this.lbAlarmPLC.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbAlarmPLC.ForeColor = System.Drawing.Color.White;
+            this.lbAlarmPLC.Location = new System.Drawing.Point(807, 0);
+            this.lbAlarmPLC.Name = "lbAlarmPLC";
+            this.lbAlarmPLC.Size = new System.Drawing.Size(270, 29);
+            this.lbAlarmPLC.TabIndex = 5;
+            this.lbAlarmPLC.Text = "PLC stopping";
+            this.lbAlarmPLC.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // Form1
             // 
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1077, 919);
+            this.Controls.Add(this.lbAlarmPLC);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
@@ -1352,6 +1367,7 @@ namespace KhoanNhaTrang
         private System.Windows.Forms.Timer timer2;
         private System.Windows.Forms.ToolStripMenuItem toolToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem timeUpdateToolStripMenuItem;
+        private System.Windows.Forms.Label lbAlarmPLC;
     }
 }
 

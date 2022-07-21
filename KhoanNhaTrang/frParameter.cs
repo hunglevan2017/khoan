@@ -244,6 +244,14 @@ namespace KhoanNhaTrang
             }
         }
 
+        private void tytrongXM_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                Write_Data_real_txt("DB2.DBD50", tytrongXM);
+            }
+        }
+
 
 
 

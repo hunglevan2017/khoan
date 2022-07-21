@@ -75,6 +75,9 @@
             this.txtanalogmax3 = new System.Windows.Forms.TextBox();
             this.label22 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
+            this.tytrongXM = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -118,7 +121,7 @@
             // btCancle1
             // 
             this.btCancle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btCancle1.Location = new System.Drawing.Point(372, 366);
+            this.btCancle1.Location = new System.Drawing.Point(349, 465);
             this.btCancle1.Name = "btCancle1";
             this.btCancle1.Size = new System.Drawing.Size(153, 41);
             this.btCancle1.TabIndex = 32;
@@ -612,12 +615,50 @@
             this.label23.Text = "HIỆU CHỈNH GIÁ TRỊ ANALOG";
             this.label23.Click += new System.EventHandler(this.label23_Click);
             // 
+            // tytrongXM
+            // 
+            this.tytrongXM.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tytrongXM.Location = new System.Drawing.Point(170, 366);
+            this.tytrongXM.MaximumSize = new System.Drawing.Size(800, 80);
+            this.tytrongXM.Name = "tytrongXM";
+            this.tytrongXM.Size = new System.Drawing.Size(89, 26);
+            this.tytrongXM.TabIndex = 54;
+            this.tytrongXM.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tytrongXM.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tytrongXM_KeyDown);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.ForeColor = System.Drawing.Color.White;
+            this.label7.Location = new System.Drawing.Point(16, 366);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(114, 24);
+            this.label7.TabIndex = 53;
+            this.label7.Text = "Tỷ trọng XM";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label16.ForeColor = System.Drawing.Color.White;
+            this.label16.Location = new System.Drawing.Point(265, 367);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(48, 24);
+            this.label16.TabIndex = 55;
+            this.label16.Text = "Kg/L";
+            this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // frParameter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(896, 432);
+            this.ClientSize = new System.Drawing.Size(896, 531);
+            this.Controls.Add(this.label16);
+            this.Controls.Add(this.tytrongXM);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.label23);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -688,5 +729,8 @@
         private System.Windows.Forms.TextBox txtanalogmax3;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.TextBox tytrongXM;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label16;
     }
 }

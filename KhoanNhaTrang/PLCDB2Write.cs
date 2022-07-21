@@ -46,6 +46,7 @@ namespace KhoanNhaTrang
         public bool End { get; set; }
         public bool test { get; set; }
         public bool clear { get; set; }
+        public int Tytrong { get; set; }
         public short temp { get; set; }
     }
 }

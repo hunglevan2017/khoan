@@ -34,8 +34,11 @@ namespace KhoanNhaTrang
         public double wc { get; set; }
         public double fluid { get; set; }
         public bool Outstart { get; set; }
-        public short wc_1 { get; set; }
+        public double wc_1 { get; set; }
         public double cement_total { get; set; }
+        public short RawAI4 { get; set; }
+        public double OutAI4 { get; set; }
+        public double WC_start { get; set; }
         public short temp1 { get; set; }
 
     }
