@@ -792,14 +792,10 @@ namespace KhoanNhaTrang
                 par2.Columns.Add("endtime");
                 par2.Columns.Add("totalfluid");
                 par2.Columns.Add("ashused");
-                par2.Columns.Add("ashdiscarded");
-                par2.Columns.Add("cemmentdiscarded");
-                object[] values2 = new object[5];
+                object[] values2 = new object[3];
                 values2[0] = "End Time: " + endDate;
                 values2[1] = "Total Fluid: " + Math.Round(totalfluid, 2) + " L";
-                values2[2] = "Ash used:    Kg" ;
-                values2[3] = "Ash discarded: " + Math.Round(PLCDB1Read.Instance().cement_total, 2) + " L";
-                values2[4] = "Cememt discarded:    Kg";
+                values2[2] = "Ash used: " + Math.Round(PLCDB1Read.Instance().cement_total, 2) + " Kg";
                 par2.Rows.Add(values2);
                 par2.TableName = "par2";
                 ds.Tables.Add(par2);
