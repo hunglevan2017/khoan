@@ -692,6 +692,9 @@ namespace KhoanNhaTrang
                 {
                     createExcel(stream, Path.GetTempPath());
 
+                    // If using Professional version, put your serial key below.
+                    SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
+
                     // Load Excel workbook from file's path.
                     ExcelFile workbook = ExcelFile.Load(tempPathFile);
 
@@ -699,13 +702,12 @@ namespace KhoanNhaTrang
                     foreach (ExcelWorksheet worksheet in workbook.Worksheets)
                     {
                         ExcelPrintOptions sheetPrintOptions = worksheet.PrintOptions;
-
                         sheetPrintOptions.Portrait = false;
                         sheetPrintOptions.HorizontalCentered = true;
                         sheetPrintOptions.VerticalCentered = true;
 
-                        sheetPrintOptions.PrintHeadings = true;
-                        sheetPrintOptions.PrintGridlines = true;
+                        sheetPrintOptions.PrintHeadings = false;
+                        sheetPrintOptions.PrintGridlines = false;
                     }
 
                     // Create spreadsheet's print options. 
