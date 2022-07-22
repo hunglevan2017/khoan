@@ -1075,6 +1075,7 @@ namespace KhoanNhaTrang
             // 
             this.chartTimeCurves.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chartTimeCurves.Location = new System.Drawing.Point(6, 25);
+            this.chartTimeCurves.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.chartTimeCurves.Name = "chartTimeCurves";
             this.chartTimeCurves.ScrollGrace = 0D;
             this.chartTimeCurves.ScrollMaxX = 0D;
@@ -1157,6 +1158,7 @@ namespace KhoanNhaTrang
             this.btnPrint.TabIndex = 41;
             this.btnPrint.Text = "Print";
             this.btnPrint.UseVisualStyleBackColor = true;
+            this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
             // 
             // btnSaveToAs
             // 
