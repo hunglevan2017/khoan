@@ -872,6 +872,16 @@ namespace KhoanNhaTrang
                 GraphPane graphPane = tmp.GraphPane.Clone();
                 graphPane.XAxis.MajorGrid.IsVisible = true;
 
+
+                LineItem curveFlowRate = tmp.GraphPane.CurveList[0] as LineItem;
+                curveFlowRate.Line.Width = 3F;
+                LineItem curveFluid = tmp.GraphPane.CurveList[1] as LineItem;
+                curveFluid.Line.Width = 3F;
+                LineItem curveWC = tmp.GraphPane.CurveList[2] as LineItem;
+                curveWC.Line.Width = 3F;
+                LineItem curvePressure = tmp.GraphPane.CurveList[3] as LineItem;
+                curvePressure.Line.Width = 3F;
+
                 graphPane.XAxis.MajorGrid.DashOn = 10.0F;
                 graphPane.YAxis.MajorGrid.DashOn = 10.0F;
 
