@@ -13,6 +13,7 @@ using System.IO;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.Diagnostics;
+using GemBox.Spreadsheet;
 
 namespace KhoanNhaTrang
 {
@@ -683,7 +684,39 @@ namespace KhoanNhaTrang
 
         private void btnPrint_Click(object sender, EventArgs e)
         {
+            var confirmResult = MessageBox.Show("Do you want to print?", "Please Confirm", MessageBoxButtons.YesNo);
+            if (confirmResult == DialogResult.Yes)
+            {
+                string tempPathFile = Path.Combine(Path.GetTempPath(), DateTime.Now.ToString("yyyyMMddhhmmss").ToString() + ".xlsx");
+                using (FileStream stream = new FileStream(tempPathFile, FileMode.Create))
+                {
+                    createExcel(stream, Path.GetTempPath());
 
+                    // Load Excel workbook from file's path.
+                    ExcelFile workbook = ExcelFile.Load(tempPathFile);
+
+                    // Set sheets print options.
+                    foreach (ExcelWorksheet worksheet in workbook.Worksheets)
+                    {
+                        ExcelPrintOptions sheetPrintOptions = worksheet.PrintOptions;
+
+                        sheetPrintOptions.Portrait = false;
+                        sheetPrintOptions.HorizontalCentered = true;
+                        sheetPrintOptions.VerticalCentered = true;
+
+                        sheetPrintOptions.PrintHeadings = true;
+                        sheetPrintOptions.PrintGridlines = true;
+                    }
+
+                    // Create spreadsheet's print options. 
+                    PrintOptions printOptions = new PrintOptions();
+                    printOptions.SelectionType = SelectionType.EntireFile;
+
+                    // Print Excel workbook to default printer (e.g. 'Microsoft Print to Pdf').
+                    string printerName = null;
+                    workbook.Print(printerName, printOptions);
+                }
+            }
         }
 
         private void createExcel(FileStream fs, String path)
@@ -838,6 +871,16 @@ namespace KhoanNhaTrang
                 tmp = chartTimeCurves;
                 GraphPane graphPane = tmp.GraphPane.Clone();
                 graphPane.XAxis.MajorGrid.IsVisible = true;
+
+
+                LineItem curveFlowRate = tmp.GraphPane.CurveList[0] as LineItem;
+                curveFlowRate.Line.Width = 3F;
+                LineItem curveFluid = tmp.GraphPane.CurveList[1] as LineItem;
+                curveFluid.Line.Width = 3F;
+                LineItem curveWC = tmp.GraphPane.CurveList[2] as LineItem;
+                curveWC.Line.Width = 3F;
+                LineItem curvePressure = tmp.GraphPane.CurveList[3] as LineItem;
+                curvePressure.Line.Width = 3F;
 
                 graphPane.XAxis.MajorGrid.DashOn = 10.0F;
                 graphPane.YAxis.MajorGrid.DashOn = 10.0F;
