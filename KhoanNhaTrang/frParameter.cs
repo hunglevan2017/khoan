@@ -55,6 +55,8 @@ namespace KhoanNhaTrang
                 show_Data_Dint_txt(txtanalogmax3, PLCDB2Write.Instance().Raw_high_3);
                 show_Data_Dint_txt(txtscalemin3, PLCDB2Write.Instance().Scale_value_low_3);
                 show_Data_Dint_txt(txtscalemax3, PLCDB2Write.Instance().Scale_value_high_3);
+                show_Data_Dint_txt(tytrongXM, PLCDB2Write.Instance().Tytrong);
+                
             }
         }
         #endregion
