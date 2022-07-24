@@ -13,7 +13,8 @@ using System.IO;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.Diagnostics;
-using GemBox.Spreadsheet;
+using System.Drawing.Printing;
+using Spire.Xls;
 
 namespace KhoanNhaTrang
 {
@@ -684,39 +685,27 @@ namespace KhoanNhaTrang
 
         private void btnPrint_Click(object sender, EventArgs e)
         {
-            var confirmResult = MessageBox.Show("Do you want to print?", "Please Confirm", MessageBoxButtons.YesNo);
-            if (confirmResult == DialogResult.Yes)
+            string tempPathFile = Path.Combine(Path.GetTempPath(), DateTime.Now.ToString("yyyyMMddhhmmss").ToString() + ".xlsx");
+            using (FileStream stream = new FileStream(tempPathFile, FileMode.Create))
             {
-                string tempPathFile = Path.Combine(Path.GetTempPath(), DateTime.Now.ToString("yyyyMMddhhmmss").ToString() + ".xlsx");
-                using (FileStream stream = new FileStream(tempPathFile, FileMode.Create))
+                createExcel(stream, Path.GetTempPath());
+
+                Workbook workbook = new Workbook();
+                workbook.LoadFromFile(tempPathFile);
+                PrintDialog dialog = new PrintDialog();
+                dialog.AllowPrintToFile = true;
+                dialog.AllowCurrentPage = true;
+                dialog.AllowSomePages = true;
+                dialog.AllowSelection = true;
+                dialog.UseEXDialog = true;
+                dialog.PrinterSettings.Duplex = Duplex.Simplex;
+                dialog.PrinterSettings.FromPage = 0;
+                dialog.PrinterSettings.ToPage = 8;
+                dialog.PrinterSettings.PrintRange = PrintRange.SomePages;
+                PrintDocument pd = workbook.PrintDocument;
+                if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    createExcel(stream, Path.GetTempPath());
-
-                    // If using Professional version, put your serial key below.
-                    SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
-
-                    // Load Excel workbook from file's path.
-                    ExcelFile workbook = ExcelFile.Load(tempPathFile);
-
-                    // Set sheets print options.
-                    foreach (ExcelWorksheet worksheet in workbook.Worksheets)
-                    {
-                        ExcelPrintOptions sheetPrintOptions = worksheet.PrintOptions;
-                        sheetPrintOptions.Portrait = false;
-                        sheetPrintOptions.HorizontalCentered = true;
-                        sheetPrintOptions.VerticalCentered = true;
-
-                        sheetPrintOptions.PrintHeadings = false;
-                        sheetPrintOptions.PrintGridlines = false;
-                    }
-
-                    // Create spreadsheet's print options. 
-                    PrintOptions printOptions = new PrintOptions();
-                    printOptions.SelectionType = SelectionType.EntireFile;
-
-                    // Print Excel workbook to default printer (e.g. 'Microsoft Print to Pdf').
-                    string printerName = null;
-                    workbook.Print(printerName, printOptions);
+                    pd.Print();
                 }
             }
         }
