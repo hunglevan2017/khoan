@@ -22,6 +22,8 @@ namespace KhoanNhaTrang
         }
          public bool Open()
         {
+            if (_plc.IsConnected)
+                return true;
             if (_plc.Open() == ErrorCode.NoError)
             {
                 PLC_connected = true;

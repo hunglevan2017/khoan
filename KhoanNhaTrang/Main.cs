@@ -145,19 +145,8 @@ namespace KhoanNhaTrang
         private void Form1_Load(object sender, EventArgs e)
         {
             timer1.Start();
-        
-            if (PLC.Instance().Open())
-            {
-                show_Data_Real_lb_wc(txtWC, PLCDB1Read.Instance().WC_start);
-                lbAlarmPLC.Text = "PLC Connected";
-                lbAlarmPLC.BackColor = Color.Lime;
-            }
-            else
-            {
-                lbAlarmPLC.Text = "PLC not connected";
-                lbAlarmPLC.BackColor = Color.Red;
-                MessageBox.Show(" PLC not connected", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            timer2.Start();
+           
 
 
             // khi khởi động sẽ được chạy
@@ -400,7 +389,7 @@ namespace KhoanNhaTrang
                     show_Data_Real_lb(txtpressure, Math.Round(PLCDB1Read.Instance().pressure, 2));
                 }
 
-                if (isInsertData)
+                if (isInsertData && PLC.Instance().Open())
                 { 
                     Data data = insertDB();
                         
@@ -1330,6 +1319,25 @@ namespace KhoanNhaTrang
 
         private void timer2_Tick(object sender, EventArgs e)
         {
+            try
+            {
+                if (PLC.Instance().Open())
+                {
+                    show_Data_Real_lb_wc(txtWC, PLCDB1Read.Instance().WC_start);
+                    lbAlarmPLC.Text = "PLC Connected";
+                    lbAlarmPLC.BackColor = Color.Lime;
+                }
+                else
+                {
+                    lbAlarmPLC.Text = "PLC not connected";
+                    lbAlarmPLC.BackColor = Color.Red;
+                }
+            }
+            catch (Exception ex)
+            {
+                
+            }
+
             if (!debugMode) { 
                 PLC.Instance().ReadClass(PLCDB1Read.Instance(), 1);
                 PLC.Instance().ReadClass(PLCDB2Write.Instance(), 2);

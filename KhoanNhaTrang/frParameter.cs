@@ -37,7 +37,7 @@ namespace KhoanNhaTrang
         {
             if (PLC.Instance().PLC_connected)
             {
-                timerpara.Interval = 100;
+                timerpara.Interval = 10;
                 timerpara.Enabled = true;
                 //AI1
                 //txtscalemax1.Text = Write_parastatic.Scale_value_high_1.ToString("0.00");
