@@ -43,20 +43,27 @@ namespace KhoanNhaTrang
                 //txtscalemax1.Text = Write_parastatic.Scale_value_high_1.ToString("0.00");
                 show_Data_Dint_txt(txtanalogmin1, PLCDB2Write.Instance().Raw_low_1);
                 show_Data_Dint_txt(txtanalogmax1, PLCDB2Write.Instance().Raw_high_1);
-                show_Data_Dint_txt(txtscalemin1, PLCDB2Write.Instance().Scale_value_low_1);
-                show_Data_Dint_txt(txtscalemax1, PLCDB2Write.Instance().Scale_value_high_1);
+                //show_Data_Dint_txt(txtscalemin1, PLCDB2Write.Instance().Scale_value_low_1);
+                //show_Data_Dint_txt(txtscalemax1, PLCDB2Write.Instance().Scale_value_high_1);
+                show_Data_Real1_txt(txtscalemin1, PLCDB3READ.Instance().Scale_value_low_1);
+                show_Data_Real1_txt(txtscalemax1, PLCDB3READ.Instance().Scale_value_high_1);
                 //AI2
                 show_Data_Dint_txt(txtanalogmin2, PLCDB2Write.Instance().Raw_low_2);
                 show_Data_Dint_txt(txtanalogmax2, PLCDB2Write.Instance().Raw_high_2);
-                show_Data_Dint_txt(txtscalemin2, PLCDB2Write.Instance().Scale_value_low_2);
-                show_Data_Dint_txt(txtscalemax2, PLCDB2Write.Instance().Scale_value_high_2);
+                //show_Data_Dint_txt(txtscalemin2, PLCDB2Write.Instance().Scale_value_low_2);
+                //show_Data_Dint_txt(txtscalemax2, PLCDB2Write.Instance().Scale_value_high_2);
+                show_Data_Real1_txt(txtscalemin2, PLCDB3READ.Instance().Scale_value_low_2);
+                show_Data_Real1_txt(txtscalemax2, PLCDB3READ.Instance().Scale_value_high_2);
                 //AI3
                 show_Data_Dint_txt(txtanalogmin3, PLCDB2Write.Instance().Raw_low_3);
                 show_Data_Dint_txt(txtanalogmax3, PLCDB2Write.Instance().Raw_high_3);
-                show_Data_Dint_txt(txtscalemin3, PLCDB2Write.Instance().Scale_value_low_3);
-                show_Data_Dint_txt(txtscalemax3, PLCDB2Write.Instance().Scale_value_high_3);
-                show_Data_Dint_txt(tytrongXM, PLCDB2Write.Instance().Tytrong);
-                
+                //show_Data_Dint_txt(txtscalemin3, PLCDB2Write.Instance().Scale_value_low_3);
+                //show_Data_Dint_txt(txtscalemax3, PLCDB2Write.Instance().Scale_value_high_3);
+                show_Data_Real1_txt(txtscalemin3, PLCDB3READ.Instance().Scale_value_low_3);
+                show_Data_Real1_txt(txtscalemax3, PLCDB3READ.Instance().Scale_value_high_3);
+                //show_Data_Dint_txt(tytrongXM, PLCDB2Write.Instance().Tytrong);
+                show_Data_Real1_txt(tytrongXM, PLCDB3READ.Instance().tytrong);
+
             }
         }
         #endregion
@@ -97,6 +104,12 @@ namespace KhoanNhaTrang
         {
 
             lb.Text = value.ToString("0.00");
+
+        }
+        private void show_Data_Real1_txt(TextBox txt, double value)
+        {
+
+            txt.Text = value.ToString("0.00");
 
         }
         #endregion

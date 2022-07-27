@@ -199,14 +199,14 @@ namespace KhoanNhaTrang
 
             // Định hiện thị cho trục thời gian (Trục X)
             myPane.XAxis.Scale.Min = 0;
-            myPane.XAxis.Scale.Max = 60;
+            myPane.XAxis.Scale.Max = 600;
             myPane.XAxis.Scale.MinorStep = 1;
-            myPane.XAxis.Scale.MajorStep = 5;
+            myPane.XAxis.Scale.MajorStep = 10;
             myPane.XAxis.MajorGrid.IsVisible = true;
 
             // Set Scale to default X
             myPane.XAxis.Scale.MinAuto = true;
-            myPane.XAxis.Scale.MaxAuto = true;
+            myPane.XAxis.Scale.MaxAuto = false;
             myPane.XAxis.Scale.MajorStepAuto = true;
             myPane.XAxis.Scale.MinorStepAuto = true;
             myPane.XAxis.CrossAuto = true;
@@ -241,6 +241,10 @@ namespace KhoanNhaTrang
 
         private void btnStart_MouseUp(object sender, MouseEventArgs e)
         {
+            //txtMaxOfYTotalFlow.Text = (Convert.ToDouble(txtMaxOfYTotalFlow.Text) * 2).ToString();
+            //valueFluid = ((data.fluid * 100) / Convert.ToDouble(txtMaxOfYTotalFlow.Text));
+            //changeMaxY();
+            //reDraw();
             PLC.Instance().ResetBit("DB2.DBX48.0");
             if (txtMaxOfYFlowrate.Text != null && !"".Equals(txtMaxOfYFlowrate.Text.Trim())
                 && txtMaxOfYTotalFlow.Text != null && !"".Equals(txtMaxOfYTotalFlow.Text.Trim())
@@ -322,7 +326,7 @@ namespace KhoanNhaTrang
             string query = @"select * from config order by id desc limit 1";
             config = db.Query<Config>(query, config).Single();
             timer1.Stop();
-            timer1.Interval = config.time_update_ui * 1000;
+            timer1.Interval = config.time_update_ui * 100;
             btnEnd.Enabled = true;
             timer1.Start();
         }
@@ -1341,6 +1345,7 @@ namespace KhoanNhaTrang
             if (!debugMode) { 
                 PLC.Instance().ReadClass(PLCDB1Read.Instance(), 1);
                 PLC.Instance().ReadClass(PLCDB2Write.Instance(), 2);
+                PLC.Instance().ReadClass(PLCDB3READ.Instance(), 3);
                 show_Data_Real_lb(txtflowrate, Math.Round(PLCDB1Read.Instance().flow_rate, 2));
                 show_Data_Real_lb(txttotalflow, Math.Round(PLCDB1Read.Instance().fluid, 2));
                 show_Data_Real_lb(txtdensi, PLCDB1Read.Instance().wc);
