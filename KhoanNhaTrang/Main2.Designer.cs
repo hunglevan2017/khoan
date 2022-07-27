@@ -1032,7 +1032,7 @@ namespace KhoanNhaTrang
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Main2";
-            this.Text = "EM Grouting -- Equipment - Form 2";
+            this.Text = "Water Pressure Test Report";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);

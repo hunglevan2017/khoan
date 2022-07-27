@@ -63,8 +63,10 @@
     <None Include="bin\Debug\net48\Template.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="bin\Debug\net48\TemplateMain2.xlsx" />
     <None Include="bin\Release\net48\Template.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="bin\Release\net48\TemplateMain2.xlsx" />
   </ItemGroup>
 </Project>

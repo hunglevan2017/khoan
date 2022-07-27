@@ -199,7 +199,7 @@ namespace KhoanNhaTrang
             // timeUpdateToolStripMenuItem
             // 
             this.timeUpdateToolStripMenuItem.Name = "timeUpdateToolStripMenuItem";
-            this.timeUpdateToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.timeUpdateToolStripMenuItem.Size = new System.Drawing.Size(168, 26);
             this.timeUpdateToolStripMenuItem.Text = "Time Update";
             this.timeUpdateToolStripMenuItem.Click += new System.EventHandler(this.timeUpdateToolStripMenuItem_Click);
             // 
@@ -209,14 +209,14 @@ namespace KhoanNhaTrang
             this.Main2ToolStripMenuItem});
             this.toolToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.toolToolStripMenuItem.Name = "toolToolStripMenuItem";
-            this.toolToolStripMenuItem.Size = new System.Drawing.Size(68, 25);
-            this.toolToolStripMenuItem.Text = "Form2";
+            this.toolToolStripMenuItem.Size = new System.Drawing.Size(78, 25);
+            this.toolToolStripMenuItem.Text = "Monitor";
             // 
             // Main2ToolStripMenuItem
             // 
             this.Main2ToolStripMenuItem.Name = "Main2ToolStripMenuItem";
-            this.Main2ToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
-            this.Main2ToolStripMenuItem.Text = "Main2";
+            this.Main2ToolStripMenuItem.Size = new System.Drawing.Size(266, 26);
+            this.Main2ToolStripMenuItem.Text = "Water Pressure Test Report";
             this.Main2ToolStripMenuItem.Click += new System.EventHandler(this.Main2ToolStripMenuItem_Click);
             // 
             // panel1
@@ -1257,7 +1257,7 @@ namespace KhoanNhaTrang
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
-            this.Text = "EM Grouting -- Equipment2";
+            this.Text = "EM Grouting -- Equipment";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

@@ -30,7 +30,7 @@ namespace KhoanNhaTrang
         private String endHour;
         private GraphPane myPane;
         Boolean isInsertData = false;
-        Boolean debugMode = true;
+        Boolean debugMode = false;
         Config config = new Config();
         DateTime lastInsert;
         Boolean firstInsert;

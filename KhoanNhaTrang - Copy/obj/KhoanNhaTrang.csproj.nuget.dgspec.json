@@ -1,0 +1,88 @@
+{
+  "format": 1,
+  "restore": {
+    "E:\\grouting\\khoan\\KhoanNhaTrang\\KhoanNhaTrang.csproj": {}
+  },
+  "projects": {
+    "E:\\grouting\\khoan\\KhoanNhaTrang\\KhoanNhaTrang.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "E:\\grouting\\khoan\\KhoanNhaTrang\\KhoanNhaTrang.csproj",
+        "projectName": "KhoanNhaTrang",
+        "projectPath": "E:\\grouting\\khoan\\KhoanNhaTrang\\KhoanNhaTrang.csproj",
+        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+        "outputPath": "E:\\grouting\\khoan\\KhoanNhaTrang\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 19.2.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net48"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\DevExpress 19.2\\Components\\System\\Components\\Packages": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net48": {
+            "targetAlias": "net48",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net48": {
+          "targetAlias": "net48",
+          "dependencies": {
+            "Dapper": {
+              "target": "Package",
+              "version": "[2.0.123, )"
+            },
+            "EPPlus": {
+              "target": "Package",
+              "version": "[6.0.6, )"
+            },
+            "FreeSpire.XLS": {
+              "target": "Package",
+              "version": "[12.7.0, )"
+            },
+            "MySqlConnector": {
+              "target": "Package",
+              "version": "[2.1.10, )"
+            },
+            "System.Data.SqlClient": {
+              "target": "Package",
+              "version": "[4.8.3, )"
+            },
+            "ZedGraph": {
+              "target": "Package",
+              "version": "[5.1.7, )"
+            },
+            "iTextSharp": {
+              "target": "Package",
+              "version": "[5.5.13.3, )"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+        }
+      },
+      "runtimes": {
+        "win7-x86": {
+          "#import": []
+        }
+      }
+    }
+  }
+}
