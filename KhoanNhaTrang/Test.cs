@@ -44,7 +44,24 @@ namespace KhoanNhaTrang
             graphPane.YAxis.Scale.Min = 0;
             graphPane.YAxis.Scale.Max = 100;
             graphPane.YAxis.Scale.MinorStep = 1;
-            graphPane.YAxis.Scale.MajorStep = 20;
+            graphPane.YAxis.Scale.MajorStep = 100;
+
+
+
+            LineItem lineGraph = graphPane.CurveList[0] as LineItem;
+            lineGraph.Line.Width = 3F;
+
+            IPointListEdit pointListEdit = lineGraph.Points as IPointListEdit;
+            pointListEdit.Add(0, 0);
+            pointListEdit.Add(57, 4);
+
+           // zedGraphControl1.AxisChange();
+            // Force a redraw
+           // zedGraphControl1.Invalidate();
+            //zedGraphControl1.Refresh();
+
+
+
 
             //zedGraphControl1.ZoomPane(graphPane, 0.9, centrePoint, false);
 

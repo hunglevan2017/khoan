@@ -80,26 +80,33 @@ namespace KhoanNhaTrang
                 }
                 string query = "";
 
-
-                Debug.WriteLine("data.insert_date:" +data.insert_date.ToString());
-                Debug.WriteLine("lastInsert:" + lastInsert.ToString());
-                Debug.WriteLine((data.insert_date - lastInsert).TotalSeconds.ToString());
-
                 if (!firstInsert)
                 { 
                     int a = 4;
                 }
 
-                if (tickStart%config.time_store_db==0 || firstInsert)
+                if (tickStart % config.time_store_db == 0 || firstInsert)
                 {
+                    if (firstInsert)
+                    {
+                        data.flow_rate = 0;
+                        data.pressure = 0;
+                    }
                     query = @"insert into data(flow_rate,pressure,management_id) values(@flow_rate,@pressure,@management_id);
                             select * from data order by id desc limit 1";
                     data = db.Query<Data>(query, data).Single();
                     data.flow_rate = Math.Round(data.flow_rate, 2);
                     data.pressure = Math.Round(data.pressure, 2);
+                    data.management_id = managementId;
                     lastInsert = data.insert_date;
                     firstInsert = false;
                 }
+                else
+                {
+                    data.management_id = 0;
+                }
+
+               
                 //Update Cement total
                 var param = new DynamicParameters();
                 param.Add("Id", managementId);
@@ -132,8 +139,6 @@ namespace KhoanNhaTrang
             timer1.Start();
             timer2.Start();
            
-
-
             // khi khởi động sẽ được chạy
             //sampleConnectDB();
             // init combobox
@@ -160,22 +165,19 @@ namespace KhoanNhaTrang
 
             // Khai báo sử dụng Graph loại GraphPane;
             myPane = chartTimeCurves.GraphPane;
-            myPane.Title.Text = "EM Grouting Curves";
+            myPane.Title.Text = "";
             myPane.XAxis.Title.Text = "Thời gian (s)";
             myPane.YAxis.Title.Text = "Percent";
 
             //Định nghĩa list để vẽ đồ thị.
-            RollingPointPairList listFlowRate = new RollingPointPairList(60000); // Sử dụng list với 60000 điểm
-            LineItem curveFlowRate = myPane.AddCurve("Flowrate", listFlowRate, Color.Red, SymbolType.None); // SymbolType là kiểu biểu thị đồ thị : điểm, đường tròn, tam giác....
+            RollingPointPairList listFlowRate = new RollingPointPairList(60000); 
+            LineItem curveLine = myPane.AddCurve("", listFlowRate, Color.Red, SymbolType.None); // SymbolType là kiểu biểu thị đồ thị : điểm, đường tròn, tam giác....
 
-            RollingPointPairList listPressure = new RollingPointPairList(60000);
-            LineItem curvePressure = myPane.AddCurve("Pressure", listPressure, Color.Green, SymbolType.None);
-           
             // Định hiện thị cho trục thời gian (Trục X)
             myPane.XAxis.Scale.Min = 0;
-            myPane.XAxis.Scale.Max = 60;
-            myPane.XAxis.Scale.MinorStep = 1;
-            myPane.XAxis.Scale.MajorStep = 5;
+            //myPane.XAxis.Scale.Max = 100;
+            //myPane.XAxis.Scale.MinorStep = 15;
+            //myPane.XAxis.Scale.MajorStep = 5;
             myPane.XAxis.MajorGrid.IsVisible = true;
 
             // Set Scale to default X
@@ -198,10 +200,10 @@ namespace KhoanNhaTrang
 
 
             // Định hiện thị cho trục thời gian(Trục Y)
-            myPane.YAxis.Scale.Min = 0;
-            myPane.YAxis.Scale.Max = 100;
-            myPane.YAxis.Scale.MinorStep = 1;
-            myPane.YAxis.Scale.MajorStep = 10;
+           // myPane.YAxis.Scale.Min = 0;
+           // myPane.YAxis.Scale.Max = 100;
+           // myPane.YAxis.Scale.MinorStep = 1;
+           // myPane.YAxis.Scale.MajorStep = 10;
             myPane.YAxis.MajorGrid.IsVisible = true;
 
             // Gọi hàm xác định cỡ trục
@@ -312,8 +314,8 @@ namespace KhoanNhaTrang
             int min = 50;
             int max = 200;
             Random _random = new Random();
-            txtflowrate.Text = _random.Next(min, max).ToString();
-            txtpressure.Text = _random.Next(30, 40).ToString();
+            txtflowrate.Text = _random.Next(50, 60).ToString();
+            txtpressure.Text = _random.Next(3, 5).ToString();
         }
 
         public void reDraw()
@@ -322,8 +324,8 @@ namespace KhoanNhaTrang
             initChart();
             for (int i = 0; i < listData.Count;i++)
             {
-                double valueFlowRate = ((listData[i].flow_rate * 100) / Convert.ToDouble(maxY.flow));
-                double valuePressure = ((listData[i].pressure * 100) / Convert.ToDouble(maxY.pressure));
+                double valueFlowRate = listData[i].flow_rate ;
+                double valuePressure = listData[i].pressure ;
                 Draw(valueFlowRate, valuePressure);
             }
         }
@@ -348,89 +350,60 @@ namespace KhoanNhaTrang
                 if ((debugMode && isInsertData) ||  (isInsertData && PLC.Instance().Open()))
                 { 
                     Data data = insertDB();
-                        
+    
                     show_Data_Real_lb(txtflowrate, data.flow_rate);
                     show_Data_Real_lb(txtpressure, data.pressure);
 
-                    double valueFlowRate = ((data.flow_rate * 100) / Convert.ToDouble(maxY.flow));
-                    double valuePressure = ((data.pressure * 100) / Convert.ToDouble(maxY.pressure));
+                    if(data.management_id>0)
+                    { 
+                        listData.Add(data);
+                        Boolean isRedraw = false;
 
-                    listData.Add(data);
-                    Boolean isRedraw = false;
-
-                    while (valueFlowRate > limitPercentScaleY)
-                    {
-                        txtMaxOfYFlowrate.Text = (Convert.ToDouble(txtMaxOfYFlowrate.Text) * 2).ToString();
-                        valueFlowRate = ((data.flow_rate * 100) / Convert.ToDouble(txtMaxOfYFlowrate.Text));
-                        changeMaxY();
-                        reDraw();
-                        isRedraw = true;
+                        if(!isRedraw && isInsertData)
+                            Draw(data.flow_rate, data.pressure);
                     }
-
-
-                    while (valuePressure > limitPercentScaleY)
-                    {
-                        txtMaxOfYPressure.Text = (Convert.ToDouble(txtMaxOfYPressure.Text) * 2).ToString();
-                        valuePressure = ((data.pressure * 100) / Convert.ToDouble(txtMaxOfYPressure.Text));
-                        changeMaxY();
-                        reDraw();
-                        isRedraw = true;
-                    }
-
-                    if(!isRedraw)
-                        Draw(valueFlowRate, valuePressure);
-
+                    tickStart = tickStart + config.time_update_ui;
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                
+
+               // ex.StackTrace();
             }
         }
 
         private void Draw(double flowRate, double pressure)
         {
-
+            initChart();
             if (chartTimeCurves.GraphPane.CurveList.Count <= 0)
                 return;
 
             // Đưa về điểm xuất phát
-            LineItem curveFlowRate = chartTimeCurves.GraphPane.CurveList[0] as LineItem;
-            curveFlowRate.Line.Width = widthBorderGraph;
+            LineItem curveLine = chartTimeCurves.GraphPane.CurveList[0] as LineItem;
+            curveLine.Line.Width = widthBorderGraph;
 
-            LineItem curvePressure = chartTimeCurves.GraphPane.CurveList[1] as LineItem;
-            curvePressure.Line.Width = widthBorderGraph;
 
-            if (curveFlowRate == null)
+            if (curveLine == null)
                 return;
-
-            if (curvePressure == null)
-                return;
-
-
-            IPointListEdit listFlowRate = curveFlowRate.Points as IPointListEdit;
-            IPointListEdit listPressure = curvePressure.Points as IPointListEdit;
-
+            IPointListEdit listFlowRate = curveLine.Points as IPointListEdit;
 
             if (listFlowRate == null)
                 return;
 
-            if (listPressure == null)
-                return;
-
             // Thêm điểm trên đồ thị
-            listFlowRate.Add(tickStart, flowRate);
-            listPressure.Add(tickStart, pressure);
+            listFlowRate.Add(0, 0);
+            listFlowRate.Add(flowRate, pressure );
 
             // Đoạn chương trình thực hiện vẽ đồ thị
             Scale xScale = chartTimeCurves.GraphPane.XAxis.Scale;
             Scale yScale = chartTimeCurves.GraphPane.YAxis.Scale;
 
             // Tự động Scale theo trục x
-            if (tickStart > xScale.Max - xScale.MajorStep)
+            if (flowRate > xScale.Max - xScale.MajorStep)
             {
                 //xScale.Max = tickStart + xScale.MajorStep;
-                xScale.Max = tickStart + xScale.Max;
+                xScale.Max = flowRate + xScale.Max;
                 xScale.Min = 0;
             }
             int seconds = tickStart;
@@ -438,11 +411,10 @@ namespace KhoanNhaTrang
             TimeSpan timeSpan = TimeSpan.FromSeconds(tickStart);
             string groutedTime = string.Format("{0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
             lbGroutedTime.Text = groutedTime;
-            tickStart = tickStart + config.time_update_ui;
+         
 
             // Vẽ đồ thị
             chartTimeCurves.AxisChange();
-            // Force a redraw
             chartTimeCurves.Invalidate();
             chartTimeCurves.Refresh();
         }
@@ -698,9 +670,6 @@ namespace KhoanNhaTrang
                 LineItem curveFlowRate = tmp.GraphPane.CurveList[0] as LineItem;
                 curveFlowRate.Line.Width = 3F;
 
-                LineItem curvePressure = tmp.GraphPane.CurveList[1] as LineItem;
-                curvePressure.Line.Width = 3F;
-
                 graphPane.XAxis.MajorGrid.DashOn = 10.0F;
                 graphPane.YAxis.MajorGrid.DashOn = 10.0F;
 
@@ -715,10 +684,10 @@ namespace KhoanNhaTrang
                 graphPane.Legend.IsVisible = false;
                 graphPane.Title.IsVisible = false;
 
-                graphPane.YAxis.Scale.Min = 0;
-                graphPane.YAxis.Scale.Max = 100;
-                graphPane.YAxis.Scale.MinorStep = 1;
-                graphPane.YAxis.Scale.MajorStep = 10;
+                //graphPane.YAxis.Scale.Min = 0;
+                //graphPane.YAxis.Scale.Max = 100;
+                //graphPane.YAxis.Scale.MinorStep = 1;
+                //graphPane.YAxis.Scale.MajorStep = 10;
                 graphPane.YAxis.MajorGrid.IsVisible = true;
 
                 Bitmap bitmap = graphPane.GetImage();

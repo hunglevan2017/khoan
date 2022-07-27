@@ -135,6 +135,7 @@ namespace KhoanNhaTrang
             this.btnStart = new System.Windows.Forms.Button();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.lbAlarmPLC = new System.Windows.Forms.Label();
+            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -206,7 +207,8 @@ namespace KhoanNhaTrang
             // toolToolStripMenuItem
             // 
             this.toolToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.Main2ToolStripMenuItem});
+            this.Main2ToolStripMenuItem,
+            this.testToolStripMenuItem});
             this.toolToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.toolToolStripMenuItem.Name = "toolToolStripMenuItem";
             this.toolToolStripMenuItem.Size = new System.Drawing.Size(78, 25);
@@ -1245,6 +1247,13 @@ namespace KhoanNhaTrang
             this.lbAlarmPLC.Text = "PLC stopping";
             this.lbAlarmPLC.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // testToolStripMenuItem
+            // 
+            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(266, 26);
+            this.testToolStripMenuItem.Text = "Test";
+            this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
@@ -1390,6 +1399,7 @@ namespace KhoanNhaTrang
         private System.Windows.Forms.Label lbAlarmPLC;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem timeUpdateToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
     }
 }
 

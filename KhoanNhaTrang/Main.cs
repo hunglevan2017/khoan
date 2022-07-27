@@ -1398,5 +1398,11 @@ namespace KhoanNhaTrang
             Main2 frMain2 = new Main2();
             frMain2.Show();
         }
+
+        private void testToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Test tess = new Test();
+            tess.Show();
+        }
     }
 }
