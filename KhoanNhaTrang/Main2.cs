@@ -345,7 +345,7 @@ namespace KhoanNhaTrang
                     show_Data_Real_lb(txtpressure, Math.Round(PLCDB1Read.Instance().pressure, 2));
                 }
 
-                if (isInsertData && PLC.Instance().Open())
+                if ((debugMode && isInsertData) ||  (isInsertData && PLC.Instance().Open()))
                 { 
                     Data data = insertDB();
                         
@@ -840,25 +840,24 @@ namespace KhoanNhaTrang
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-            try
-            {
-                if (PLC.Instance().Open())
+            if (!debugMode) {
+                try
                 {
-                    lbAlarmPLC.Text = "PLC Connected";
-                    lbAlarmPLC.BackColor = Color.Lime;
+                    if (PLC.Instance().Open())
+                    {
+                        lbAlarmPLC.Text = "PLC Connected";
+                        lbAlarmPLC.BackColor = Color.Lime;
+                    }
+                    else
+                    {
+                        lbAlarmPLC.Text = "PLC not connected";
+                        lbAlarmPLC.BackColor = Color.Red;
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    lbAlarmPLC.Text = "PLC not connected";
-                    lbAlarmPLC.BackColor = Color.Red;
-                }
-            }
-            catch (Exception ex)
-            {
-                
-            }
 
-            if (!debugMode) { 
+                }
                 PLC.Instance().ReadClass(PLCDB1Read.Instance(), 1);
                 PLC.Instance().ReadClass(PLCDB2Write.Instance(), 2);
                 show_Data_Real_lb(txtflowrate, Math.Round(PLCDB1Read.Instance().flow_rate, 2));
