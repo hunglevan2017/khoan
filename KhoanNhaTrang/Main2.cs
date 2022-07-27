@@ -641,12 +641,20 @@ namespace KhoanNhaTrang
                 var tab1 = new DataTable();
                 tab1.Columns.Add("time", typeof(string));
                 tab1.Columns.Add("flowrate", typeof(string));
+                tab1.Columns.Add("tfluid", typeof(string));
                 tab1.Columns.Add("pressure", typeof(string));
+                tab1.Columns.Add("wc", typeof(string));
                 String timeMin = "00:00:01";
                 int seconds = config.time_store_db;
+                double totalFlowrate = 0;
+                double totalPressure = 0;
+                int count = 0;
                 foreach (Data data in listDataReport)
                 {
-                    tab1.Rows.Add(timeMin, Math.Round(data.flow_rate, 2).ToString("0.00"), Math.Round(data.pressure, 2).ToString("0.00"));
+                    totalFlowrate = totalFlowrate + Math.Round(data.flow_rate, 2);
+                    totalPressure = totalPressure + Math.Round(data.pressure, 2);
+                    count++;
+                    tab1.Rows.Add(timeMin, Math.Round(data.flow_rate, 2).ToString("0.00"), "",  Math.Round(data.pressure, 2).ToString("0.00"), "");
                     TimeSpan timeMinSpan = TimeSpan.FromSeconds(seconds);
                     timeMin = string.Format("{0:D2}:{1:D2}:{2:D2}", timeMinSpan.Hours, timeMinSpan.Minutes, timeMinSpan.Seconds);
                     seconds = seconds + config.time_store_db;
@@ -662,9 +670,12 @@ namespace KhoanNhaTrang
                 par2.Columns.Add("radioofpermeate");
                 object[] values2 = new object[4];
                 values2[0] = "End Time: " + endDate;
-                values2[1] = "Stable Pressure: " +  " MPa";
-                values2[2] = "Stable Flowrate: " +  " L/Min";
-                values2[3] = "Ratio of Permeate q = " + " (Lu)";
+                double tbTotalPressure = totalPressure / count;
+                double tbTotalFlowrate = totalFlowrate / count;
+                values2[1] = "Stable Pressure: " + Math.Round(tbTotalPressure, 3).ToString("0.000")  + " MPa";
+                values2[2] = "Stable Flowrate: " + Math.Round(tbTotalFlowrate, 3).ToString("0.000") + " L/Min";
+                double q = tbTotalFlowrate / (double.Parse(txtLength.Text) * tbTotalPressure);
+                values2[3] = "Ratio of Permeate q = " + Math.Round(q, 3).ToString("0.000") + " (Lu)";
                 par2.Rows.Add(values2);
                 par2.TableName = "par2";
                 ds.Tables.Add(par2);
@@ -714,7 +725,7 @@ namespace KhoanNhaTrang
                 ToGrayScale(bitmap);
                 bitmap.Save(path + imageChartName);
 
-                ExportExcelToTemplateEpplus.TemplateExcel.FillReport(fs, "TemplateMain2.xlsx", ds, listDataReport.Count -1, path + imageChartName,  new string[] { "{", "}" });
+                ExportExcelToTemplateEpplus.TemplateExcel2.FillReport(fs, "TemplateMain2.xlsx", ds, listDataReport.Count -1, path + imageChartName,  new string[] { "{", "}" });
             }
             else
             {
