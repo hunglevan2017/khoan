@@ -18,6 +18,11 @@ namespace KhoanNhaTrang
         public Test()
         {
             InitializeComponent();
+
+            double x = 27.234f / (5.9f*8.75f);
+            MessageBox.Show(""+x);
+
+
             graphPane = zedGraphControl1.GraphPane;
 
 

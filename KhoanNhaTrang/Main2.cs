@@ -166,8 +166,8 @@ namespace KhoanNhaTrang
             // Khai báo sử dụng Graph loại GraphPane;
             myPane = chartTimeCurves.GraphPane;
             myPane.Title.Text = "";
-            myPane.XAxis.Title.Text = "Thời gian (s)";
-            myPane.YAxis.Title.Text = "Percent";
+            myPane.XAxis.Title.Text = "Flowrate (L/min)";
+            myPane.YAxis.Title.Text = "Pressure (MPa)";
 
             //Định nghĩa list để vẽ đồ thị.
             RollingPointPairList listFlowRate = new RollingPointPairList(60000); 
@@ -646,7 +646,7 @@ namespace KhoanNhaTrang
                 double tbTotalFlowrate = totalFlowrate / count;
                 values2[1] = "Stable Pressure: " + Math.Round(tbTotalPressure, 3).ToString("0.000")  + " MPa";
                 values2[2] = "Stable Flowrate: " + Math.Round(tbTotalFlowrate, 3).ToString("0.000") + " L/Min";
-                double q = tbTotalFlowrate / (double.Parse(txtLength.Text) * tbTotalPressure);
+                double q = Math.Round(tbTotalFlowrate, 3) / (double.Parse(txtTo.Text) * Math.Round(tbTotalPressure, 3));
                 values2[3] = "Ratio of Permeate q = " + Math.Round(q, 3).ToString("0.000") + " (Lu)";
                 par2.Rows.Add(values2);
                 par2.TableName = "par2";
