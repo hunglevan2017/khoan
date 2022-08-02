@@ -1,7 +1,7 @@
 ﻿
 namespace KhoanNhaTrang
 {
-    partial class Form1
+    partial class Form_Home
     {
         /// <summary>
         ///  Required designer variable.
@@ -31,14 +31,6 @@ namespace KhoanNhaTrang
         {
             this.components = new System.ComponentModel.Container();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.timeUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.Main2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.txtpressure = new System.Windows.Forms.TextBox();
@@ -122,7 +114,6 @@ namespace KhoanNhaTrang
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.chartTimeCurves = new ZedGraph.ZedGraphControl();
-            this.tabDataGrid = new System.Windows.Forms.TabPage();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel4 = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -135,7 +126,6 @@ namespace KhoanNhaTrang
             this.btnStart = new System.Windows.Forms.Button();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.lbAlarmPLC = new System.Windows.Forms.Label();
-            this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -149,75 +139,6 @@ namespace KhoanNhaTrang
             this.panel4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1,
-            this.toolStripMenuItem3,
-            this.toolStripMenuItem2,
-            this.toolToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1077, 29);
-            this.menuStrip1.TabIndex = 0;
-            this.menuStrip1.Text = "File";
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.exitToolStripMenuItem});
-            this.toolStripMenuItem1.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(46, 25);
-            this.toolStripMenuItem1.Text = "File";
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(104, 26);
-            this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
-            // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(71, 25);
-            this.toolStripMenuItem3.Text = "Setting";
-            this.toolStripMenuItem3.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.timeUpdateToolStripMenuItem});
-            this.toolStripMenuItem2.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(68, 25);
-            this.toolStripMenuItem2.Text = "Config";
-            // 
-            // timeUpdateToolStripMenuItem
-            // 
-            this.timeUpdateToolStripMenuItem.Name = "timeUpdateToolStripMenuItem";
-            this.timeUpdateToolStripMenuItem.Size = new System.Drawing.Size(168, 26);
-            this.timeUpdateToolStripMenuItem.Text = "Time Update";
-            this.timeUpdateToolStripMenuItem.Click += new System.EventHandler(this.timeUpdateToolStripMenuItem_Click);
-            // 
-            // toolToolStripMenuItem
-            // 
-            this.toolToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.Main2ToolStripMenuItem});
-            this.toolToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.toolToolStripMenuItem.Name = "toolToolStripMenuItem";
-            this.toolToolStripMenuItem.Size = new System.Drawing.Size(78, 25);
-            this.toolToolStripMenuItem.Text = "Monitor";
-            // 
-            // Main2ToolStripMenuItem
-            // 
-            this.Main2ToolStripMenuItem.Name = "Main2ToolStripMenuItem";
-            this.Main2ToolStripMenuItem.Size = new System.Drawing.Size(266, 26);
-            this.Main2ToolStripMenuItem.Text = "Water Pressure Test Report";
-            this.Main2ToolStripMenuItem.Click += new System.EventHandler(this.Main2ToolStripMenuItem_Click);
             // 
             // panel1
             // 
@@ -824,7 +745,6 @@ namespace KhoanNhaTrang
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabTimeCurves);
-            this.tabControl1.Controls.Add(this.tabDataGrid);
             this.tabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.tabControl1.Location = new System.Drawing.Point(6, 4);
             this.tabControl1.Name = "tabControl1";
@@ -908,6 +828,7 @@ namespace KhoanNhaTrang
             this.txtMaxOfYPressure.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.txtMaxOfYPressure.Location = new System.Drawing.Point(669, 50);
             this.txtMaxOfYPressure.Name = "txtMaxOfYPressure";
+            this.txtMaxOfYPressure.ReadOnly = true;
             this.txtMaxOfYPressure.Size = new System.Drawing.Size(140, 26);
             this.txtMaxOfYPressure.TabIndex = 17;
             this.txtMaxOfYPressure.Text = "10";
@@ -950,6 +871,7 @@ namespace KhoanNhaTrang
             this.txtMaxOfYWC.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.txtMaxOfYWC.Location = new System.Drawing.Point(487, 50);
             this.txtMaxOfYWC.Name = "txtMaxOfYWC";
+            this.txtMaxOfYWC.ReadOnly = true;
             this.txtMaxOfYWC.Size = new System.Drawing.Size(96, 26);
             this.txtMaxOfYWC.TabIndex = 13;
             this.txtMaxOfYWC.Text = "10";
@@ -992,6 +914,7 @@ namespace KhoanNhaTrang
             this.txtMaxOfYTotalFlow.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.txtMaxOfYTotalFlow.Location = new System.Drawing.Point(291, 50);
             this.txtMaxOfYTotalFlow.Name = "txtMaxOfYTotalFlow";
+            this.txtMaxOfYTotalFlow.ReadOnly = true;
             this.txtMaxOfYTotalFlow.Size = new System.Drawing.Size(140, 26);
             this.txtMaxOfYTotalFlow.TabIndex = 9;
             this.txtMaxOfYTotalFlow.Text = "100";
@@ -1034,6 +957,7 @@ namespace KhoanNhaTrang
             this.txtMaxOfYFlowrate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.txtMaxOfYFlowrate.Location = new System.Drawing.Point(91, 50);
             this.txtMaxOfYFlowrate.Name = "txtMaxOfYFlowrate";
+            this.txtMaxOfYFlowrate.ReadOnly = true;
             this.txtMaxOfYFlowrate.Size = new System.Drawing.Size(140, 26);
             this.txtMaxOfYFlowrate.TabIndex = 5;
             this.txtMaxOfYFlowrate.Text = "100";
@@ -1107,17 +1031,6 @@ namespace KhoanNhaTrang
             this.chartTimeCurves.TabIndex = 0;
             this.chartTimeCurves.UseExtendedPrintDialog = true;
             this.chartTimeCurves.VisibleChanged += new System.EventHandler(this.chartTimeCurves_VisibleChanged);
-            // 
-            // tabDataGrid
-            // 
-            this.tabDataGrid.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.tabDataGrid.Location = new System.Drawing.Point(4, 29);
-            this.tabDataGrid.Name = "tabDataGrid";
-            this.tabDataGrid.Padding = new System.Windows.Forms.Padding(3);
-            this.tabDataGrid.Size = new System.Drawing.Size(832, 705);
-            this.tabDataGrid.TabIndex = 1;
-            this.tabDataGrid.Text = "Data Gird";
-            this.tabDataGrid.UseVisualStyleBackColor = true;
             // 
             // timer1
             // 
@@ -1238,14 +1151,14 @@ namespace KhoanNhaTrang
             this.lbAlarmPLC.BackColor = System.Drawing.Color.Red;
             this.lbAlarmPLC.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbAlarmPLC.ForeColor = System.Drawing.Color.White;
-            this.lbAlarmPLC.Location = new System.Drawing.Point(807, 0);
+            this.lbAlarmPLC.Location = new System.Drawing.Point(6, 4);
             this.lbAlarmPLC.Name = "lbAlarmPLC";
             this.lbAlarmPLC.Size = new System.Drawing.Size(270, 29);
             this.lbAlarmPLC.TabIndex = 5;
             this.lbAlarmPLC.Text = "PLC stopping";
             this.lbAlarmPLC.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // Form1
+            // Form_Home
             // 
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1077, 919);
@@ -1254,13 +1167,10 @@ namespace KhoanNhaTrang
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
-            this.Name = "Form1";
+            this.Name = "Form_Home";
             this.Text = "EM Grouting -- Equipment";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -1278,17 +1188,12 @@ namespace KhoanNhaTrang
             this.panel4.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
@@ -1296,7 +1201,6 @@ namespace KhoanNhaTrang
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabTimeCurves;
-        private System.Windows.Forms.TabPage tabDataGrid;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.GroupBox groupBox4;
@@ -1385,11 +1289,7 @@ namespace KhoanNhaTrang
         private System.Windows.Forms.TextBox txtdensi;
         private System.Windows.Forms.Label label33;
         private System.Windows.Forms.Timer timer2;
-        private System.Windows.Forms.ToolStripMenuItem toolToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem Main2ToolStripMenuItem;
         private System.Windows.Forms.Label lbAlarmPLC;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem timeUpdateToolStripMenuItem;
     }
 }
 

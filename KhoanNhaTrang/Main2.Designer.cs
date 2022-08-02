@@ -31,7 +31,6 @@ namespace KhoanNhaTrang
         {
             this.components = new System.ComponentModel.Container();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.txtpressure = new System.Windows.Forms.TextBox();
@@ -102,7 +101,6 @@ namespace KhoanNhaTrang
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.chartTimeCurves = new ZedGraph.ZedGraphControl();
-            this.tabDataGrid = new System.Windows.Forms.TabPage();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel4 = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -128,14 +126,6 @@ namespace KhoanNhaTrang
             this.panel4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1077, 24);
-            this.menuStrip1.TabIndex = 0;
-            this.menuStrip1.Text = "File";
             // 
             // panel1
             // 
@@ -703,7 +693,6 @@ namespace KhoanNhaTrang
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabTimeCurves);
-            this.tabControl1.Controls.Add(this.tabDataGrid);
             this.tabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.tabControl1.Location = new System.Drawing.Point(6, 4);
             this.tabControl1.Name = "tabControl1";
@@ -721,7 +710,7 @@ namespace KhoanNhaTrang
             this.tabTimeCurves.Padding = new System.Windows.Forms.Padding(3);
             this.tabTimeCurves.Size = new System.Drawing.Size(832, 705);
             this.tabTimeCurves.TabIndex = 0;
-            this.tabTimeCurves.Text = "Time Curves";
+            this.tabTimeCurves.Text = "Chart";
             // 
             // groupBox5
             // 
@@ -860,7 +849,7 @@ namespace KhoanNhaTrang
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.chartTimeCurves);
-            this.groupBox4.Location = new System.Drawing.Point(2, 0);
+            this.groupBox4.Location = new System.Drawing.Point(0, 0);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(827, 385);
             this.groupBox4.TabIndex = 0;
@@ -883,17 +872,6 @@ namespace KhoanNhaTrang
             this.chartTimeCurves.TabIndex = 0;
             this.chartTimeCurves.UseExtendedPrintDialog = true;
             this.chartTimeCurves.VisibleChanged += new System.EventHandler(this.chartTimeCurves_VisibleChanged);
-            // 
-            // tabDataGrid
-            // 
-            this.tabDataGrid.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.tabDataGrid.Location = new System.Drawing.Point(4, 29);
-            this.tabDataGrid.Name = "tabDataGrid";
-            this.tabDataGrid.Padding = new System.Windows.Forms.Padding(3);
-            this.tabDataGrid.Size = new System.Drawing.Size(832, 705);
-            this.tabDataGrid.TabIndex = 1;
-            this.tabDataGrid.Text = "Data Gird";
-            this.tabDataGrid.UseVisualStyleBackColor = true;
             // 
             // timer1
             // 
@@ -1014,7 +992,7 @@ namespace KhoanNhaTrang
             this.lbAlarmPLC.BackColor = System.Drawing.Color.Red;
             this.lbAlarmPLC.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbAlarmPLC.ForeColor = System.Drawing.Color.White;
-            this.lbAlarmPLC.Location = new System.Drawing.Point(807, 0);
+            this.lbAlarmPLC.Location = new System.Drawing.Point(6, 4);
             this.lbAlarmPLC.Name = "lbAlarmPLC";
             this.lbAlarmPLC.Size = new System.Drawing.Size(270, 29);
             this.lbAlarmPLC.TabIndex = 5;
@@ -1030,10 +1008,9 @@ namespace KhoanNhaTrang
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
             this.Name = "Main2";
             this.Text = "Water Pressure Test Report";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
@@ -1052,14 +1029,12 @@ namespace KhoanNhaTrang
             this.panel4.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
@@ -1067,7 +1042,6 @@ namespace KhoanNhaTrang
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabTimeCurves;
-        private System.Windows.Forms.TabPage tabDataGrid;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.GroupBox groupBox4;

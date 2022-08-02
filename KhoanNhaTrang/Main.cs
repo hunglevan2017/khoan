@@ -19,7 +19,7 @@ using Spire.Xls;
 namespace KhoanNhaTrang
 {
 
-    public partial class Form1 : Form
+    public partial class Form_Home : Form
     {
         int limitPercentScaleY = 95;
         private List<Data> listData = new List<Data>();
@@ -55,7 +55,7 @@ namespace KhoanNhaTrang
                 maxY.pressure = int.Parse(txtMaxOfYPressure.Text);
         }
 
-        public Form1()
+        public Form_Home()
         {
             InitializeComponent();
             changeMaxY();
@@ -180,13 +180,13 @@ namespace KhoanNhaTrang
             myPane.YAxis.Title.Text = "Percent";
 
             //Định nghĩa list để vẽ đồ thị.
-            RollingPointPairList listFlowRate = new RollingPointPairList(60000); // Sử dụng list với 60000 điểm
+            RollingPointPairList listFlowRate = new RollingPointPairList(360000); // Sử dụng list với 60000 điểm
             LineItem curveFlowRate = myPane.AddCurve("Flowrate", listFlowRate, Color.Red, SymbolType.None); // SymbolType là kiểu biểu thị đồ thị : điểm, đường tròn, tam giác....
-            RollingPointPairList listFluid = new RollingPointPairList(60000);
+            RollingPointPairList listFluid = new RollingPointPairList(360000);
             LineItem curveFluid = myPane.AddCurve("Total flow", listFluid, Color.Blue, SymbolType.None);
-            RollingPointPairList listWC = new RollingPointPairList(60000);
+            RollingPointPairList listWC = new RollingPointPairList(360000);
             LineItem curveWC = myPane.AddCurve("W/C", listWC, Color.Brown, SymbolType.None);
-            RollingPointPairList listPressure = new RollingPointPairList(60000);
+            RollingPointPairList listPressure = new RollingPointPairList(360000);
             LineItem curvePressure = myPane.AddCurve("Pressure", listPressure, Color.Green, SymbolType.None);
             //RollingPointPairList listFlowRate = new RollingPointPairList(60000); // Sử dụng list với 60000 điểm
             //LineItem curveFlowRate = myPane.AddCurve("Flowrate", listFlowRate, Color.Black, SymbolType.None); // SymbolType là kiểu biểu thị đồ thị : điểm, đường tròn, tam giác....
@@ -200,15 +200,15 @@ namespace KhoanNhaTrang
             // Định hiện thị cho trục thời gian (Trục X)
             myPane.XAxis.Scale.Min = 0;
             myPane.XAxis.Scale.Max = 600;
-            myPane.XAxis.Scale.MinorStep = 1;
-            myPane.XAxis.Scale.MajorStep = 10;
+            myPane.XAxis.Scale.MinorStep = 10;
+            myPane.XAxis.Scale.MajorStep = 100;
             myPane.XAxis.MajorGrid.IsVisible = true;
-
+            //myPane.XAxis.Scale.Format = 600/60;
             // Set Scale to default X
             myPane.XAxis.Scale.MinAuto = true;
             myPane.XAxis.Scale.MaxAuto = false;
-            myPane.XAxis.Scale.MajorStepAuto = true;
-            myPane.XAxis.Scale.MinorStepAuto = true;
+            myPane.XAxis.Scale.MajorStepAuto = false;
+            myPane.XAxis.Scale.MinorStepAuto = false;
             myPane.XAxis.CrossAuto = true;
             myPane.XAxis.Scale.MagAuto = true;
             myPane.XAxis.Scale.FormatAuto = true;
@@ -326,7 +326,7 @@ namespace KhoanNhaTrang
             string query = @"select * from config order by id desc limit 1";
             config = db.Query<Config>(query, config).Single();
             timer1.Stop();
-            timer1.Interval = config.time_update_ui * 100;
+            timer1.Interval = config.time_update_ui * 1000;
             btnEnd.Enabled = true;
             timer1.Start();
         }
@@ -386,6 +386,7 @@ namespace KhoanNhaTrang
                     //Read value from PLC
                     PLC.Instance().ReadClass(PLCDB1Read.Instance(), 1);
                     PLC.Instance().ReadClass(PLCDB2Write.Instance(), 2);
+                    PLC.Instance().ReadClass(PLCDB3READ.Instance(), 3);
                     show_Data_Real_lb(txtflowrate, Math.Round(PLCDB1Read.Instance().flow_rate, 2));
                     show_Data_Real_lb(txttotalflow, Math.Round(PLCDB1Read.Instance().fluid, 2));
                     show_Data_Real_lb(txtdensi, PLCDB1Read.Instance().wc);

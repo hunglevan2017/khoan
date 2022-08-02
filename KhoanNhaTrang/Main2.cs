@@ -19,7 +19,7 @@ namespace KhoanNhaTrang
 
     public partial class Main2 : Form
     {
-        int limitPercentScaleY = 95;
+        int limitPercentScaleY = 100;
         private List<Data> listData = new List<Data>();
         private int index = 0;
         int tickStart = 0;
@@ -285,11 +285,24 @@ namespace KhoanNhaTrang
         }
         private void btnStart_Click(object sender, EventArgs e)
         {
+            
+            
             changeMaxY();
             lastInsert = new DateTime();
             firstInsert = true;
             string query = @"select * from config order by id desc limit 1";
             config = db.Query<Config>(query, config).Single();
+            //
+            //if (data.management_id > 0)
+            //{
+            Data data = insertDB();
+            listData.Add(data);
+                Boolean isRedraw = false;
+
+                if (!isRedraw && isInsertData)
+                    Draw(data.flow_rate, data.pressure);
+            //}
+            //
             timer1.Stop();
             timer1.Interval = config.time_update_ui * 1000;
             btnEnd.Enabled = true;
@@ -333,7 +346,7 @@ namespace KhoanNhaTrang
         private void timer1_Tick(object sender, EventArgs e)
         {
 
-
+            show_Data_Real_lb(txtdensi, PLCDB1Read.Instance().wc);
             try
             {
                 if (debugMode)
@@ -600,7 +613,7 @@ namespace KhoanNhaTrang
                 values[2] = "Holes parameters: ";
                 values[3] = "Hole No.: " + txtHoleNo.Text;
                 values[4] = "Order: " + cbOrder.Text  + " Range: " + cbRange.Text;
-                values[5] = "The: " + txtThe.Text + " Sect From: " + txtSectFrom.Text + " To: " + txtTo.Text + "m";
+                values[5] = "The: " + txtThe.Text + " Sect From: " + txtSectFrom.Text + " To: " + txtTo.Text + "m" + " Length " + txtLength.Text;
                 values[6] = "Begin Time: " + startHour;
                 values[7] = "Recorder: " + txtRecorder.Text;
                 values[8] = "Leader: " + txtLeader.Text;
@@ -626,7 +639,7 @@ namespace KhoanNhaTrang
                     totalFlowrate = totalFlowrate + Math.Round(data.flow_rate, 2);
                     totalPressure = totalPressure + Math.Round(data.pressure, 2);
                     count++;
-                    tab1.Rows.Add(timeMin, Math.Round(data.flow_rate, 2).ToString("0.00"), "",  Math.Round(data.pressure, 2).ToString("0.00"), "");
+                    tab1.Rows.Add(timeMin, Math.Round(data.flow_rate, 2).ToString("0.000"), "",  Math.Round(data.pressure, 2).ToString("0.000"), "");
                     TimeSpan timeMinSpan = TimeSpan.FromSeconds(seconds);
                     timeMin = string.Format("{0:D2}:{1:D2}:{2:D2}", timeMinSpan.Hours, timeMinSpan.Minutes, timeMinSpan.Seconds);
                     seconds = seconds + config.time_store_db;
@@ -646,7 +659,7 @@ namespace KhoanNhaTrang
                 double tbTotalFlowrate = totalFlowrate / count;
                 values2[1] = "Stable Pressure: " + Math.Round(tbTotalPressure, 3).ToString("0.000")  + " MPa";
                 values2[2] = "Stable Flowrate: " + Math.Round(tbTotalFlowrate, 3).ToString("0.000") + " L/Min";
-                double q = Math.Round(tbTotalFlowrate, 3) / (double.Parse(txtTo.Text) * Math.Round(tbTotalPressure, 3));
+                double q = Math.Round(tbTotalFlowrate, 3) / (double.Parse(txtLength.Text) * Math.Round(tbTotalPressure, 3));
                 values2[3] = "Ratio of Permeate q = " + Math.Round(q, 3).ToString("0.000") + " (Lu)";
                 par2.Rows.Add(values2);
                 par2.TableName = "par2";
@@ -840,8 +853,10 @@ namespace KhoanNhaTrang
                 }
                 PLC.Instance().ReadClass(PLCDB1Read.Instance(), 1);
                 PLC.Instance().ReadClass(PLCDB2Write.Instance(), 2);
+                PLC.Instance().ReadClass(PLCDB3READ.Instance(), 3);
                 show_Data_Real_lb(txtflowrate, Math.Round(PLCDB1Read.Instance().flow_rate, 2));
                 show_Data_Real_lb(txtpressure, Math.Round(PLCDB1Read.Instance().pressure, 2));
+                show_Data_Real_lb(txtdensi, PLCDB1Read.Instance().wc);
             }
         }
 
