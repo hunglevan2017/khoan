@@ -28,6 +28,7 @@ namespace KhoanNhaTrang
 {
     public partial class FormMain : Form
     {
+        Boolean debugMode = false;
         public FormMain()
         {
             InitializeComponent();
@@ -59,6 +60,8 @@ namespace KhoanNhaTrang
 
         private void timermain_Tick(object sender, EventArgs e)
         {
+            if (!debugMode)
+            {
                 try
                 {
                     if (PLC.Instance().Open())
@@ -87,6 +90,7 @@ namespace KhoanNhaTrang
 
                 }
             }
+        }
 
         private void CalibrationToolStripMenuItem_Click(object sender, EventArgs e)
         {
