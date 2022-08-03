@@ -1405,5 +1405,91 @@ namespace KhoanNhaTrang
             Test tess = new Test();
             tess.Show();
         }
+
+        private List<Data> DataForGrid()
+        {
+                List<Data> listDataReport = new List<Data>();
+                try
+                {
+                    db.Open();
+                    var param = new DynamicParameters();
+                    param.Add("management_id", managementId);
+                    string query = @"
+                                 SELECT flow_rate, fluid, wc, pressure ,insert_date
+                                 FROM grouting.data
+                                 where management_id =@management_id
+                                    order by id";
+                    listDataReport = db.Query<Data>(query, param).ToList();
+                    List<Data> tmpReport = new List<Data>();
+                    foreach (Data temp in listDataReport)
+                    {
+
+                        temp.flow_rate = Math.Round(temp.flow_rate, 2);
+                        temp.fluid = Math.Round(temp.fluid, 2);
+                        temp.pressure = Math.Round(temp.pressure, 2);
+                        temp.wc = Math.Round(temp.wc, 2);
+                        tmpReport.Add(temp);
+                    }
+                    listDataReport = tmpReport;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                finally
+                {
+                    try
+                    {
+                        db.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+                return listDataReport;
+            
+        }
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (tabControl1.SelectedIndex)
+            {
+                case 0:
+                    break;
+                case 1:
+                    try
+                    {
+                        dataGridView1.Rows.Clear();
+                    }
+                    catch (Exception ex) { 
+                    }
+                    String timeMin = "00:00:01";
+                    int seconds = config.time_store_db;
+  
+                    var dataTable = new DataTable();
+                    dataTable.Columns.Add("time", typeof(string));
+                    dataTable.Columns.Add("flowrate", typeof(string));
+                    dataTable.Columns.Add("tfluid", typeof(string));
+                    dataTable.Columns.Add("wc", typeof(string));
+                    dataTable.Columns.Add("pressure", typeof(string));
+                    foreach (Data data in DataForGrid())
+                    {
+
+                        DataGridViewRow row = (DataGridViewRow)dataGridView1.Rows[0].Clone();
+                        row.Cells[0].Value = timeMin;
+                        row.Cells[1].Value = Math.Round(data.flow_rate, 2).ToString("0.00");
+                        row.Cells[2].Value = Math.Round(data.fluid, 1).ToString("0.0");
+                        row.Cells[3].Value = data.wc.ToString() + ":1";
+                        row.Cells[4].Value = Math.Round(data.pressure, 2).ToString("0.00");
+                        dataGridView1.Rows.Add(row);
+
+                        TimeSpan timeMinSpan = TimeSpan.FromSeconds(seconds);
+                        timeMin = string.Format("{0:D2}:{1:D2}:{2:D2}", timeMinSpan.Hours, timeMinSpan.Minutes, timeMinSpan.Seconds);
+                        seconds = seconds + config.time_store_db;
+                    }
+                    break; 
+            }
+        }
     }
 }
