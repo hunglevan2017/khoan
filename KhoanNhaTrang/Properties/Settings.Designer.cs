@@ -25,7 +25,7 @@ namespace KhoanNhaTrang.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("192.168.0.1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("192.168.1.3")]
         public string IPPLC {
             get {
                 return ((string)(this["IPPLC"]));
