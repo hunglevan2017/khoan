@@ -116,6 +116,11 @@ namespace KhoanNhaTrang
             this.chartTimeCurves = new ZedGraph.ZedGraphControl();
             this.tabData = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.Time = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Flowrate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TFluid = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.WC = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Pressure = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel4 = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -128,11 +133,6 @@ namespace KhoanNhaTrang
             this.btnStart = new System.Windows.Forms.Button();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.lbAlarmPLC = new System.Windows.Forms.Label();
-            this.Time = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Flowrate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TFluid = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.WC = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Pressure = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -1064,8 +1064,33 @@ namespace KhoanNhaTrang
             this.Pressure});
             this.dataGridView1.Location = new System.Drawing.Point(12, 13);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(540, 349);
+            this.dataGridView1.Size = new System.Drawing.Size(540, 458);
             this.dataGridView1.TabIndex = 0;
+            // 
+            // Time
+            // 
+            this.Time.HeaderText = "Time";
+            this.Time.Name = "Time";
+            // 
+            // Flowrate
+            // 
+            this.Flowrate.HeaderText = "Flowrate";
+            this.Flowrate.Name = "Flowrate";
+            // 
+            // TFluid
+            // 
+            this.TFluid.HeaderText = "TFluid";
+            this.TFluid.Name = "TFluid";
+            // 
+            // WC
+            // 
+            this.WC.HeaderText = "W/C";
+            this.WC.Name = "WC";
+            // 
+            // Pressure
+            // 
+            this.Pressure.HeaderText = "Pressure";
+            this.Pressure.Name = "Pressure";
             // 
             // timer1
             // 
@@ -1192,31 +1217,6 @@ namespace KhoanNhaTrang
             this.lbAlarmPLC.TabIndex = 5;
             this.lbAlarmPLC.Text = "PLC stopping";
             this.lbAlarmPLC.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // Time
-            // 
-            this.Time.HeaderText = "Time";
-            this.Time.Name = "Time";
-            // 
-            // Flowrate
-            // 
-            this.Flowrate.HeaderText = "Flowrate";
-            this.Flowrate.Name = "Flowrate";
-            // 
-            // TFluid
-            // 
-            this.TFluid.HeaderText = "TFluid";
-            this.TFluid.Name = "TFluid";
-            // 
-            // WC
-            // 
-            this.WC.HeaderText = "W/C";
-            this.WC.Name = "WC";
-            // 
-            // Pressure
-            // 
-            this.Pressure.HeaderText = "Pressure";
-            this.Pressure.Name = "Pressure";
             // 
             // Form_Home
             // 

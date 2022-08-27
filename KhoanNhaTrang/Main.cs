@@ -199,9 +199,9 @@ namespace KhoanNhaTrang
 
             // Định hiện thị cho trục thời gian (Trục X)
             myPane.XAxis.Scale.Min = 0;
-            myPane.XAxis.Scale.Max = 600;
-            myPane.XAxis.Scale.MinorStep = 10;
-            myPane.XAxis.Scale.MajorStep = 100;
+            myPane.XAxis.Scale.Max = 6000;
+            myPane.XAxis.Scale.MinorStep = 100;
+            myPane.XAxis.Scale.MajorStep = 1000;
             myPane.XAxis.MajorGrid.IsVisible = true;
             //myPane.XAxis.Scale.Format = 600/60;
             // Set Scale to default X
