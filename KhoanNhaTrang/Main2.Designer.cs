@@ -101,6 +101,11 @@ namespace KhoanNhaTrang
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.chartTimeCurves = new ZedGraph.ZedGraphControl();
+            this.tabData = new System.Windows.Forms.TabPage();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.Time = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Pressure = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel4 = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -113,11 +118,6 @@ namespace KhoanNhaTrang
             this.btnStart = new System.Windows.Forms.Button();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.lbAlarmPLC = new System.Windows.Forms.Label();
-            this.tabData = new System.Windows.Forms.TabPage();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Time = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Pressure = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -128,10 +128,10 @@ namespace KhoanNhaTrang
             this.tabTimeCurves.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
-            this.panel4.SuspendLayout();
-            this.groupBox3.SuspendLayout();
             this.tabData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.panel4.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -402,6 +402,7 @@ namespace KhoanNhaTrang
             this.txtTo.Size = new System.Drawing.Size(81, 23);
             this.txtTo.TabIndex = 14;
             this.txtTo.Text = "5.9";
+            this.txtTo.TextChanged += new System.EventHandler(this.txtTo_TextChanged);
             // 
             // label14
             // 
@@ -421,6 +422,7 @@ namespace KhoanNhaTrang
             this.txtSectFrom.Size = new System.Drawing.Size(79, 23);
             this.txtSectFrom.TabIndex = 11;
             this.txtSectFrom.Text = "0.9";
+            this.txtSectFrom.TextChanged += new System.EventHandler(this.txtSectFrom_TextChanged);
             // 
             // label13
             // 
@@ -882,6 +884,43 @@ namespace KhoanNhaTrang
             this.chartTimeCurves.UseExtendedPrintDialog = true;
             this.chartTimeCurves.VisibleChanged += new System.EventHandler(this.chartTimeCurves_VisibleChanged);
             // 
+            // tabData
+            // 
+            this.tabData.Controls.Add(this.dataGridView1);
+            this.tabData.Location = new System.Drawing.Point(4, 29);
+            this.tabData.Name = "tabData";
+            this.tabData.Size = new System.Drawing.Size(832, 705);
+            this.tabData.TabIndex = 1;
+            this.tabData.Text = "Data";
+            this.tabData.UseVisualStyleBackColor = true;
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Time,
+            this.Column1,
+            this.Pressure});
+            this.dataGridView1.Location = new System.Drawing.Point(12, 13);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(343, 150);
+            this.dataGridView1.TabIndex = 0;
+            // 
+            // Time
+            // 
+            this.Time.HeaderText = "Time";
+            this.Time.Name = "Time";
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Flowrate";
+            this.Column1.Name = "Column1";
+            // 
+            // Pressure
+            // 
+            this.Pressure.HeaderText = "Pressure";
+            this.Pressure.Name = "Pressure";
+            // 
             // timer1
             // 
             this.timer1.Interval = 1000;
@@ -1008,43 +1047,6 @@ namespace KhoanNhaTrang
             this.lbAlarmPLC.Text = "PLC stopping";
             this.lbAlarmPLC.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // tabData
-            // 
-            this.tabData.Controls.Add(this.dataGridView1);
-            this.tabData.Location = new System.Drawing.Point(4, 29);
-            this.tabData.Name = "tabData";
-            this.tabData.Size = new System.Drawing.Size(832, 705);
-            this.tabData.TabIndex = 1;
-            this.tabData.Text = "Data";
-            this.tabData.UseVisualStyleBackColor = true;
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Time,
-            this.Column1,
-            this.Pressure});
-            this.dataGridView1.Location = new System.Drawing.Point(12, 13);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(343, 150);
-            this.dataGridView1.TabIndex = 0;
-            // 
-            // Time
-            // 
-            this.Time.HeaderText = "Time";
-            this.Time.Name = "Time";
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Flowrate";
-            this.Column1.Name = "Column1";
-            // 
-            // Pressure
-            // 
-            this.Pressure.HeaderText = "Pressure";
-            this.Pressure.Name = "Pressure";
-            // 
             // Main2
             // 
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
@@ -1072,10 +1074,10 @@ namespace KhoanNhaTrang
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.groupBox4.ResumeLayout(false);
-            this.panel4.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
             this.tabData.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.panel4.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

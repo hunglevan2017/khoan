@@ -456,6 +456,7 @@ namespace KhoanNhaTrang
             this.txtTo.Size = new System.Drawing.Size(81, 23);
             this.txtTo.TabIndex = 14;
             this.txtTo.Text = "5.9";
+            this.txtTo.TextChanged += new System.EventHandler(this.txtTo_TextChanged);
             // 
             // label14
             // 
@@ -475,6 +476,7 @@ namespace KhoanNhaTrang
             this.txtSectFrom.Size = new System.Drawing.Size(79, 23);
             this.txtSectFrom.TabIndex = 11;
             this.txtSectFrom.Text = "0.9";
+            this.txtSectFrom.TextChanged += new System.EventHandler(this.txtSectFrom_TextChanged);
             // 
             // label13
             // 

@@ -35,6 +35,7 @@ namespace KhoanNhaTrang
         DateTime lastInsert;
         Boolean firstInsert;
         MaxY maxY = new MaxY();
+        static Boolean isRunning = false;
 
 
         float widthBorderGraph = 2.0F;
@@ -285,8 +286,9 @@ namespace KhoanNhaTrang
         }
         private void btnStart_Click(object sender, EventArgs e)
         {
-            
-            
+            isRunning = true;
+
+
             changeMaxY();
             lastInsert = new DateTime();
             firstInsert = true;
@@ -345,7 +347,7 @@ namespace KhoanNhaTrang
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-
+            if(isRunning) { 
             show_Data_Real_lb(txtdensi, PLCDB1Read.Instance().wc);
             try
             {
@@ -383,6 +385,7 @@ namespace KhoanNhaTrang
                 
 
                // ex.StackTrace();
+            }
             }
         }
 
@@ -433,6 +436,7 @@ namespace KhoanNhaTrang
         }
         private void btnPause_MouseDown(object sender, MouseEventArgs e)
         {
+            isRunning = false;
             PLC.Instance().SetBit("DB2.DBX48.1");
             btnStart.Enabled = true;
             btnPause.Enabled = false;
@@ -833,7 +837,7 @@ namespace KhoanNhaTrang
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-            if (!debugMode) {
+            if (!debugMode && isRunning) {
                 try
                 {
                     if (PLC.Instance().Open())
@@ -966,5 +970,29 @@ namespace KhoanNhaTrang
                     break;
             }
         }
+        public static bool IsNumeric(object Expression)
+        {
+            double retNum;
+
+            bool isNum = Double.TryParse(Convert.ToString(Expression), System.Globalization.NumberStyles.Any, System.Globalization.NumberFormatInfo.InvariantInfo, out retNum);
+            return isNum;
+        }
+        private void txtSectFrom_TextChanged(object sender, EventArgs e)
+        {
+            if (IsNumeric(txtSectFrom.Text) && IsNumeric(txtTo.Text))
+            {
+                txtLength.Text = (Double.Parse(txtTo.Text) - Double.Parse(txtSectFrom.Text)).ToString();
+            }
+        }
+
+        private void txtTo_TextChanged(object sender, EventArgs e)
+        {
+            if (IsNumeric(txtSectFrom.Text) && IsNumeric(txtTo.Text))
+            {
+                txtLength.Text = (Double.Parse(txtTo.Text) - Double.Parse(txtSectFrom.Text)).ToString();
+            }
+        }
     }
+
+ 
 }

@@ -21,6 +21,7 @@ namespace KhoanNhaTrang
 
     public partial class Form_Home : Form
     {
+        Boolean debugMode = false;
         int limitPercentScaleY = 95;
         private List<Data> listData = new List<Data>();
         private int index = 0;
@@ -32,11 +33,11 @@ namespace KhoanNhaTrang
         private String endHour;
         private GraphPane myPane;
         Boolean isInsertData = false;
-        Boolean debugMode = false;
         Config config = new Config();
         DateTime lastInsert;
         Boolean firstInsert;
         MaxY maxY = new MaxY();
+       static Boolean isRunning = false;
 
 
         float widthBorderGraph = 2.0F;
@@ -319,6 +320,7 @@ namespace KhoanNhaTrang
         }
         private void btnStart_Click(object sender, EventArgs e)
         {
+            isRunning = true;
             show_Data_Real_lb_wc(txtWC, PLCDB1Read.Instance().WC_start);
             changeMaxY();
             lastInsert = new DateTime();
@@ -375,9 +377,11 @@ namespace KhoanNhaTrang
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            label27.Text = isRunning.ToString();
+            if (isRunning)
+            {
 
-
-            try
+                try
             {
                 if (debugMode)
                     simulator();
@@ -466,6 +470,7 @@ namespace KhoanNhaTrang
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+            }
             }
         }
 
@@ -576,6 +581,7 @@ namespace KhoanNhaTrang
         }
         private void btnPause_MouseDown(object sender, MouseEventArgs e)
         {
+            isRunning = false;
             PLC.Instance().SetBit("DB2.DBX48.1");
             btnStart.Enabled = true;
             btnPause.Enabled = false;
@@ -590,17 +596,12 @@ namespace KhoanNhaTrang
         }
         private void btnPause_Click(object sender, EventArgs e)
         {
-            //PLC.Instance().ResetBit("DB2.DBX48.1");
-            //btnStart.Enabled = true;
-            //btnPause.Enabled = false;
-            //btnEnd.Enabled = true;
-            //btnSaveToAs.Enabled = true;
-            //btnPrint.Enabled = true;
-            //isInsertData = false;
+         
         }
         private void btnEnd_MouseDown(object sender, MouseEventArgs e)
         {
             //Data data = insertDB();
+          
             PLC.Instance().SetBit("DB2.DBX48.2");
             index = 0;
 
@@ -713,10 +714,10 @@ namespace KhoanNhaTrang
                 var param = new DynamicParameters();
                 param.Add("management_id", managementId);
                 string query = @"
-                                 SELECT flow_rate, fluid, wc, pressure ,insert_date
+                                 SELECT  avg(flow_rate) flow_rate, avg(fluid) fluid, avg(wc) wc,avg(pressure) pressure, convert((min(insert_date) div 500)*500 + 230, datetime) as insert_date
                                  FROM grouting.data
-                                 where management_id =@management_id
-                                    order by id";
+                                 where management_id =9
+                                 group by insert_date div 500";
                 listDataReport = db.Query<Data>(query, param).ToList();
                 List<Data> tmpReport = new List<Data>();
                 foreach (Data temp in listDataReport)
@@ -895,6 +896,7 @@ namespace KhoanNhaTrang
             }
             else
             {
+                
                 MessageBox.Show("Có lỗi xảy ra vui lòng thử lại.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -1325,7 +1327,7 @@ namespace KhoanNhaTrang
         private void timer2_Tick(object sender, EventArgs e)
         {
      
-            if(!debugMode)
+            if(!debugMode && isRunning)
             { 
                 try
                 {
@@ -1489,6 +1491,28 @@ namespace KhoanNhaTrang
                         seconds = seconds + config.time_store_db;
                     }
                     break; 
+            }
+        }
+        public static bool IsNumeric(object Expression)
+        {
+            double retNum;
+
+            bool isNum = Double.TryParse(Convert.ToString(Expression), System.Globalization.NumberStyles.Any, System.Globalization.NumberFormatInfo.InvariantInfo, out retNum);
+            return isNum;
+        }
+        private void txtSectFrom_TextChanged(object sender, EventArgs e)
+        {
+            if (IsNumeric(txtSectFrom.Text) && IsNumeric(txtTo.Text))
+            {
+                txtLength.Text = ( Double.Parse(txtTo.Text) - Double.Parse(txtSectFrom.Text)).ToString();
+            }
+        }
+
+        private void txtTo_TextChanged(object sender, EventArgs e)
+        {
+            if (IsNumeric(txtSectFrom.Text) && IsNumeric(txtTo.Text))
+            {
+                txtLength.Text = (Double.Parse(txtTo.Text) - Double.Parse(txtSectFrom.Text)).ToString();
             }
         }
     }
