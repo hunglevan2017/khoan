@@ -147,6 +147,19 @@ namespace KhoanNhaTrang
         {
             timer1.Start();
             timer2.Start();
+
+            try {
+                if (PLC.Instance().Open())
+                {
+                    lbAlarmPLC.Text = "PLC Connected";
+                    lbAlarmPLC.BackColor = Color.Lime;
+                }
+                else
+                {
+                    lbAlarmPLC.Text = "PLC not connected";
+                    lbAlarmPLC.BackColor = Color.Red;
+                }
+            } catch (Exception EX) { }
            
 
 
@@ -377,7 +390,7 @@ namespace KhoanNhaTrang
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            label27.Text = isRunning.ToString();
+          
             if (isRunning)
             {
 
@@ -716,7 +729,7 @@ namespace KhoanNhaTrang
                 string query = @"
                                  SELECT  avg(flow_rate) flow_rate, avg(fluid) fluid, avg(wc) wc,avg(pressure) pressure, convert((min(insert_date) div 500)*500 + 230, datetime) as insert_date
                                  FROM grouting.data
-                                 where management_id =9
+                                 where management_id =@managementId
                                  group by insert_date div 500";
                 listDataReport = db.Query<Data>(query, param).ToList();
                 List<Data> tmpReport = new List<Data>();
@@ -1327,7 +1340,7 @@ namespace KhoanNhaTrang
         private void timer2_Tick(object sender, EventArgs e)
         {
      
-            if(!debugMode && isRunning)
+            if(!debugMode )
             { 
                 try
                 {

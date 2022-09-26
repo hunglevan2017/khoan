@@ -139,7 +139,20 @@ namespace KhoanNhaTrang
         {
             timer1.Start();
             timer2.Start();
-           
+            try
+            {
+                if (PLC.Instance().Open())
+                {
+                    lbAlarmPLC.Text = "PLC Connected";
+                    lbAlarmPLC.BackColor = Color.Lime;
+                }
+                else
+                {
+                    lbAlarmPLC.Text = "PLC not connected";
+                    lbAlarmPLC.BackColor = Color.Red;
+                }
+            }
+            catch (Exception EX) { }
             // khi khởi động sẽ được chạy
             //sampleConnectDB();
             // init combobox
@@ -837,7 +850,7 @@ namespace KhoanNhaTrang
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-            if (!debugMode && isRunning) {
+            if (!debugMode  ) {
                 try
                 {
                     if (PLC.Instance().Open())
