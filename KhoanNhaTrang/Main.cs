@@ -334,6 +334,7 @@ namespace KhoanNhaTrang
         private void btnStart_Click(object sender, EventArgs e)
         {
             isRunning = true;
+            
             show_Data_Real_lb_wc(txtWC, PLCDB1Read.Instance().WC_start);
             changeMaxY();
             lastInsert = new DateTime();
@@ -344,6 +345,7 @@ namespace KhoanNhaTrang
             timer1.Interval = config.time_update_ui * 1000;
             btnEnd.Enabled = true;
             timer1.Start();
+
         }
 
         private void show_Data_Real_lb_wc(TextBox lb, double value)
@@ -390,7 +392,7 @@ namespace KhoanNhaTrang
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-          
+            label17.Text = managementId+"";
             if (isRunning)
             {
 
@@ -726,6 +728,7 @@ namespace KhoanNhaTrang
                 db.Open();
                 var param = new DynamicParameters();
                 param.Add("management_id", managementId);
+                ///@managementId
                 string query = @"
                                  SELECT  avg(flow_rate) flow_rate, avg(fluid) fluid, avg(wc) wc,avg(pressure) pressure, convert((min(insert_date) div 500)*500 + 230, datetime) as insert_date
                                  FROM grouting.data
@@ -743,6 +746,154 @@ namespace KhoanNhaTrang
                     tmpReport.Add(temp);
                 }
                 listDataReport = tmpReport;
+                if (listDataReport != null && listDataReport.Any())
+                {
+                    var ds = new DataSet();
+
+                    // Paragrap1
+                    var par1 = new DataTable();
+                    par1.Columns.Add("equipment");
+                    par1.Columns.Add("projectname");
+                    par1.Columns.Add("grouting");
+                    par1.Columns.Add("holeno");
+                    par1.Columns.Add("order");
+                    par1.Columns.Add("the");
+                    par1.Columns.Add("length");
+                    par1.Columns.Add("num");
+                    par1.Columns.Add("desofhole");
+                    par1.Columns.Add("distbwejectandhole");
+                    par1.Columns.Add("holehigh");
+                    par1.Columns.Add("begintime");
+                    par1.Columns.Add("recorder");
+                    par1.Columns.Add("leader");
+                    par1.Columns.Add("quality");
+                    object[] values = new object[15];
+                    values[0] = "Equipment: " + lbEquipment.Text + "  " + startDate;
+                    values[1] = "Project Name: " + txtProjectName.Text;
+                    values[2] = "Grouting Holes Parameters: ";
+                    values[3] = "Hole No.: " + txtHoleNo.Text;
+                    values[4] = "Order: " + cbOrder.Text + " Range: " + cbRange.Text;
+                    values[5] = "The: " + txtThe.Text + " Sect From: " + txtSectFrom.Text + " To: " + txtTo.Text + "m";
+                    values[6] = "Length(m): " + txtLength.Text;
+                    values[7] = "Num.: " + txtNum.Text;
+                    values[8] = "Des of Hole(mm): " + txtDesOfHole.Text;
+                    values[9] = "Dist bw eject and hole(cm): " + txtDistBwEjectAndHole.Text;
+                    values[10] = "Hole High(m): " + txtHoleHigh.Text;
+                    values[11] = "Begin Time: " + startHour;
+                    values[12] = "Recorder: " + txtRecorder.Text;
+                    values[13] = "Leader: " + txtLeader.Text;
+                    values[14] = "Quality: " + txtQuality.Text;
+                    par1.Rows.Add(values);
+                    par1.TableName = "par1";
+                    ds.Tables.Add(par1);
+
+                    // Table 1
+                    var tab1 = new DataTable();
+                    tab1.Columns.Add("time", typeof(string));
+                    tab1.Columns.Add("flowrate", typeof(string));
+                    tab1.Columns.Add("tfluid", typeof(string));
+                    tab1.Columns.Add("wc", typeof(string));
+                    tab1.Columns.Add("pressure", typeof(string));
+                    String timeMin = "00:00:01";
+                    int seconds = config.time_store_db;
+                    double totalfluid = 0;
+                    foreach (Data data in listDataReport)
+                    {
+                        totalfluid = data.fluid;
+                        tab1.Rows.Add(timeMin, Math.Round(data.flow_rate, 2).ToString("0.00"), Math.Round(data.fluid, 1).ToString("0.0"), data.wc.ToString() + ":1", Math.Round(data.pressure, 2).ToString("0.00"));
+                        TimeSpan timeMinSpan = TimeSpan.FromSeconds(seconds);
+                        timeMin = string.Format("{0:D2}:{1:D2}:{2:D2}", timeMinSpan.Hours, timeMinSpan.Minutes, timeMinSpan.Seconds);
+                        seconds = seconds + config.time_store_db;
+                    }
+                    tab1.TableName = "tab1";
+                    ds.Tables.Add(tab1);
+
+                    // Paragrap 2
+                    var par2 = new DataTable();
+                    par2.Columns.Add("endtime");
+                    par2.Columns.Add("totalfluid");
+                    par2.Columns.Add("ashused");
+                    object[] values2 = new object[3];
+                    values2[0] = "End Time: " + endDate;
+                    values2[1] = "Total Fluid: " + Math.Round(totalfluid, 2) + " L";
+                    values2[2] = "Ash used: " + Math.Round(PLCDB1Read.Instance().cement_total, 2) + " Kg";
+                    par2.Rows.Add(values2);
+                    par2.TableName = "par2";
+                    ds.Tables.Add(par2);
+
+                    // Paragrap 3
+                    var par3 = new DataTable();
+                    par3.Columns.Add("maxofflowrate");
+                    par3.Columns.Add("maxoftfluid");
+                    par3.Columns.Add("maxofwc");
+                    par3.Columns.Add("maxofpressure");
+                    par3.Columns.Add("minofflowrate");
+                    par3.Columns.Add("minoftfluid");
+                    par3.Columns.Add("minofwc");
+                    par3.Columns.Add("minofpressure");
+                    object[] values3 = new object[8];
+                    values3[0] = txtMaxOfYFlowrate.Text;
+                    values3[1] = txtMaxOfYTotalFlow.Text;
+                    values3[2] = txtMaxOfYWC.Text;
+                    values3[3] = txtMaxOfYPressure.Text;
+                    values3[4] = "0";
+                    values3[5] = "0";
+                    values3[6] = "0";
+                    values3[7] = "0";
+                    par3.Rows.Add(values3);
+                    par3.TableName = "par3";
+                    ds.Tables.Add(par3);
+
+                    // chart 
+                    var chart = new DataTable();
+                    chart.Columns.Add("timecurves");
+                    chart.Rows.Add("");
+                    chart.TableName = "chart";
+                    ds.Tables.Add(chart);
+
+                    // Draw chart
+                    String imageChartName = @"\Chart" + DateTime.Now.ToString("yyyyMMddhhmmss").ToString() + ".bmp";
+                    ZedGraphControl tmp = new ZedGraphControl();
+                    tmp = chartTimeCurves;
+                    GraphPane graphPane = tmp.GraphPane.Clone();
+                    graphPane.XAxis.MajorGrid.IsVisible = true;
+
+
+                    LineItem curveFlowRate = tmp.GraphPane.CurveList[0] as LineItem;
+                    curveFlowRate.Line.Width = 3F;
+                    LineItem curveFluid = tmp.GraphPane.CurveList[1] as LineItem;
+                    curveFluid.Line.Width = 3F;
+                    LineItem curveWC = tmp.GraphPane.CurveList[2] as LineItem;
+                    curveWC.Line.Width = 3F;
+                    LineItem curvePressure = tmp.GraphPane.CurveList[3] as LineItem;
+                    curvePressure.Line.Width = 3F;
+
+                    graphPane.XAxis.MajorGrid.DashOn = 10.0F;
+                    graphPane.YAxis.MajorGrid.DashOn = 10.0F;
+
+                    graphPane.XAxis.Scale.FontSpec.Size = 32;
+                    graphPane.YAxis.Scale.FontSpec.Size = 32;
+
+                    graphPane.YAxis.Title.IsVisible = false;
+                    graphPane.XAxis.Title.IsVisible = false;
+                    graphPane.Title.IsVisible = false;
+
+                    graphPane.Border.IsVisible = false;
+                    graphPane.Legend.IsVisible = false;
+                    graphPane.Title.IsVisible = false;
+
+                    graphPane.YAxis.Scale.Min = 0;
+                    graphPane.YAxis.Scale.Max = 100;
+                    graphPane.YAxis.Scale.MinorStep = 1;
+                    graphPane.YAxis.Scale.MajorStep = 10;
+                    graphPane.YAxis.MajorGrid.IsVisible = true;
+
+                    Bitmap bitmap = graphPane.GetImage();
+                    ToGrayScale(bitmap);
+                    bitmap.Save(path + imageChartName);
+
+                    ExportExcelToTemplateEpplus.TemplateExcel.FillReport(fs, "Template.xlsx", ds, listDataReport.Count - 1, path + imageChartName, new string[] { "{", "}" });
+                }
             }
             catch (Exception ex)
             {
@@ -759,159 +910,7 @@ namespace KhoanNhaTrang
                     Console.WriteLine(ex.Message);
                 }
             }
-            if (listDataReport != null && listDataReport.Any())
-            {
-                var ds = new DataSet();
-               
-                // Paragrap1
-                var par1 = new DataTable();
-                par1.Columns.Add("equipment");
-                par1.Columns.Add("projectname");
-                par1.Columns.Add("grouting"); 
-                par1.Columns.Add("holeno");
-                par1.Columns.Add("order");
-                par1.Columns.Add("the");
-                par1.Columns.Add("length");
-                par1.Columns.Add("num");
-                par1.Columns.Add("desofhole");
-                par1.Columns.Add("distbwejectandhole");
-                par1.Columns.Add("holehigh");
-                par1.Columns.Add("begintime");
-                par1.Columns.Add("recorder");
-                par1.Columns.Add("leader");
-                par1.Columns.Add("quality");
-                object[] values = new object[15];
-                values[0] = "Equipment: " + lbEquipment.Text + "  " + startDate;
-                values[1] = "Project Name: " + txtProjectName.Text;
-                values[2] = "Grouting Holes Parameters: ";
-                values[3] = "Hole No.: " + txtHoleNo.Text;
-                values[4] = "Order: " + cbOrder.Text  + " Range: " + cbRange.Text;
-                values[5] = "The: " + txtThe.Text + " Sect From: " + txtSectFrom.Text + " To: " + txtTo.Text + "m";
-                values[6] = "Length(m): " + txtLength.Text;
-                values[7] = "Num.: " + txtNum.Text;
-                values[8] = "Des of Hole(mm): " + txtDesOfHole.Text;
-                values[9] = "Dist bw eject and hole(cm): " + txtDistBwEjectAndHole.Text;
-                values[10] = "Hole High(m): " + txtHoleHigh.Text;
-                values[11] = "Begin Time: " + startHour;
-                values[12] = "Recorder: " + txtRecorder.Text;
-                values[13] = "Leader: " + txtLeader.Text;
-                values[14] = "Quality: " + txtQuality.Text;
-                par1.Rows.Add(values);
-                par1.TableName = "par1";
-                ds.Tables.Add(par1);
-
-                // Table 1
-                var tab1 = new DataTable();
-                tab1.Columns.Add("time", typeof(string));
-                tab1.Columns.Add("flowrate", typeof(string));
-                tab1.Columns.Add("tfluid", typeof(string));
-                tab1.Columns.Add("wc", typeof(string));
-                tab1.Columns.Add("pressure", typeof(string));
-                String timeMin = "00:00:01";
-                int seconds = config.time_store_db;
-                double totalfluid = 0;
-                foreach (Data data in listDataReport)
-                {
-                    totalfluid = data.fluid;
-                    tab1.Rows.Add(timeMin, Math.Round(data.flow_rate, 2).ToString("0.00"), Math.Round(data.fluid, 1).ToString("0.0"), data.wc.ToString() + ":1", Math.Round(data.pressure, 2).ToString("0.00"));
-                    TimeSpan timeMinSpan = TimeSpan.FromSeconds(seconds);
-                    timeMin = string.Format("{0:D2}:{1:D2}:{2:D2}", timeMinSpan.Hours, timeMinSpan.Minutes, timeMinSpan.Seconds);
-                    seconds = seconds + config.time_store_db;
-                }
-                tab1.TableName = "tab1";
-                ds.Tables.Add(tab1);
-
-                // Paragrap 2
-                var par2 = new DataTable();
-                par2.Columns.Add("endtime");
-                par2.Columns.Add("totalfluid");
-                par2.Columns.Add("ashused");
-                object[] values2 = new object[3];
-                values2[0] = "End Time: " + endDate;
-                values2[1] = "Total Fluid: " + Math.Round(totalfluid, 2) + " L";
-                values2[2] = "Ash used: " + Math.Round(PLCDB1Read.Instance().cement_total, 2) + " Kg";
-                par2.Rows.Add(values2);
-                par2.TableName = "par2";
-                ds.Tables.Add(par2);
-
-                // Paragrap 3
-                var par3 = new DataTable();
-                par3.Columns.Add("maxofflowrate");
-                par3.Columns.Add("maxoftfluid");
-                par3.Columns.Add("maxofwc");
-                par3.Columns.Add("maxofpressure");
-                par3.Columns.Add("minofflowrate");
-                par3.Columns.Add("minoftfluid");
-                par3.Columns.Add("minofwc");
-                par3.Columns.Add("minofpressure");
-                object[] values3 = new object[8];
-                values3[0] = txtMaxOfYFlowrate.Text;
-                values3[1] = txtMaxOfYTotalFlow.Text;
-                values3[2] = txtMaxOfYWC.Text;
-                values3[3] = txtMaxOfYPressure.Text;
-                values3[4] = "0";
-                values3[5] = "0";
-                values3[6] = "0";
-                values3[7] = "0";
-                par3.Rows.Add(values3);
-                par3.TableName = "par3";
-                ds.Tables.Add(par3);
-
-                // chart 
-                var chart = new DataTable();
-                chart.Columns.Add("timecurves");
-                chart.Rows.Add("");
-                chart.TableName = "chart";
-                ds.Tables.Add(chart);
-
-                // Draw chart
-                String imageChartName = @"\Chart" + DateTime.Now.ToString("yyyyMMddhhmmss").ToString() + ".bmp";
-                ZedGraphControl tmp = new ZedGraphControl();
-                tmp = chartTimeCurves;
-                GraphPane graphPane = tmp.GraphPane.Clone();
-                graphPane.XAxis.MajorGrid.IsVisible = true;
-
-
-                LineItem curveFlowRate = tmp.GraphPane.CurveList[0] as LineItem;
-                curveFlowRate.Line.Width = 3F;
-                LineItem curveFluid = tmp.GraphPane.CurveList[1] as LineItem;
-                curveFluid.Line.Width = 3F;
-                LineItem curveWC = tmp.GraphPane.CurveList[2] as LineItem;
-                curveWC.Line.Width = 3F;
-                LineItem curvePressure = tmp.GraphPane.CurveList[3] as LineItem;
-                curvePressure.Line.Width = 3F;
-
-                graphPane.XAxis.MajorGrid.DashOn = 10.0F;
-                graphPane.YAxis.MajorGrid.DashOn = 10.0F;
-
-                graphPane.XAxis.Scale.FontSpec.Size = 32;
-                graphPane.YAxis.Scale.FontSpec.Size = 32;
-
-                graphPane.YAxis.Title.IsVisible = false;
-                graphPane.XAxis.Title.IsVisible = false;
-                graphPane.Title.IsVisible = false;
-
-                graphPane.Border.IsVisible = false;
-                graphPane.Legend.IsVisible = false;
-                graphPane.Title.IsVisible = false;
-
-                graphPane.YAxis.Scale.Min = 0;
-                graphPane.YAxis.Scale.Max = 100;
-                graphPane.YAxis.Scale.MinorStep = 1;
-                graphPane.YAxis.Scale.MajorStep = 10;
-                graphPane.YAxis.MajorGrid.IsVisible = true;
-
-                Bitmap bitmap = graphPane.GetImage();
-                ToGrayScale(bitmap);
-                bitmap.Save(path + imageChartName);
-
-                ExportExcelToTemplateEpplus.TemplateExcel.FillReport(fs, "Template.xlsx", ds, listDataReport.Count -1, path + imageChartName,  new string[] { "{", "}" });
-            }
-            else
-            {
-                
-                MessageBox.Show("Có lỗi xảy ra vui lòng thử lại.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+          
         }
 
         public void ToGrayScale(Bitmap Bmp)
